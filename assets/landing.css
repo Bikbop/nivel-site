@@ -67,18 +67,13 @@ html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 /* галерея: прокрутка по горизонтали, первый кадр выровнен по контенту */
 .gallery {
   display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; outline: 0;
-  padding: 8px max(32px, calc((100% - 1180px) / 2 + 32px)) 24px; scroll-padding-inline: max(32px, calc((100% - 1180px) / 2 + 32px)); scrollbar-width: none; scroll-behavior: smooth;
+  padding: 8px max(32px, calc((100% - 1180px) / 2 + 32px)) 24px; scroll-padding-inline: max(32px, calc((100% - 1180px) / 2 + 32px));
 }
-.gallery::-webkit-scrollbar { display: none; }
-.gallery-box { position: relative; }
-.g-btn {
-  position: absolute; top: calc(50% - 30px); z-index: 2; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--outline-soft);
-  background: var(--surface); color: var(--on-surface); display: grid; place-items: center; cursor: pointer; box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
-}
-.g-btn[hidden] { display: none; }
-.g-btn:hover { background: var(--primary); color: var(--on-primary, #fff); border-color: transparent; }
-.g-btn.prev { left: max(12px, calc((100% - 1180px) / 2 - 8px)); }
-.g-btn.next { right: max(12px, calc((100% - 1180px) / 2 - 8px)); }
+@supports (-moz-appearance: none) { .gallery { scrollbar-width: auto; scrollbar-color: var(--outline) var(--surface); } }
+.gallery::-webkit-scrollbar { height: 16px; }
+.gallery::-webkit-scrollbar-track { background: var(--surface); border-radius: 8px; margin-inline: max(32px, calc((100% - 1180px) / 2 + 32px)); }
+.gallery::-webkit-scrollbar-thumb { background: var(--outline); border-radius: 8px; border: 3px solid var(--surface); }
+.gallery::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 .gallery figure { margin: 0; flex: none; width: 220px; scroll-snap-align: start; }
 .gallery figcaption { text-align: center; font-size: 14px; color: var(--on-surface-variant); margin-top: 14px; }
 .gallery .phone { border-radius: 26px; padding: 7px; }

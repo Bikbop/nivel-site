@@ -126,9 +126,6 @@
         <p>Тёмная тема по умолчанию; есть светлая и строгие темы.</p>
       </div>
     </div>
-    <div class="gallery-box">
-    <button class="g-btn prev" type="button" aria-label="Назад" hidden><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    <button class="g-btn next" type="button" aria-label="Вперёд" hidden><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <div class="gallery" tabindex="0" aria-label="Скриншоты приложения">
       <figure><div class="phone"><img src="assets/img/mill/menu.webp" alt="Главное меню и поиск" loading="lazy" width="400" height="824"></div><figcaption>Главное меню и поиск</figcaption></figure>
       <figure><div class="phone"><img src="assets/img/mill/journal.webp" alt="Журнал нивелирования" loading="lazy" width="400" height="824"></div><figcaption>Журнал нивелирования</figcaption></figure>
@@ -141,7 +138,6 @@
       <figure><div class="phone"><img src="assets/img/mill/functions.webp" alt="Другие функции" loading="lazy" width="400" height="824"></div><figcaption>Другие функции</figcaption></figure>
       <figure><div class="phone"><img src="assets/img/mill/settings.webp" alt="Настройки и темы" loading="lazy" width="400" height="824"></div><figcaption>Настройки и темы</figcaption></figure>
       <figure><div class="phone"><img src="assets/img/mill/kb.webp" alt="База знаний" loading="lazy" width="400" height="824"></div><figcaption>База знаний</figcaption></figure>
-    </div>
     </div>
   </section>
 
@@ -269,22 +265,6 @@
     icon();
   });
   icon();
-})();
-// Галерея: кнопки-стрелки листают на ширину видимой области
-(function () {
-  var g = document.querySelector(".gallery"), box = g && g.parentNode;
-  if (!g) return;
-  var prev = box.querySelector(".prev"), next = box.querySelector(".next");
-  function upd() {
-    prev.hidden = g.scrollLeft < 8;
-    next.hidden = g.scrollLeft > g.scrollWidth - g.clientWidth - 8;
-  }
-  function go(d) { g.scrollBy({ left: d * Math.max(240, g.clientWidth * 0.8), behavior: "smooth" }); }
-  prev.addEventListener("click", function () { go(-1); });
-  next.addEventListener("click", function () { go(1); });
-  g.addEventListener("scroll", upd, { passive: true });
-  window.addEventListener("resize", upd);
-  upd();
 })();
 </script>
 </body>
