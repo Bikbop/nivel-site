@@ -64,24 +64,15 @@ html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 .acc-cyan { background: var(--cyan); color: var(--on-cyan); }
 .acc-indigo { background: var(--indigo); color: var(--on-indigo); }
 
-/* «мельница» скриншотов: без JS — обычная горизонтальная прокрутка, с JS — карточки на огромном колесе */
-.mill-sec { overflow: hidden; padding: 96px 0 72px; position: relative; }
-.mill-sec::before {
-  content: ""; position: absolute; left: 50%; top: 0; width: 1400px; height: 700px; transform: translateX(-50%);
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--primary) 16%, transparent), transparent); pointer-events: none;
+/* галерея: прокрутка по горизонтали, первый кадр выровнен по контенту */
+.gallery {
+  display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; outline: 0;
+  padding: 8px max(32px, calc((100% - 1180px) / 2 + 32px)) 24px; scroll-padding-inline: max(32px, calc((100% - 1180px) / 2 + 32px)); scrollbar-width: thin;
 }
-.mill-sec .wrap { position: relative; }
-.section-head.center { text-align: center; margin-inline: auto; }
-.section-head.center h2 { font-size: clamp(32px, 4.4vw, 52px); letter-spacing: -.025em; }
-.mill { display: flex; gap: 24px; overflow-x: auto; padding: 8px 32px 24px; outline: 0; scrollbar-width: thin; position: relative; }
-.mill figure { margin: 0; flex: none; width: 220px; }
-.mill.on { display: block; overflow: hidden; padding: 0; }
-.mill.on figure { position: absolute; left: 0; top: 0; will-change: transform, opacity; transform-origin: 50% 50%; }
-.mill .phone { border-radius: 30px; padding: 8px; box-shadow: 0 24px 50px -18px rgba(0, 0, 0, .55); }
-.mill .phone img { border-radius: 23px; aspect-ratio: 400 / 824; }
-.mill figcaption { text-align: center; margin-top: 16px; }
-.mill figcaption b { display: block; font-size: 15px; font-weight: 600; }
-.mill figcaption span { display: block; font-size: 13px; color: var(--on-surface-variant); margin-top: 3px; }
+.gallery figure { margin: 0; flex: none; width: 220px; scroll-snap-align: start; }
+.gallery figcaption { text-align: center; font-size: 14px; color: var(--on-surface-variant); margin-top: 14px; }
+.gallery .phone { border-radius: 26px; padding: 7px; }
+.gallery .phone img { border-radius: 20px; }
 
 /* онлайн-версия */
 .online { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 56px; align-items: center; }
@@ -166,7 +157,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 @media (max-width: 600px) {
   .wrap { padding: 0 16px; }
   .features { grid-template-columns: minmax(0, 1fr); }
-  .mill-sec { padding: 64px 0 48px; }
+  .gallery { padding-inline: 16px; scroll-padding-inline: 16px; }
+  .gallery figure { width: 180px; }
   .head-in .btn { padding: 6px 12px; }
   .lead { font-size: 16.5px; }
   .about { flex-direction: column; gap: 20px; }
