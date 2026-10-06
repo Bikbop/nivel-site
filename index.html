@@ -129,16 +129,13 @@
     <div class="gallery" tabindex="0" aria-label="Скриншоты приложения">
       <figure><div class="phone"><img src="assets/img/screens/menu.webp" alt="Главное меню Nivel" loading="lazy" width="540" height="1081"></div><figcaption>Главное меню и поиск</figcaption></figure>
       <figure><div class="phone"><img src="assets/img/screens/journal.webp" alt="Ввод станции в журнале нивелирования" loading="lazy" width="540" height="1081"></div><figcaption>Журнал нивелирования</figcaption></figure>
-      <figure><div class="phone"><img src="assets/img/screens/traverse.webp" alt="Журнал полигонометрии со схемой хода и невязками" loading="lazy" width="540" height="1081"></div><figcaption>Полигонометрия и уравнивание</figcaption></figure>
-      <figure><div class="phone"><img src="assets/img/screens/map.webp" alt="Карта с объектами и треком" loading="lazy" width="540" height="1081"></div><figcaption>Карта, GNSS и объекты</figcaption></figure>
-      <figure><div class="phone"><img src="assets/img/screens/sphere.webp" alt="Аппроксимация шара: недоступная точка по наклонам вехи" loading="lazy" width="540" height="1081"></div><figcaption>Аппроксимация шара</figcaption></figure>
+      <figure><div class="phone"><img src="assets/img/screens/map.webp" alt="Карта с объектами и треком" loading="lazy" width="540" height="1081"></div><figcaption>Карта и объекты</figcaption></figure>
       <figure><div class="phone"><img src="assets/img/screens/cad.webp" alt="Редактор чертежей со схемой хода" loading="lazy" width="540" height="1081"></div><figcaption>Чертежи</figcaption></figure>
       <figure><div class="phone"><img src="assets/img/screens/intersections.webp" alt="Обратная засечка" loading="lazy" width="540" height="1081"></div><figcaption>Засечки с контролем</figcaption></figure>
+      <figure><div class="phone"><img src="assets/img/screens/sphere.webp" alt="Аппроксимация шара: недоступная точка по наклонам вехи" loading="lazy" width="540" height="1081"></div><figcaption>Аппроксимация шара</figcaption></figure>
       <figure><div class="phone"><img src="assets/img/screens/converter.webp" alt="Конвертер координат" loading="lazy" width="540" height="1081"></div><figcaption>Конвертер координат</figcaption></figure>
-      <figure><div class="phone"><img src="assets/img/screens/functions.webp" alt="Другие функции: ПГЗ, ОГЗ, засечки, вынос, шар" loading="lazy" width="540" height="1081"></div><figcaption>Расчёты в одном месте</figcaption></figure>
       <figure><div class="phone"><img src="assets/img/screens/verification.webp" alt="Поверка коллимационной ошибки" loading="lazy" width="540" height="1081"></div><figcaption>Поверки приборов</figcaption></figure>
       <figure><div class="phone"><img src="assets/img/screens/kb.webp" alt="База знаний" loading="lazy" width="540" height="1081"></div><figcaption>База знаний</figcaption></figure>
-      <figure><div class="phone"><img src="assets/img/screens/settings.webp" alt="Настройки: темы оформления" loading="lazy" width="540" height="1081"></div><figcaption>Темы оформления</figcaption></figure>
     </div>
   </section>
 
@@ -266,6 +263,49 @@
     icon();
   });
   icon();
+})();
+
+// Галерея: медленная прокрутка по кругу. Кадры дублируются, на стыке позиция возвращается назад — бесшовно.
+// Пауза при наведении, касании, прокрутке и фокусе; без анимации, если в системе включено «уменьшить движение».
+(function () {
+  var g = document.querySelector(".gallery");
+  if (!g || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var originals = Array.prototype.slice.call(g.children);
+  originals.forEach(function (f) {
+    var c = f.cloneNode(true);
+    c.setAttribute("aria-hidden", "true");
+    c.querySelectorAll("img").forEach(function (i) { i.alt = ""; i.loading = "eager"; });
+    g.appendChild(c);
+  });
+  g.classList.add("auto");
+  var SPEED = 28;                 // пикселей в секунду
+  var pos = g.scrollLeft, last = 0, pausedUntil = 0, visible = true, hover = false;
+  function setWidth() { return g.children[originals.length].offsetLeft - g.children[0].offsetLeft; }
+  function pause(ms) { pausedUntil = performance.now() + ms; }
+  function tick(t) {
+    var dt = last ? Math.min(t - last, 100) : 0;
+    last = t;
+    if (visible && !hover && t >= pausedUntil && document.visibilityState === "visible") {
+      var w = setWidth();
+      pos += SPEED * dt / 1000;
+      if (w > 0 && pos >= w) pos -= w;
+      g.scrollLeft = pos;
+    }
+    requestAnimationFrame(tick);
+  }
+  // свою прокрутку (колесо, перетаскивание, клавиши) учитываем: позиция синхронизируется с реальной
+  g.addEventListener("scroll", function () {
+    if (Math.abs(g.scrollLeft - pos) > 2) { pos = g.scrollLeft; var w = setWidth(); if (w > 0 && pos >= w) { pos -= w; g.scrollLeft = pos; } }
+  }, { passive: true });
+  ["wheel", "touchstart", "pointerdown", "keydown", "focusin"].forEach(function (e) {
+    g.addEventListener(e, function () { pause(5000); }, { passive: true });
+  });
+  g.addEventListener("mouseenter", function () { hover = true; });
+  g.addEventListener("mouseleave", function () { hover = false; pause(1500); });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }, { threshold: 0.1 }).observe(g);
+  }
+  requestAnimationFrame(tick);
 })();
 </script>
 </body>

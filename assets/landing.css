@@ -69,6 +69,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 72px; }
   display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; outline: 0;
   padding: 8px max(32px, calc((100% - 1180px) / 2 + 32px)) 24px; scroll-padding-inline: max(32px, calc((100% - 1180px) / 2 + 32px)); scrollbar-width: thin;
 }
+.gallery.auto { scroll-snap-type: none; }
 .gallery figure { margin: 0; flex: none; width: 220px; scroll-snap-align: start; }
 .gallery figcaption { text-align: center; font-size: 14px; color: var(--on-surface-variant); margin-top: 14px; }
 .gallery .phone { border-radius: 26px; padding: 7px; }
