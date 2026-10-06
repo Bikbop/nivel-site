@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nivel — журналы нивелирования и геодезические расчёты</title>
+<meta name="description" content="Nivel — приложение для геодезистов: журнал нивелирования с контролем на станции и уравниванием, полигонометрия, карта и GNSS, чертежи, засечки, конвертер координат. Есть онлайн-версия для компьютера.">
+<meta name="theme-color" content="#F6F7F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111418" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Nivel — журналы нивелирования и геодезические расчёты">
+<meta property="og:description" content="Полевой журнал, уравнивание, карта, чертежи и расчёты — в телефоне и в браузере.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/nivel.css">
+<link rel="stylesheet" href="assets/landing.css">
+<script>try{var t=localStorage.getItem("nivel.theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="logo" href="./"><span class="logo-badge">N</span>Nivel</a>
+    <nav class="head-nav" aria-label="Разделы">
+      <a href="#features">Возможности</a>
+      <a href="#screens">Скриншоты</a>
+      <a href="#online">Онлайн-версия</a>
+      <a href="#android">Скачать</a>
+      <a href="#about">О разработчике</a>
+    </nav>
+    <button class="icon-btn" id="theme" type="button" title="Сменить тему" aria-label="Сменить тему"><svg class="icon s"><use href="assets/icons.svg#dark_mode"/></svg></button>
+    <a class="btn" href="app/">Открыть онлайн</a>
+  </div>
+</header>
+
+<main>
+  <!-- ===== Первый экран ===== -->
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div class="hero-text">
+        <p class="eyebrow">Для геодезистов и изыскателей</p>
+        <h1>Полевой журнал и&nbsp;геодезические расчёты&nbsp;— в&nbsp;телефоне и&nbsp;на&nbsp;компьютере</h1>
+        <p class="lead">Nivel ведёт журнал нивелирования и полигонометрии с контролем допусков прямо на станции,
+          уравнивает ходы, строит схемы и чертежи, работает с картой и GNSS. Дома журнал открывается в браузере —
+          без установки и регистрации.</p>
+        <div class="row hero-cta">
+          <a class="btn large" href="#android"><svg class="icon s"><use href="assets/icons.svg#android"/></svg>Скачать для Android</a>
+          <a class="btn large tonal" href="app/"><svg class="icon s"><use href="assets/icons.svg#devices"/></svg>Онлайн-версия</a>
+        </div>
+        <ul class="hero-facts">
+          <li><svg class="icon s"><use href="assets/icons.svg#check"/></svg>Бесплатно, без рекламы</li>
+          <li><svg class="icon s"><use href="assets/icons.svg#cloud_off"/></svg>Работает без интернета</li>
+          <li><svg class="icon s"><use href="assets/icons.svg#lock"/></svg>Данные остаются у вас</li>
+        </ul>
+      </div>
+      <div class="hero-phones" aria-hidden="true">
+        <div class="phone back"><img src="assets/img/screens/map.webp" alt="" width="540" height="1081"></div>
+        <div class="phone front"><img src="assets/img/screens/journal.webp" alt="" width="540" height="1081"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Возможности ===== -->
+  <section class="section" id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Что умеет Nivel</h2>
+        <p>Всё, что обычно лежит в тетради, калькуляторе и паре программ на компьютере, — в одном приложении.</p>
+      </div>
+      <div class="features">
+        <article class="feature">
+          <div class="f-ico acc-teal"><svg class="icon"><use href="assets/icons.svg#assignment"/></svg></div>
+          <h3>Журнал нивелирования</h3>
+          <p>III и IV класс по ГКИНП (ГНТА)-03-010-02 или свои допуски. Контроль на станции сразу при вводе,
+            прямой и обратный ход, секции, невязка и ведомость уравнивания.</p>
+        </article>
+        <article class="feature">
+          <div class="f-ico acc-indigo"><svg class="icon"><use href="assets/icons.svg#polyline"/></svg></div>
+          <h3>Полигонометрия</h3>
+          <p>Приёмы КЛ/КП, 2C и расхождение полуприёмов, угловая и линейная невязки, параметрическое уравнивание
+            по МНК и схема хода.</p>
+        </article>
+        <article class="feature">
+          <div class="f-ico acc-cyan"><svg class="icon"><use href="assets/icons.svg#map"/></svg></div>
+          <h3>Карта и GNSS</h3>
+          <p>Точки, линии и полигоны, запись трека, фототочки, статика по серии фиксов, навигация к точке и по
+            маршруту, растровые подложки с привязкой.</p>
+        </article>
+        <article class="feature">
+          <div class="f-ico acc-violet"><svg class="icon"><use href="assets/icons.svg#architecture"/></svg></div>
+          <h3>Чертежи</h3>
+          <p>Схема нивелирного хода и профиль из журнала в одно касание, свой редактор с привязками и размерами,
+            экспорт в DXF, PDF и SVG.</p>
+        </article>
+        <article class="feature">
+          <div class="f-ico acc-pink"><svg class="icon"><use href="assets/icons.svg#functions"/></svg></div>
+          <h3>Расчёты</h3>
+          <p>ПГЗ и ОГЗ, засечки с контролем, вынос в натуру, недоступная точка по наклонам вехи, калькулятор углов
+            и масштабов.</p>
+        </article>
+        <article class="feature">
+          <div class="f-ico acc-orange"><svg class="icon"><use href="assets/icons.svg#public"/></svg></div>
+          <h3>Системы координат</h3>
+          <p>WGS-84, ПЗ-90.11, ГСК-2011, СК-42 и СК-95 по ГОСТ, зоны Гаусса — Крюгера, UTM и местные системы (МСК).</p>
+        </article>
+        <article class="feature">
+          <div class="f-ico acc-blue"><svg class="icon"><use href="assets/icons.svg#verified"/></svg></div>
+          <h3>Поверки приборов</h3>
+          <p>Главное условие нивелира, круглый уровень, сетка нитей, разность пяток реек, коллимационная ошибка
+            и место нуля — с расчётом и историей.</p>
+        </article>
+        <article class="feature">
+          <div class="f-ico acc-teal"><svg class="icon"><use href="assets/icons.svg#share"/></svg></div>
+          <h3>Обмен и копии</h3>
+          <p>Журналы отправляются файлом .nivel, выгружаются в Excel и TXT. Резервная копия всех данных и автокопия
+            по расписанию.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Скриншоты ===== -->
+  <section class="section alt" id="screens">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Как это выглядит</h2>
+        <p>Тёмная тема по умолчанию; есть светлая и строгие темы.</p>
+      </div>
+    </div>
+    <div class="gallery" tabindex="0" aria-label="Скриншоты приложения">
+      <figure><div class="phone"><img src="assets/img/screens/menu.webp" alt="Главное меню Nivel" loading="lazy" width="540" height="1081"></div><figcaption>Главное меню и поиск</figcaption></figure>
+      <figure><div class="phone"><img src="assets/img/screens/journal.webp" alt="Список журналов нивелирования" loading="lazy" width="540" height="1081"></div><figcaption>Журналы с итогами ходов</figcaption></figure>
+      <figure><div class="phone"><img src="assets/img/screens/map.webp" alt="Карта с объектами" loading="lazy" width="540" height="1081"></div><figcaption>Карта и объекты</figcaption></figure>
+      <figure><div class="phone"><img src="assets/img/screens/cad.webp" alt="Список чертежей" loading="lazy" width="540" height="1081"></div><figcaption>Чертежи</figcaption></figure>
+      <figure><div class="phone"><img src="assets/img/screens/intersections.webp" alt="Обратная засечка" loading="lazy" width="540" height="1081"></div><figcaption>Засечки с контролем</figcaption></figure>
+      <figure><div class="phone"><img src="assets/img/screens/sphere.webp" alt="Недоступная точка по наклонам вехи" loading="lazy" width="540" height="1081"></div><figcaption>Недоступная точка (шар)</figcaption></figure>
+      <figure><div class="phone"><img src="assets/img/screens/converter.webp" alt="Конвертер координат" loading="lazy" width="540" height="1081"></div><figcaption>Конвертер координат</figcaption></figure>
+      <figure><div class="phone"><img src="assets/img/screens/verification.webp" alt="Поверки приборов" loading="lazy" width="540" height="1081"></div><figcaption>Поверки приборов</figcaption></figure>
+      <figure><div class="phone"><img src="assets/img/screens/kb.webp" alt="База знаний" loading="lazy" width="540" height="1081"></div><figcaption>База знаний</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ===== Онлайн-версия ===== -->
+  <section class="section" id="online">
+    <div class="wrap online">
+      <div class="online-text">
+        <p class="eyebrow">Онлайн-версия</p>
+        <h2>Камеральная обработка — на большом экране</h2>
+        <p>Откройте файл .nivel, отправленный из приложения, и продолжайте работу в браузере: таблицы станций,
+          ведомость уравнивания, схема хода и профиль, расчёты и поверки. Те же формулы, что в приложении, — код
+          общий.</p>
+        <ul class="checks">
+          <li>Журналы нивелирования и полигонометрии с уравниванием</li>
+          <li>ПГЗ, ОГЗ, засечки, вынос в натуру, конвертер координат</li>
+          <li>Карты: маршруты навигации для приложения, треки, точки и объекты, GPX, KML и GeoJSON</li>
+          <li>Поверки приборов со схемами и база знаний</li>
+          <li>Ничего не отправляется на сервер: расчёты идут в браузере, журналы хранятся на вашем компьютере</li>
+        </ul>
+        <a class="btn large" href="app/">Открыть онлайн-версию<svg class="icon s"><use href="assets/icons.svg#arrow_forward"/></svg></a>
+      </div>
+      <div class="browser" aria-hidden="true">
+        <div class="browser-bar"><i></i><i></i><i></i><span>nivel / app</span></div>
+        <img class="img-light" src="assets/img/web.webp" alt="" width="1440" height="900">
+        <img class="img-dark" src="assets/img/web-dark.webp" alt="" width="1440" height="900" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Скачать ===== -->
+  <section class="section alt" id="android">
+    <div class="wrap download">
+      <div>
+        <p class="eyebrow">Android</p>
+        <h2>Скачать Nivel</h2>
+        <p>Версия 1.5 · Android 7.0 и новее. Приложение бесплатное и работает без интернета; интернет нужен только для
+          подложек карты.</p>
+        <!-- TODO: прямая ссылка на APK — когда файл будет размещён, добавить рядом с кнопкой RuStore -->
+        <div class="row">
+          <a class="btn large" href="https://www.rustore.ru/catalog/app/com.example.nivel30" target="_blank" rel="noopener"><svg class="icon s"><use href="assets/icons.svg#download"/></svg>Скачать в RuStore</a>
+        </div>
+      </div>
+      <ol class="steps">
+        <li><b>Откройте страницу в RuStore</b> на телефоне и нажмите «Установить».</li>
+        <li><b>Обновления</b> приходят через RuStore сами.</li>
+        <li><b>Готово.</b> Журналы, чертежи и карты хранятся только на телефоне — делайте резервные копии в «Настройках».</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== О разработчике ===== -->
+  <section class="section" id="about">
+    <div class="wrap about">
+      <div class="avatar photo"><img src="assets/img/developer.webp" alt="Владимир Машинец" width="240" height="240" loading="lazy"></div>
+      <div>
+        <p class="eyebrow">О разработчике</p>
+        <h2>Владимир Машинец</h2>
+        <p>Студент Сибирского государственного университета геосистем и технологий. Nivel начался как личный проект:
+          я хотел иметь под рукой в поле и на практике журнал нивелирования, который сам следит за допусками и считает
+          невязки. Постепенно приложение выросло в полноценный инструмент — с полигонометрией, картой, чертежами и
+          онлайн-версией.</p>
+        <p>Nivel делаю в свободное время, поэтому каждое замечание и каждая идея — по-настоящему важны: пишите, что
+          неудобно или чего не хватает.</p>
+        <p class="muted">Авторы программы: Машинец В. А., Терещенко В. Е. · Свидетельство о регистрации программы для ЭВМ № 2026666579 от 02.06.2026</p>
+        <div class="row">
+          <a class="btn tonal" href="mailto:nivel67@bk.ru"><svg class="icon s"><use href="assets/icons.svg#mail"/></svg>nivel67@bk.ru</a>
+          <a class="btn tonal" href="https://t.me/Koesit" target="_blank" rel="noopener"><svg class="icon s"><use href="assets/icons.svg#send"/></svg>Telegram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Поддержка ===== -->
+  <section class="section alt" id="support">
+    <div class="wrap support">
+      <div class="support-card">
+        <svg class="icon l"><use href="assets/icons.svg#favorite"/></svg>
+        <div class="grow">
+          <h2>Поддержать проект</h2>
+          <p>Nivel бесплатный и без рекламы. Если он экономит вам время, можно поблагодарить разработчика — это помогает
+            развивать приложение дальше.</p>
+        </div>
+        <a class="btn large" href="https://pay.cloudtips.ru/p/60ecbee7" target="_blank" rel="noopener">Поддержать</a>
+      </div>
+      <div class="support-card">
+        <svg class="icon l"><use href="assets/icons.svg#mail"/></svg>
+        <div class="grow">
+          <h2>Обратная связь</h2>
+          <p>Нашли ошибку, не хватает функции или есть идея? Напишите — каждое сообщение читается.</p>
+        </div>
+        <a class="btn large tonal" href="mailto:nivel67@bk.ru" target="_blank" rel="noopener">Написать</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-in">
+    <a class="logo" href="./"><span class="logo-badge">N</span>Nivel</a>
+    <nav>
+      <a href="app/">Онлайн-версия</a>
+      <a href="#android">Скачать</a>
+      <a href="#support">Поддержать</a>
+      <a href="mailto:nivel67@bk.ru" target="_blank" rel="noopener">Обратная связь</a>
+      <a href="privacy/">Конфиденциальность</a>
+      <a href="terms/">Условия</a>
+      <a href="licenses/">Лицензии</a>
+    </nav>
+    <p class="muted small">© 2026 Nivel. Авторы: Машинец В. А., Терещенко В. Е. Свидетельство о государственной регистрации программы для ЭВМ № 2026666579. Значки — Material Icons (Apache 2.0). Подложки карты — © их правообладателей.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById("theme"), root = document.documentElement;
+  function dark() {
+    var t = root.getAttribute("data-theme");
+    return t ? t === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  function icon() { btn.querySelector("use").setAttribute("href", "assets/icons.svg#" + (dark() ? "light_mode" : "dark_mode")); }
+  btn.addEventListener("click", function () {
+    var next = dark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("nivel.theme", next); } catch (e) {}
+    icon();
+  });
+  icon();
+})();
+</script>
+</body>
+</html>

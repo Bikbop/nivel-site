@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Открытые лицензии и источники данных — Nivel</title>
+<meta name="description" content="Библиотеки и данные карты, которые использует Nivel, и их лицензии.">
+<meta name="theme-color" content="#F6F7F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111418" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/nivel.css">
+<link rel="stylesheet" href="../assets/landing.css">
+<script>try{var t=localStorage.getItem("nivel.theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="logo" href="../"><span class="logo-badge">N</span>Nivel</a>
+    <nav class="head-nav" aria-label="Документы">
+      <a href="../privacy/">Конфиденциальность</a>
+      <a href="../terms/">Условия</a>
+      <a href="../licenses/" aria-current="page">Лицензии</a>
+    </nav>
+    <button class="icon-btn" id="theme" type="button" title="Сменить тему" aria-label="Сменить тему"><svg class="icon s"><use href="../assets/icons.svg#dark_mode"/></svg></button>
+    <a class="btn" href="../app/">Открыть онлайн</a>
+  </div>
+</header>
+
+<main>
+  <article class="doc wrap">
+    <p class="eyebrow">Правовая информация</p>
+    <h1>Открытые лицензии и источники данных</h1>
+
+    <p>Nivel использует открытые библиотеки и данные. Их авторы и условия перечислены здесь; названия и товарные знаки принадлежат их владельцам.</p>
+
+    <h2>Данные карты</h2>
+    <ul>
+      <li>© участники OpenStreetMap; данные доступны по лицензии ODbL — <a href="https://www.openstreetmap.org/copyright" rel="noopener">openstreetmap.org/copyright</a>.
+        Правила использования тайлов: <a href="https://operations.osmfoundation.org/policies/tiles/" rel="noopener">operations.osmfoundation.org/policies/tiles</a>.</li>
+      <li>OpenTopoMap — стиль © OpenTopoMap (CC-BY-SA), высоты SRTM; данные © участники OpenStreetMap — <a href="https://opentopomap.org/about" rel="noopener">opentopomap.org/about</a>.</li>
+      <li>MapTiler, Thunderforest, Stadia Maps, CARTO — подложки по вашему личному ключу, на условиях поставщиков:
+        <a href="https://www.maptiler.com/terms/cloud/" rel="noopener">MapTiler</a>,
+        <a href="https://www.thunderforest.com/terms/" rel="noopener">Thunderforest</a>,
+        <a href="https://stadiamaps.com/terms-of-service/" rel="noopener">Stadia Maps</a>,
+        <a href="https://carto.com/legal/basemap-terms/" rel="noopener">CARTO</a>. Подпись источника показывается на карте.</li>
+    </ul>
+    <p>Тайлы OpenStreetMap нельзя скачивать заранее для офлайна — это запрещено правилами сервера, поэтому для него офлайн-загрузка в приложении отключена.</p>
+
+    <h2>Библиотеки приложения для Android (Apache 2.0)</h2>
+    <ul>
+      <li>osmdroid — отображение карты</li>
+      <li>AndroidX: Jetpack Compose, Material 3 и значки Material, Room, CameraX, Activity, Lifecycle, Core, DocumentFile</li>
+      <li>Coil — загрузка изображений</li>
+      <li>Kotlin и kotlinx — язык и стандартная библиотека</li>
+    </ul>
+    <p>Текст лицензии: <a href="https://www.apache.org/licenses/LICENSE-2.0" rel="noopener">apache.org/licenses/LICENSE-2.0</a>.</p>
+
+    <h2>Онлайн-версия и сайт</h2>
+    <ul>
+      <li><b>Leaflet</b> 1.9.4 — карта, © 2010–2023 Volodymyr Agafonkin, © 2010–2011 CloudMade; лицензия BSD 2-Clause. Файл лицензии поставляется вместе с библиотекой:
+        <a href="../assets/vendor/leaflet/LICENSE">LICENSE</a>.</li>
+      <li><b>sql.js</b> — чтение файлов .nivel (SQLite в браузере), © 2017 авторы sql.js; лицензия MIT.
+        <a href="../assets/vendor/sqljs/LICENSE.txt">Текст лицензии</a>.</li>
+      <li><b>Material Icons</b> — значки интерфейса, лицензия Apache 2.0.</li>
+      <li>Kotlin и kotlinx — среда выполнения Kotlin/JS, лицензия Apache 2.0.</li>
+    </ul>
+
+    <h2>Справочник приборов</h2>
+    <p>Названия производителей и моделей приборов в справочнике используются только для идентификации оборудования. Они принадлежат их владельцам; Nivel
+      не связан с производителями и не одобрен ими. Характеристики в справочнике — справочные, сверяйте их с паспортом прибора.</p>
+  </article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-in">
+    <a class="logo" href="../"><span class="logo-badge">N</span>Nivel</a>
+    <nav>
+      <a href="../app/">Онлайн-версия</a>
+      <a href="../privacy/">Конфиденциальность</a>
+      <a href="../terms/">Условия</a>
+      <a href="../licenses/">Лицензии</a>
+      <a href="mailto:nivel67@bk.ru">Обратная связь</a>
+    </nav>
+    <p class="muted small">Программа для ЭВМ «Nivel», свидетельство о государственной регистрации № 2026666579 от 02.06.2026. Авторы: Машинец В. А., Терещенко В. Е.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById("theme"), root = document.documentElement;
+  function dark() {
+    var t = root.getAttribute("data-theme");
+    return t ? t === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  function icon() { btn.querySelector("use").setAttribute("href", "../assets/icons.svg#" + (dark() ? "light_mode" : "dark_mode")); }
+  btn.addEventListener("click", function () {
+    var next = dark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("nivel.theme", next); } catch (e) {}
+    icon();
+  });
+  icon();
+})();
+</script>
+</body>
+</html>
