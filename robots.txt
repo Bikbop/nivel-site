@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bikbop.github.io/nivel-site/sitemap.xml
