@@ -81,6 +81,8 @@ body { min-height: 100vh; }
 .crumbs a:hover { color: var(--primary); }
 .crumbs .sep { opacity: .6; }
 .pagehead h1 { font-size: 26px; font-weight: 600; letter-spacing: -.01em; }
+.pagehead .title-row { display: flex; align-items: center; gap: 4px; }
+.pagehead .title-row .icon-btn { width: 30px; height: 30px; flex: none; }
 .pagehead .sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
 .pagehead .actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 
@@ -259,6 +261,9 @@ main.page.narrow, .pagehead.narrow { max-width: 1040px; }
 .badge.bad { background: color-mix(in srgb, var(--error) 14%, transparent); color: var(--error); }
 .badge.warn { background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn); }
 .note { background: var(--surface-2); border: 1px solid var(--outline-soft); border-radius: var(--radius-m); padding: 10px 14px; font-size: 13.5px; color: var(--on-surface-variant); }
+.backup-banner { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; max-width: 1240px; width: 100%; margin: 12px auto 0; padding: 10px 36px; box-sizing: border-box; background: var(--surface-2); border-bottom: 1px solid var(--outline-soft); font-size: 13.5px; color: var(--on-surface-variant); }
+.backup-banner .grow { flex: 1; min-width: 240px; }
+@media (max-width: 760px) { .backup-banner { padding: 10px 16px; } }
 .note.bad { background: var(--error-container); border-color: color-mix(in srgb, var(--error) 30%, transparent); color: var(--on-error-container); }
 
 /* ---------- таблицы ---------- */
@@ -514,7 +519,6 @@ footer.app-foot .grow { min-width: 200px; }
 .cad-svg #cad-ovl .grip-plus circle { fill: var(--cad-bg); stroke: var(--cad-sel); stroke-width: 1.2; }
 .cad-svg #cad-ovl .grip-plus path { stroke: var(--cad-sel); stroke-width: 1.4; fill: none; }
 .cad-svg #cad-ovl .sp { fill: var(--cad-preview); }
-.cad-svg #cad-ovl .xh { stroke: var(--cad-ink); stroke-width: 1; opacity: .75; fill: none; }
 .cad-svg #cad-ovl .box { fill: color-mix(in srgb, var(--cad-sel) 12%, transparent); stroke: var(--cad-sel); stroke-width: 1; }
 .cad-svg #cad-ovl .box.cross { stroke-dasharray: 6 4; fill: color-mix(in srgb, var(--cad-preview) 12%, transparent); stroke: var(--cad-preview); }
 .cad-svg #cad-ovl .snapm * { fill: none; stroke: var(--cad-snap); stroke-width: 2; }
