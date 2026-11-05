@@ -1,0 +1,180 @@
+/*
+ * Общая тема сайта Nivel (лендинг + онлайн-версия). Не копирует мобильное приложение: сдержанная «настольная»
+ * палитра, тонкие рамки вместо цветных плашек, один фирменный акцент (бирюзовый Nivel).
+ * Тема по умолчанию — как в системе; выбор пользователя — атрибут data-theme на <html>.
+ */
+:root {
+  color-scheme: light;
+  --bg: #F6F7F9;
+  --on-bg: #16191D;
+  --surface: #FFFFFF;
+  --surface-2: #F1F3F5;
+  --surface-variant: #E9ECEF;
+  --on-surface-variant: #3F464E;
+  --muted: #69717B;
+  --outline: #C5CAD1;
+  --outline-soft: #E1E4E8;
+  --sidebar: #FBFBFC;
+
+  --primary: #0F766E;
+  --primary-hover: #0B5F58;
+  --on-primary: #FFFFFF;
+  --primary-soft: #E3F4F1;
+  --on-primary-soft: #0B5F58;
+  --primary-container: var(--primary-soft);
+  --on-primary-container: var(--on-primary-soft);
+  --secondary: #2563EB;
+  --secondary-container: #E4ECFD;
+  --on-secondary-container: #1D4ED8;
+  --tertiary: #7C3AED;
+  --tertiary-container: #EFE7FD;
+  --on-tertiary-container: #6D28D9;
+  --error: #C62828;
+  --error-container: #FDECEC;
+  --on-error-container: #8E1B1B;
+  --ok: #15803D;
+  --warn: #B45309;
+
+  --orange: #FDEEE3; --on-orange: #C2410C;
+  --pink: #FCE7F1; --on-pink: #BE185D;
+  --cyan: #E0F4F8; --on-cyan: #0E7490;
+  --indigo: #E8E9FD; --on-indigo: #4338CA;
+
+  --radius-s: 6px;
+  --radius-m: 8px;
+  --radius-l: 10px;
+  --radius-xl: 14px;
+  --shadow: 0 1px 2px rgb(16 24 40 / .06), 0 1px 3px rgb(16 24 40 / .08);
+  --shadow-lg: 0 12px 32px rgb(16 24 40 / .14), 0 2px 6px rgb(16 24 40 / .08);
+  --font: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --mono: "Cascadia Mono", "JetBrains Mono", "SF Mono", ui-monospace, Consolas, "Roboto Mono", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #111418;
+    --on-bg: #E6E8EB;
+    --surface: #181C21;
+    --surface-2: #1F242A;
+    --surface-variant: #262C33;
+    --on-surface-variant: #C2C8CF;
+    --muted: #8D96A0;
+    --outline: #3D4550;
+    --outline-soft: #2A3038;
+    --sidebar: #14181C;
+    --primary: #2DD4BF;
+    --primary-hover: #5EEAD4;
+    --on-primary: #04211E;
+    --primary-soft: #12302D;
+    --on-primary-soft: #7EE8D8;
+    --secondary: #7AA7FF;
+    --secondary-container: #1A2742;
+    --on-secondary-container: #A9C4FF;
+    --tertiary: #B79CFF;
+    --tertiary-container: #271E3D;
+    --on-tertiary-container: #CDB8FF;
+    --error: #FF8A80;
+    --error-container: #3A1A1A;
+    --on-error-container: #FFC9C4;
+    --ok: #4ADE80;
+    --warn: #FBBF24;
+    --orange: #33231A; --on-orange: #FDBA8C;
+    --pink: #351A27; --on-pink: #F9A8D4;
+    --cyan: #13292F; --on-cyan: #7DD3E6;
+    --indigo: #1F2140; --on-indigo: #A5B4FC;
+    --shadow: 0 1px 2px rgb(0 0 0 / .4);
+    --shadow-lg: 0 16px 40px rgb(0 0 0 / .5);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111418;
+  --on-bg: #E6E8EB;
+  --surface: #181C21;
+  --surface-2: #1F242A;
+  --surface-variant: #262C33;
+  --on-surface-variant: #C2C8CF;
+  --muted: #8D96A0;
+  --outline: #3D4550;
+  --outline-soft: #2A3038;
+  --sidebar: #14181C;
+  --primary: #2DD4BF;
+  --primary-hover: #5EEAD4;
+  --on-primary: #04211E;
+  --primary-soft: #12302D;
+  --on-primary-soft: #7EE8D8;
+  --secondary: #7AA7FF;
+  --secondary-container: #1A2742;
+  --on-secondary-container: #A9C4FF;
+  --tertiary: #B79CFF;
+  --tertiary-container: #271E3D;
+  --on-tertiary-container: #CDB8FF;
+  --error: #FF8A80;
+  --error-container: #3A1A1A;
+  --on-error-container: #FFC9C4;
+  --ok: #4ADE80;
+  --warn: #FBBF24;
+  --orange: #33231A; --on-orange: #FDBA8C;
+  --pink: #351A27; --on-pink: #F9A8D4;
+  --cyan: #13292F; --on-cyan: #7DD3E6;
+  --indigo: #1F2140; --on-indigo: #A5B4FC;
+  --shadow: 0 1px 2px rgb(0 0 0 / .4);
+  --shadow-lg: 0 16px 40px rgb(0 0 0 / .5);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--on-bg);
+  font: 15px/1.5 var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 0; font-weight: 600; }
+p { margin: 0 0 .75em; }
+code, .mono { font-family: var(--mono); }
+img { max-width: 100%; }
+::selection { background: color-mix(in srgb, var(--primary) 28%, transparent); }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.icon { width: 20px; height: 20px; fill: currentColor; flex: none; display: inline-block; vertical-align: middle; }
+.icon.s { width: 18px; height: 18px; }
+.icon.l { width: 28px; height: 28px; }
+
+/* ---------- логотип ---------- */
+.logo { display: inline-flex; align-items: center; gap: 10px; color: var(--on-bg); font-size: 18px; font-weight: 600; letter-spacing: .01em; }
+.logo:hover { text-decoration: none; }
+.logo-badge {
+  width: 30px; height: 30px; border-radius: 7px; background: var(--primary);
+  color: var(--on-primary); display: grid; place-items: center; font-weight: 700; font-size: 15px;
+}
+
+/* ---------- кнопки ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 36px; padding: 6px 14px; border-radius: var(--radius-s); border: 1px solid transparent;
+  font: 500 14px/1.2 var(--font); cursor: pointer; text-decoration: none !important; white-space: nowrap;
+  background: var(--primary); color: var(--on-primary); transition: background .12s, border-color .12s, color .12s;
+}
+.btn:hover { background: var(--primary-hover); }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn.tonal { background: var(--surface); color: var(--on-bg); border-color: var(--outline); }
+.btn.tonal:hover { background: var(--surface-2); }
+.btn.outline { background: transparent; color: var(--primary); border-color: var(--outline); }
+.btn.outline:hover { background: var(--primary-soft); }
+.btn.text { background: transparent; color: var(--primary); padding: 6px 10px; }
+.btn.text:hover { background: var(--primary-soft); }
+.btn.danger { background: var(--error); color: #fff; }
+.btn.danger:hover { filter: brightness(.92); }
+.btn.small { min-height: 30px; padding: 3px 10px; font-size: 13px; }
+.btn.large { min-height: 44px; padding: 10px 20px; font-size: 15px; }
+.icon-btn {
+  width: 34px; height: 34px; border-radius: var(--radius-s); border: 0; background: transparent; color: var(--on-surface-variant);
+  display: inline-grid; place-items: center; cursor: pointer; flex: none;
+}
+.icon-btn:hover { background: var(--surface-variant); color: var(--on-bg); }
+.support-btn .icon { color: #E25C5C; }
