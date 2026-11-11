@@ -130,7 +130,8 @@ main.page.narrow, .pagehead.narrow { max-width: 1040px; }
 
 /* главная: рабочие разделы */
 .workspaces { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.ws { display: flex; flex-direction: column; gap: 14px; }
+.ws { display: grid; grid-row: span 3; grid-template-rows: subgrid; }
+.ws > .row { flex-direction: column; align-items: flex-start; }
 .ws-head { display: flex; gap: 14px; align-items: flex-start; }
 .ws-head .ico { width: 44px; height: 44px; border-radius: var(--radius-m); display: grid; place-items: center; flex: none; }
 .ws-head .t { font-size: 17px; font-weight: 600; }
@@ -750,6 +751,7 @@ footer.app-foot .grow { min-width: 200px; }
 .raster-crop-rotation .field { min-width: 0; }
 .raster-preview { max-height: 42vh; overflow: auto; overscroll-behavior: contain; border: 1px solid var(--outline); background: var(--surface-2); }
 .raster-image { display: block; width: 100%; height: auto; cursor: crosshair; touch-action: none; user-select: none; }
+.raster-image.pixelated image { image-rendering: pixelated; }
 .raster-mark { cursor: grab; }
 .raster-mark > :not(.raster-mark-hit) { pointer-events: none; }
 .raster-mark-hit { fill: transparent; pointer-events: all; }
