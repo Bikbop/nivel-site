@@ -37,6 +37,11 @@ if (typeof Array.prototype.fill === 'undefined') {
     Object.defineProperty(TypedArray.prototype, 'fill', {value: Array.prototype.fill});
   }
 });
+if (typeof Math.log10 === 'undefined') {
+  Math.log10 = function (x) {
+    return Math.log(x) * Math.LOG10E;
+  };
+}
 if (typeof Math.hypot === 'undefined') {
   Math.hypot = function () {
     var y = 0;
@@ -50,15 +55,6 @@ if (typeof Math.hypot === 'undefined') {
     return Math.sqrt(y);
   };
 }
-if (typeof Math.sign === 'undefined') {
-  Math.sign = function (x) {
-    x = +x; // convert to a number
-    if (x === 0 || isNaN(x)) {
-      return Number(x);
-    }
-    return x > 0 ? 1 : -1;
-  };
-}
 if (typeof Math.clz32 === 'undefined') {
   Math.clz32 = function (log, LN2) {
     return function (x) {
@@ -70,9 +66,13 @@ if (typeof Math.clz32 === 'undefined') {
     };
   }(Math.log, Math.LN2);
 }
-if (typeof Math.log10 === 'undefined') {
-  Math.log10 = function (x) {
-    return Math.log(x) * Math.LOG10E;
+if (typeof Math.sign === 'undefined') {
+  Math.sign = function (x) {
+    x = +x; // convert to a number
+    if (x === 0 || isNaN(x)) {
+      return Number(x);
+    }
+    return x > 0 ? 1 : -1;
   };
 }
 if (typeof String.prototype.startsWith === 'undefined') {
@@ -125,24 +125,24 @@ initMetadataForClass(AbstractCollection, 'AbstractCollection', VOID, VOID, [Coll
 initMetadataForClass(AbstractMutableCollection, 'AbstractMutableCollection', VOID, AbstractCollection, [AbstractCollection, MutableIterable, Collection]);
 initMetadataForClass(IteratorImpl, 'IteratorImpl');
 initMetadataForClass(ListIteratorImpl, 'ListIteratorImpl', VOID, IteratorImpl);
-initMetadataForClass(AbstractMutableList, 'AbstractMutableList', VOID, AbstractMutableCollection, [AbstractMutableCollection, Collection, MutableIterable, KtList]);
+initMetadataForClass(AbstractMutableList, 'AbstractMutableList', VOID, AbstractMutableCollection, [AbstractMutableCollection, MutableIterable, Collection, KtList]);
 initMetadataForInterface(RandomAccess, 'RandomAccess');
 initMetadataForClass(SubList, 'SubList', VOID, AbstractMutableList, [AbstractMutableList, RandomAccess]);
 initMetadataForClass(AbstractMap, 'AbstractMap', VOID, VOID, [KtMap]);
 initMetadataForClass(AbstractMutableMap, 'AbstractMutableMap', VOID, AbstractMap, [AbstractMap, KtMap]);
-initMetadataForClass(AbstractMutableSet, 'AbstractMutableSet', VOID, AbstractMutableCollection, [AbstractMutableCollection, KtSet, Collection, MutableIterable]);
+initMetadataForClass(AbstractMutableSet, 'AbstractMutableSet', VOID, AbstractMutableCollection, [AbstractMutableCollection, KtSet, MutableIterable, Collection]);
 initMetadataForCompanion(Companion_2);
-initMetadataForClass(ArrayList, 'ArrayList', ArrayList_init_$Create$, AbstractMutableList, [AbstractMutableList, Collection, MutableIterable, KtList, RandomAccess]);
+initMetadataForClass(ArrayList, 'ArrayList', ArrayList_init_$Create$, AbstractMutableList, [AbstractMutableList, MutableIterable, Collection, KtList, RandomAccess]);
 initMetadataForClass(HashMap, 'HashMap', HashMap_init_$Create$, AbstractMutableMap, [AbstractMutableMap, KtMap]);
-initMetadataForClass(HashMapKeys, 'HashMapKeys', VOID, AbstractMutableSet, [KtSet, Collection, MutableIterable, AbstractMutableSet]);
+initMetadataForClass(HashMapKeys, 'HashMapKeys', VOID, AbstractMutableSet, [KtSet, MutableIterable, Collection, AbstractMutableSet]);
 initMetadataForClass(HashMapValues, 'HashMapValues', VOID, AbstractMutableCollection, [MutableIterable, Collection, AbstractMutableCollection]);
-initMetadataForClass(HashMapEntrySetBase, 'HashMapEntrySetBase', VOID, AbstractMutableSet, [KtSet, Collection, MutableIterable, AbstractMutableSet]);
+initMetadataForClass(HashMapEntrySetBase, 'HashMapEntrySetBase', VOID, AbstractMutableSet, [KtSet, MutableIterable, Collection, AbstractMutableSet]);
 initMetadataForClass(HashMapEntrySet, 'HashMapEntrySet', VOID, HashMapEntrySetBase);
 initMetadataForClass(HashMapKeysDefault$iterator$1);
 initMetadataForClass(HashMapKeysDefault, 'HashMapKeysDefault', VOID, AbstractMutableSet);
 initMetadataForClass(HashMapValuesDefault$iterator$1);
 initMetadataForClass(HashMapValuesDefault, 'HashMapValuesDefault', VOID, AbstractMutableCollection);
-initMetadataForClass(HashSet, 'HashSet', HashSet_init_$Create$, AbstractMutableSet, [AbstractMutableSet, KtSet, Collection, MutableIterable]);
+initMetadataForClass(HashSet, 'HashSet', HashSet_init_$Create$, AbstractMutableSet, [AbstractMutableSet, KtSet, MutableIterable, Collection]);
 initMetadataForCompanion(Companion_3);
 initMetadataForClass(Itr, 'Itr');
 initMetadataForClass(KeysItr, 'KeysItr', VOID, Itr);
@@ -188,7 +188,7 @@ initMetadataForInterface(InternalMap, 'InternalMap');
 initMetadataForClass(InternalHashMap, 'InternalHashMap', InternalHashMap_init_$Create$, VOID, [InternalMap]);
 initMetadataForObject(EmptyHolder, 'EmptyHolder');
 initMetadataForClass(LinkedHashMap, 'LinkedHashMap', LinkedHashMap_init_$Create$, HashMap, [HashMap, KtMap]);
-initMetadataForClass(LinkedHashSet, 'LinkedHashSet', LinkedHashSet_init_$Create$, HashSet, [HashSet, KtSet, Collection, MutableIterable]);
+initMetadataForClass(LinkedHashSet, 'LinkedHashSet', LinkedHashSet_init_$Create$, HashSet, [HashSet, KtSet, MutableIterable, Collection]);
 initMetadataForClass(Exception, 'Exception', Exception_init_$Create$, Error);
 initMetadataForClass(RuntimeException, 'RuntimeException', RuntimeException_init_$Create$, Exception);
 initMetadataForClass(IllegalArgumentException, 'IllegalArgumentException', IllegalArgumentException_init_$Create$, RuntimeException);
@@ -851,6 +851,12 @@ function maxOrNull(_this__u8e3s4) {
   }
   return max;
 }
+function plus_1(_this__u8e3s4, elements) {
+  var result = ArrayList_init_$Create$_0(_this__u8e3s4.o() + elements.length | 0);
+  result.q(_this__u8e3s4);
+  addAll_0(result, elements);
+  return result;
+}
 function sum(_this__u8e3s4) {
   var sum = 0.0;
   var _iterator__ex2g4s = _this__u8e3s4.j();
@@ -1241,13 +1247,13 @@ function minus_0(_this__u8e3s4, element) {
   }
   return result;
 }
-function plus_1(_this__u8e3s4, element) {
+function plus_2(_this__u8e3s4, element) {
   var result = LinkedHashSet_init_$Create$_1(mapCapacity(_this__u8e3s4.o() + 1 | 0));
   result.q(_this__u8e3s4);
   result.f(element);
   return result;
 }
-function plus_2(_this__u8e3s4, elements) {
+function plus_3(_this__u8e3s4, elements) {
   var tmp0_safe_receiver = collectionSizeOrNull(elements);
   var tmp;
   if (tmp0_safe_receiver == null) {
@@ -1282,14 +1288,6 @@ function minus_1(_this__u8e3s4, elements) {
   result.p1(other);
   return result;
 }
-function take_1(_this__u8e3s4, n) {
-  // Inline function 'kotlin.require' call
-  if (!(n >= 0)) {
-    var message = 'Requested character count ' + n + ' is less than zero.';
-    throw IllegalArgumentException_init_$Create$_0(toString_1(message));
-  }
-  return substring(_this__u8e3s4, 0, coerceAtMost(n, _this__u8e3s4.length));
-}
 function drop_0(_this__u8e3s4, n) {
   // Inline function 'kotlin.require' call
   if (!(n >= 0)) {
@@ -1297,6 +1295,14 @@ function drop_0(_this__u8e3s4, n) {
     throw IllegalArgumentException_init_$Create$_0(toString_1(message));
   }
   return substring_0(_this__u8e3s4, coerceAtMost(n, _this__u8e3s4.length));
+}
+function take_1(_this__u8e3s4, n) {
+  // Inline function 'kotlin.require' call
+  if (!(n >= 0)) {
+    var message = 'Requested character count ' + n + ' is less than zero.';
+    throw IllegalArgumentException_init_$Create$_0(toString_1(message));
+  }
+  return substring(_this__u8e3s4, 0, coerceAtMost(n, _this__u8e3s4.length));
 }
 function dropLast_0(_this__u8e3s4, n) {
   // Inline function 'kotlin.require' call
@@ -2684,7 +2690,7 @@ function _init_properties_void_kt__3zg9as() {
     VOID = void 0;
   }
 }
-function plus_3(_this__u8e3s4, elements) {
+function plus_4(_this__u8e3s4, elements) {
   return arrayPlusCollection(_this__u8e3s4, elements);
 }
 function asList(_this__u8e3s4) {
@@ -7535,7 +7541,7 @@ function toMap_0(_this__u8e3s4) {
   }
   return optimizeReadOnlyMap(toMap_1(_this__u8e3s4, LinkedHashMap_init_$Create$()));
 }
-function plus_4(_this__u8e3s4, pair) {
+function plus_5(_this__u8e3s4, pair) {
   var tmp;
   if (_this__u8e3s4.n()) {
     tmp = mapOf(pair);
@@ -7597,6 +7603,9 @@ function addAll(_this__u8e3s4, elements) {
     }
     return result;
   }
+}
+function addAll_0(_this__u8e3s4, elements) {
+  return _this__u8e3s4.q(asList(elements));
 }
 function convertToListIfNotCollection(_this__u8e3s4) {
   var tmp;
@@ -9654,10 +9663,11 @@ export {
   min as min1hp1v7yf4yjv0,
   mutableListOf as mutableListOf6oorvk2mtdmp,
   mutableMapOf as mutableMapOfk2y3zt1azl40,
-  plus_3 as plus27p1csfyhycs6,
-  plus_2 as plus1ogy4liedzq5j,
-  plus_4 as plus2lr02ok6jhhxu,
-  plus_1 as plus18eogev54fmsa,
+  plus_4 as plus27p1csfyhycs6,
+  plus_1 as plus1di085adi7f7m,
+  plus_3 as plus1ogy4liedzq5j,
+  plus_5 as plus2lr02ok6jhhxu,
+  plus_2 as plus18eogev54fmsa,
   plus as plus310ted5e4i90h,
   plus_0 as plus20p0vtfmu0596,
   reversedArray as reversedArray1jvawboiqjp41,

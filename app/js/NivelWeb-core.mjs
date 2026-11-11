@@ -25040,24 +25040,6 @@ var GeodeticDatum_SK95_instance;
 function values_31() {
   return [GeodeticDatum_WGS84_getInstance(), GeodeticDatum_PZ90_11_getInstance(), GeodeticDatum_GSK2011_getInstance(), GeodeticDatum_SK42_getInstance(), GeodeticDatum_SK95_getInstance()];
 }
-function valueOf_0(value) {
-  switch (value) {
-    case 'WGS84':
-      return GeodeticDatum_WGS84_getInstance();
-    case 'PZ90_11':
-      return GeodeticDatum_PZ90_11_getInstance();
-    case 'GSK2011':
-      return GeodeticDatum_GSK2011_getInstance();
-    case 'SK42':
-      return GeodeticDatum_SK42_getInstance();
-    case 'SK95':
-      return GeodeticDatum_SK95_getInstance();
-    default:
-      GeodeticDatum_initEntries();
-      THROW_IAE('No enum constant value.');
-      break;
-  }
-}
 function get_entries_31() {
   if ($ENTRIES_31 == null)
     $ENTRIES_31 = enumEntries(values_31());
@@ -32375,7 +32357,6 @@ export {
   CoordinateSettings as CoordinateSettings39v0k7byt2htk,
   get_GSK2011_ELLIPSOID as get_GSK2011_ELLIPSOIDfaen3up6s3m3,
   get_entries_31 as get_entries1remw92uzy0cc,
-  valueOf_0 as valueOf1gigvh2z6jzeo,
   get_KRASSOVSKY_ELLIPSOID as get_KRASSOVSKY_ELLIPSOID1753vnq0fzhhi,
   get_entries_29 as get_entriesqe5f9k92nuh7,
   get_entries_33 as get_entries3p0rynkl7wwix,
