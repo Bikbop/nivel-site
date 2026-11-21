@@ -37,6 +37,72 @@ if (typeof Array.prototype.fill === 'undefined') {
     Object.defineProperty(TypedArray.prototype, 'fill', {value: Array.prototype.fill});
   }
 });
+if (typeof Math.clz32 === 'undefined') {
+  Math.clz32 = function (log, LN2) {
+    return function (x) {
+      var asUint = x >>> 0;
+      if (asUint === 0) {
+        return 32;
+      }
+      return 31 - (log(asUint) / LN2 | 0) | 0; // the "| 0" acts like math.floor
+    };
+  }(Math.log, Math.LN2);
+}
+if (typeof Math.sinh === 'undefined') {
+  var epsilon = 2.220446049250313E-16;
+  var taylor_2_bound = Math.sqrt(epsilon);
+  var taylor_n_bound = Math.sqrt(taylor_2_bound);
+  Math.sinh = function (x) {
+    if (Math.abs(x) < taylor_n_bound) {
+      var result = x;
+      if (Math.abs(x) > taylor_2_bound) {
+        result += x * x * x / 6;
+      }
+      return result;
+    } else {
+      var y = Math.exp(x);
+      var y1 = 1 / y;
+      if (!isFinite(y))
+        return Math.exp(x - Math.LN2);
+      if (!isFinite(y1))
+        return -Math.exp(-x - Math.LN2);
+      return (y - y1) / 2;
+    }
+  };
+}
+if (typeof Math.asinh === 'undefined') {
+  var epsilon = 2.220446049250313E-16;
+  var taylor_2_bound = Math.sqrt(epsilon);
+  var taylor_n_bound = Math.sqrt(taylor_2_bound);
+  var upper_taylor_2_bound = 1 / taylor_2_bound;
+  var upper_taylor_n_bound = 1 / taylor_n_bound;
+  var asinh = function (x) {
+    if (x >= +taylor_n_bound) {
+      if (x > upper_taylor_n_bound) {
+        if (x > upper_taylor_2_bound) {
+          // approximation by laurent series in 1/x at 0+ order from -1 to 0
+          return Math.log(x) + Math.LN2;
+        } else {
+          // approximation by laurent series in 1/x at 0+ order from -1 to 1
+          return Math.log(x * 2 + 1 / (x * 2));
+        }
+      } else {
+        return Math.log(x + Math.sqrt(x * x + 1));
+      }
+    } else if (x <= -taylor_n_bound) {
+      return -asinh(-x);
+    } else {
+      // approximation by taylor series in x at 0 up to order 2
+      var result = x;
+      if (Math.abs(x) >= taylor_2_bound) {
+        var x3 = x * x * x; // approximation by taylor series in x at 0 up to order 4
+        result -= x3 / 6;
+      }
+      return result;
+    }
+  };
+  Math.asinh = asinh;
+}
 if (typeof Math.log10 === 'undefined') {
   Math.log10 = function (x) {
     return Math.log(x) * Math.LOG10E;
@@ -54,17 +120,6 @@ if (typeof Math.hypot === 'undefined') {
     }
     return Math.sqrt(y);
   };
-}
-if (typeof Math.clz32 === 'undefined') {
-  Math.clz32 = function (log, LN2) {
-    return function (x) {
-      var asUint = x >>> 0;
-      if (asUint === 0) {
-        return 32;
-      }
-      return 31 - (log(asUint) / LN2 | 0) | 0; // the "| 0" acts like math.floor
-    };
-  }(Math.log, Math.LN2);
 }
 if (typeof Math.sign === 'undefined') {
   Math.sign = function (x) {
@@ -125,24 +180,24 @@ initMetadataForClass(AbstractCollection, 'AbstractCollection', VOID, VOID, [Coll
 initMetadataForClass(AbstractMutableCollection, 'AbstractMutableCollection', VOID, AbstractCollection, [AbstractCollection, MutableIterable, Collection]);
 initMetadataForClass(IteratorImpl, 'IteratorImpl');
 initMetadataForClass(ListIteratorImpl, 'ListIteratorImpl', VOID, IteratorImpl);
-initMetadataForClass(AbstractMutableList, 'AbstractMutableList', VOID, AbstractMutableCollection, [AbstractMutableCollection, MutableIterable, Collection, KtList]);
+initMetadataForClass(AbstractMutableList, 'AbstractMutableList', VOID, AbstractMutableCollection, [AbstractMutableCollection, Collection, KtList, MutableIterable]);
 initMetadataForInterface(RandomAccess, 'RandomAccess');
 initMetadataForClass(SubList, 'SubList', VOID, AbstractMutableList, [AbstractMutableList, RandomAccess]);
 initMetadataForClass(AbstractMap, 'AbstractMap', VOID, VOID, [KtMap]);
 initMetadataForClass(AbstractMutableMap, 'AbstractMutableMap', VOID, AbstractMap, [AbstractMap, KtMap]);
-initMetadataForClass(AbstractMutableSet, 'AbstractMutableSet', VOID, AbstractMutableCollection, [AbstractMutableCollection, KtSet, MutableIterable, Collection]);
+initMetadataForClass(AbstractMutableSet, 'AbstractMutableSet', VOID, AbstractMutableCollection, [AbstractMutableCollection, Collection, MutableIterable, KtSet]);
 initMetadataForCompanion(Companion_2);
-initMetadataForClass(ArrayList, 'ArrayList', ArrayList_init_$Create$, AbstractMutableList, [AbstractMutableList, MutableIterable, Collection, KtList, RandomAccess]);
+initMetadataForClass(ArrayList, 'ArrayList', ArrayList_init_$Create$, AbstractMutableList, [AbstractMutableList, Collection, KtList, MutableIterable, RandomAccess]);
 initMetadataForClass(HashMap, 'HashMap', HashMap_init_$Create$, AbstractMutableMap, [AbstractMutableMap, KtMap]);
-initMetadataForClass(HashMapKeys, 'HashMapKeys', VOID, AbstractMutableSet, [KtSet, MutableIterable, Collection, AbstractMutableSet]);
+initMetadataForClass(HashMapKeys, 'HashMapKeys', VOID, AbstractMutableSet, [Collection, MutableIterable, KtSet, AbstractMutableSet]);
 initMetadataForClass(HashMapValues, 'HashMapValues', VOID, AbstractMutableCollection, [MutableIterable, Collection, AbstractMutableCollection]);
-initMetadataForClass(HashMapEntrySetBase, 'HashMapEntrySetBase', VOID, AbstractMutableSet, [KtSet, MutableIterable, Collection, AbstractMutableSet]);
+initMetadataForClass(HashMapEntrySetBase, 'HashMapEntrySetBase', VOID, AbstractMutableSet, [Collection, MutableIterable, KtSet, AbstractMutableSet]);
 initMetadataForClass(HashMapEntrySet, 'HashMapEntrySet', VOID, HashMapEntrySetBase);
 initMetadataForClass(HashMapKeysDefault$iterator$1);
 initMetadataForClass(HashMapKeysDefault, 'HashMapKeysDefault', VOID, AbstractMutableSet);
 initMetadataForClass(HashMapValuesDefault$iterator$1);
 initMetadataForClass(HashMapValuesDefault, 'HashMapValuesDefault', VOID, AbstractMutableCollection);
-initMetadataForClass(HashSet, 'HashSet', HashSet_init_$Create$, AbstractMutableSet, [AbstractMutableSet, KtSet, MutableIterable, Collection]);
+initMetadataForClass(HashSet, 'HashSet', HashSet_init_$Create$, AbstractMutableSet, [AbstractMutableSet, Collection, MutableIterable, KtSet]);
 initMetadataForCompanion(Companion_3);
 initMetadataForClass(Itr, 'Itr');
 initMetadataForClass(KeysItr, 'KeysItr', VOID, Itr);
@@ -188,7 +243,7 @@ initMetadataForInterface(InternalMap, 'InternalMap');
 initMetadataForClass(InternalHashMap, 'InternalHashMap', InternalHashMap_init_$Create$, VOID, [InternalMap]);
 initMetadataForObject(EmptyHolder, 'EmptyHolder');
 initMetadataForClass(LinkedHashMap, 'LinkedHashMap', LinkedHashMap_init_$Create$, HashMap, [HashMap, KtMap]);
-initMetadataForClass(LinkedHashSet, 'LinkedHashSet', LinkedHashSet_init_$Create$, HashSet, [HashSet, KtSet, MutableIterable, Collection]);
+initMetadataForClass(LinkedHashSet, 'LinkedHashSet', LinkedHashSet_init_$Create$, HashSet, [HashSet, Collection, MutableIterable, KtSet]);
 initMetadataForClass(Exception, 'Exception', Exception_init_$Create$, Error);
 initMetadataForClass(RuntimeException, 'RuntimeException', RuntimeException_init_$Create$, Exception);
 initMetadataForClass(IllegalArgumentException, 'IllegalArgumentException', IllegalArgumentException_init_$Create$, RuntimeException);
@@ -346,11 +401,17 @@ function reversedArray(_this__u8e3s4) {
      while (!(i === lastIndex));
   return result;
 }
+function contains_1(_this__u8e3s4, element) {
+  return indexOf(_this__u8e3s4, element) >= 0;
+}
+function getOrNull(_this__u8e3s4, index) {
+  return (0 <= index ? index <= (_this__u8e3s4.length - 1 | 0) : false) ? _this__u8e3s4[index] : null;
+}
 function filterNotNull(_this__u8e3s4) {
   return filterNotNullTo(_this__u8e3s4, ArrayList_init_$Create$());
 }
-function contains_1(_this__u8e3s4, element) {
-  return indexOf(_this__u8e3s4, element) >= 0;
+function contains_2(_this__u8e3s4, element) {
+  return indexOf_0(_this__u8e3s4, element) >= 0;
 }
 function single(_this__u8e3s4) {
   var tmp;
@@ -397,6 +458,34 @@ function joinTo(_this__u8e3s4, buffer, separator, prefix, postfix, limit, trunca
 function get_lastIndex(_this__u8e3s4) {
   return _this__u8e3s4.length - 1 | 0;
 }
+function indexOf(_this__u8e3s4, element) {
+  if (element == null) {
+    var inductionVariable = 0;
+    var last = _this__u8e3s4.length - 1 | 0;
+    if (inductionVariable <= last)
+      do {
+        var index = inductionVariable;
+        inductionVariable = inductionVariable + 1 | 0;
+        if (_this__u8e3s4[index] == null) {
+          return index;
+        }
+      }
+       while (inductionVariable <= last);
+  } else {
+    var inductionVariable_0 = 0;
+    var last_0 = _this__u8e3s4.length - 1 | 0;
+    if (inductionVariable_0 <= last_0)
+      do {
+        var index_0 = inductionVariable_0;
+        inductionVariable_0 = inductionVariable_0 + 1 | 0;
+        if (equals(element, _this__u8e3s4[index_0])) {
+          return index_0;
+        }
+      }
+       while (inductionVariable_0 <= last_0);
+  }
+  return -1;
+}
 function filterNotNullTo(_this__u8e3s4, destination) {
   var inductionVariable = 0;
   var last = _this__u8e3s4.length;
@@ -409,7 +498,7 @@ function filterNotNullTo(_this__u8e3s4, destination) {
   }
   return destination;
 }
-function indexOf(_this__u8e3s4, element) {
+function indexOf_0(_this__u8e3s4, element) {
   var inductionVariable = 0;
   var last = _this__u8e3s4.length - 1 | 0;
   if (inductionVariable <= last)
@@ -443,37 +532,6 @@ function toCollection(_this__u8e3s4, destination) {
   }
   return destination;
 }
-function indexOf_0(_this__u8e3s4, element) {
-  if (element == null) {
-    var inductionVariable = 0;
-    var last = _this__u8e3s4.length - 1 | 0;
-    if (inductionVariable <= last)
-      do {
-        var index = inductionVariable;
-        inductionVariable = inductionVariable + 1 | 0;
-        if (_this__u8e3s4[index] == null) {
-          return index;
-        }
-      }
-       while (inductionVariable <= last);
-  } else {
-    var inductionVariable_0 = 0;
-    var last_0 = _this__u8e3s4.length - 1 | 0;
-    if (inductionVariable_0 <= last_0)
-      do {
-        var index_0 = inductionVariable_0;
-        inductionVariable_0 = inductionVariable_0 + 1 | 0;
-        if (equals(element, _this__u8e3s4[index_0])) {
-          return index_0;
-        }
-      }
-       while (inductionVariable_0 <= last_0);
-  }
-  return -1;
-}
-function contains_2(_this__u8e3s4, element) {
-  return indexOf_0(_this__u8e3s4, element) >= 0;
-}
 function toList_0(_this__u8e3s4) {
   switch (_this__u8e3s4.length) {
     case 0:
@@ -483,9 +541,6 @@ function toList_0(_this__u8e3s4) {
     default:
       return toMutableList_0(_this__u8e3s4);
   }
-}
-function getOrNull(_this__u8e3s4, index) {
-  return (0 <= index ? index <= (_this__u8e3s4.length - 1 | 0) : false) ? _this__u8e3s4[index] : null;
 }
 function average(_this__u8e3s4) {
   var sum = 0.0;
@@ -2848,7 +2903,7 @@ function eachCount(_this__u8e3s4) {
 function isNaN_0(_this__u8e3s4) {
   return !(_this__u8e3s4 === _this__u8e3s4);
 }
-function isFinite(_this__u8e3s4) {
+function isFinite_0(_this__u8e3s4) {
   return !isInfinite(_this__u8e3s4) && !isNaN_0(_this__u8e3s4);
 }
 function isInfinite(_this__u8e3s4) {
@@ -3234,7 +3289,20 @@ protoOf(AbstractMutableMap).k2 = function () {
 protoOf(AbstractMutableMap).q3 = function () {
   this.x().q3();
 };
-protoOf(AbstractMutableMap).s4 = function (key) {
+protoOf(AbstractMutableMap).s4 = function (from) {
+  this.n3();
+  // Inline function 'kotlin.collections.iterator' call
+  var _iterator__ex2g4s = from.x().j();
+  while (_iterator__ex2g4s.k()) {
+    var _destruct__k2r9zo = _iterator__ex2g4s.l();
+    // Inline function 'kotlin.collections.component1' call
+    var key = _destruct__k2r9zo.y();
+    // Inline function 'kotlin.collections.component2' call
+    var value = _destruct__k2r9zo.z();
+    this.l3(key, value);
+  }
+};
+protoOf(AbstractMutableMap).t4 = function (key) {
   this.n3();
   var iter = this.x().j();
   while (iter.k()) {
@@ -3258,10 +3326,10 @@ protoOf(AbstractMutableSet).equals = function (other) {
     return true;
   if (!(!(other == null) ? isInterface(other, KtSet) : false))
     return false;
-  return Companion_instance_7.w4(this, other);
+  return Companion_instance_7.x4(this, other);
 };
 protoOf(AbstractMutableSet).hashCode = function () {
-  return Companion_instance_7.x4(this);
+  return Companion_instance_7.y4(this);
 };
 function arrayOfUninitializedElements(capacity) {
   // Inline function 'kotlin.require' call
@@ -3295,7 +3363,7 @@ function Companion_2() {
   // Inline function 'kotlin.also' call
   var this_0 = ArrayList_init_$Create$_0(0);
   this_0.i_1 = true;
-  tmp.y4_1 = this_0;
+  tmp.z4_1 = this_0;
 }
 var Companion_instance_2;
 function Companion_getInstance_2() {
@@ -3357,10 +3425,10 @@ function ArrayList(array) {
   this.h_1 = array;
   this.i_1 = false;
 }
-protoOf(ArrayList).z4 = function () {
+protoOf(ArrayList).a5 = function () {
   this.n3();
   this.i_1 = true;
-  return this.o() > 0 ? this : Companion_getInstance_2().y4_1;
+  return this.o() > 0 ? this : Companion_getInstance_2().z4_1;
 };
 protoOf(ArrayList).o = function () {
   return this.h_1.length;
@@ -3455,16 +3523,16 @@ protoOf(ArrayList).q3 = function () {
   this.u3_1 = this.u3_1 + 1 | 0;
 };
 protoOf(ArrayList).s = function (element) {
-  return indexOf_0(this.h_1, element);
+  return indexOf(this.h_1, element);
 };
 protoOf(ArrayList).toString = function () {
   return arrayToString(this.h_1);
 };
-protoOf(ArrayList).a5 = function () {
+protoOf(ArrayList).b5 = function () {
   return [].slice.call(this.h_1);
 };
 protoOf(ArrayList).toArray = function () {
-  return this.a5();
+  return this.b5();
 };
 protoOf(ArrayList).n3 = function () {
   if (this.i_1)
@@ -3599,7 +3667,7 @@ function sortArray$lambda(a, b) {
 function HashMap_init_$Init$(internalMap, $this) {
   AbstractMutableMap.call($this);
   HashMap.call($this);
-  $this.f5_1 = internalMap;
+  $this.g5_1 = internalMap;
   return $this;
 }
 function HashMap_init_$Init$_0($this) {
@@ -3625,27 +3693,27 @@ function HashMap_init_$Init$_3(original, $this) {
   return $this;
 }
 protoOf(HashMap).q3 = function () {
-  this.f5_1.q3();
+  this.g5_1.q3();
 };
 protoOf(HashMap).g2 = function (key) {
-  return this.f5_1.h5(key);
+  return this.g5_1.i5(key);
 };
 protoOf(HashMap).h2 = function (value) {
-  return this.f5_1.h2(value);
+  return this.g5_1.h2(value);
 };
 protoOf(HashMap).q4 = function () {
-  return new HashMapKeys(this.f5_1);
+  return new HashMapKeys(this.g5_1);
 };
 protoOf(HashMap).r4 = function () {
-  return new HashMapValues(this.f5_1);
+  return new HashMapValues(this.g5_1);
 };
 protoOf(HashMap).x = function () {
-  var tmp0_elvis_lhs = this.g5_1;
+  var tmp0_elvis_lhs = this.h5_1;
   var tmp;
   if (tmp0_elvis_lhs == null) {
     // Inline function 'kotlin.also' call
-    var this_0 = new HashMapEntrySet(this.f5_1);
-    this.g5_1 = this_0;
+    var this_0 = new HashMapEntrySet(this.g5_1);
+    this.h5_1 = this_0;
     tmp = this_0;
   } else {
     tmp = tmp0_elvis_lhs;
@@ -3653,22 +3721,22 @@ protoOf(HashMap).x = function () {
   return tmp;
 };
 protoOf(HashMap).i2 = function (key) {
-  return this.f5_1.i2(key);
+  return this.g5_1.i2(key);
 };
 protoOf(HashMap).l3 = function (key, value) {
-  return this.f5_1.l3(key, value);
+  return this.g5_1.l3(key, value);
 };
-protoOf(HashMap).s4 = function (key) {
-  return this.f5_1.s4(key);
+protoOf(HashMap).t4 = function (key) {
+  return this.g5_1.t4(key);
 };
 protoOf(HashMap).o = function () {
-  return this.f5_1.o();
+  return this.g5_1.o();
 };
-protoOf(HashMap).i5 = function (from) {
-  return this.f5_1.i5(from);
+protoOf(HashMap).s4 = function (from) {
+  return this.g5_1.s4(from);
 };
 function HashMap() {
-  this.g5_1 = null;
+  this.h5_1 = null;
 }
 function HashMapKeys(backing) {
   AbstractMutableSet.call(this);
@@ -3681,7 +3749,7 @@ protoOf(HashMapKeys).n = function () {
   return this.j5_1.o() === 0;
 };
 protoOf(HashMapKeys).r = function (element) {
-  return this.j5_1.h5(element);
+  return this.j5_1.i5(element);
 };
 protoOf(HashMapKeys).q3 = function () {
   return this.j5_1.q3();
@@ -3812,22 +3880,22 @@ protoOf(HashMapKeysDefault).f = function (element) {
 protoOf(HashMapKeysDefault).q3 = function () {
   return this.c6_1.q3();
 };
-protoOf(HashMapKeysDefault).h5 = function (element) {
+protoOf(HashMapKeysDefault).i5 = function (element) {
   return this.c6_1.g2(element);
 };
 protoOf(HashMapKeysDefault).r = function (element) {
   if (!(element == null ? true : !(element == null)))
     return false;
-  return this.h5((element == null ? true : !(element == null)) ? element : THROW_CCE());
+  return this.i5((element == null ? true : !(element == null)) ? element : THROW_CCE());
 };
 protoOf(HashMapKeysDefault).j = function () {
   var entryIterator = this.c6_1.x().j();
   return new HashMapKeysDefault$iterator$1(entryIterator);
 };
-protoOf(HashMapKeysDefault).s4 = function (element) {
+protoOf(HashMapKeysDefault).t4 = function (element) {
   this.n3();
   if (this.c6_1.g2(element)) {
-    this.c6_1.s4(element);
+    this.c6_1.t4(element);
     return true;
   }
   return false;
@@ -3835,7 +3903,7 @@ protoOf(HashMapKeysDefault).s4 = function (element) {
 protoOf(HashMapKeysDefault).m3 = function (element) {
   if (!(element == null ? true : !(element == null)))
     return false;
-  return this.s4((element == null ? true : !(element == null)) ? element : THROW_CCE());
+  return this.t4((element == null ? true : !(element == null)) ? element : THROW_CCE());
 };
 protoOf(HashMapKeysDefault).o = function () {
   return this.c6_1.o();
@@ -3923,7 +3991,7 @@ protoOf(HashSet).q3 = function () {
   this.o1_1.q3();
 };
 protoOf(HashSet).r = function (element) {
-  return this.o1_1.h5(element);
+  return this.o1_1.i5(element);
 };
 protoOf(HashSet).n = function () {
   return this.o1_1.o() === 0;
@@ -3932,7 +4000,7 @@ protoOf(HashSet).j = function () {
   return this.o1_1.l5();
 };
 protoOf(HashSet).m3 = function (element) {
-  return !(this.o1_1.s4(element) == null);
+  return !(this.o1_1.t4(element) == null);
 };
 protoOf(HashSet).o = function () {
   return this.o1_1.o();
@@ -3966,7 +4034,7 @@ function InternalHashMap_init_$Create$_0(initialCapacity) {
 }
 function InternalHashMap_init_$Init$_1(original, $this) {
   InternalHashMap_init_$Init$_0(original.o(), $this);
-  $this.i5(original);
+  $this.s4(original);
   return $this;
 }
 function InternalHashMap_init_$Create$_1(original) {
@@ -4439,7 +4507,7 @@ protoOf(InternalHashMap).i2 = function (key) {
     return null;
   return ensureNotNull(this.h6_1)[index];
 };
-protoOf(InternalHashMap).h5 = function (key) {
+protoOf(InternalHashMap).i5 = function (key) {
   return findKey(this, key) >= 0;
 };
 protoOf(InternalHashMap).l3 = function (key, value) {
@@ -4454,11 +4522,11 @@ protoOf(InternalHashMap).l3 = function (key, value) {
     return null;
   }
 };
-protoOf(InternalHashMap).i5 = function (from) {
+protoOf(InternalHashMap).s4 = function (from) {
   this.m5();
   putAllEntries(this, from.x());
 };
-protoOf(InternalHashMap).s4 = function (key) {
+protoOf(InternalHashMap).t4 = function (key) {
   this.m5();
   var index = findKey(this, key);
   if (index < 0)
@@ -4619,8 +4687,8 @@ function EmptyHolder_getInstance() {
     new EmptyHolder();
   return EmptyHolder_instance;
 }
-protoOf(LinkedHashMap).z4 = function () {
-  this.f5_1.v7();
+protoOf(LinkedHashMap).a5 = function () {
+  this.g5_1.v7();
   var tmp;
   if (this.o() > 0) {
     tmp = this;
@@ -4632,7 +4700,7 @@ protoOf(LinkedHashMap).z4 = function () {
   return tmp;
 };
 protoOf(LinkedHashMap).n3 = function () {
-  return this.f5_1.m5();
+  return this.g5_1.m5();
 };
 function LinkedHashMap() {
 }
@@ -6373,13 +6441,13 @@ function AbstractMap$keys$1(this$0) {
   this.ta_1 = this$0;
   AbstractSet.call(this);
 }
-protoOf(AbstractMap$keys$1).h5 = function (element) {
+protoOf(AbstractMap$keys$1).i5 = function (element) {
   return this.ta_1.g2(element);
 };
 protoOf(AbstractMap$keys$1).r = function (element) {
   if (!(element == null ? true : !(element == null)))
     return false;
-  return this.h5((element == null ? true : !(element == null)) ? element : THROW_CCE());
+  return this.i5((element == null ? true : !(element == null)) ? element : THROW_CCE());
 };
 protoOf(AbstractMap$keys$1).j = function () {
   var entryIterator = this.ta_1.x().j();
@@ -6413,8 +6481,8 @@ protoOf(AbstractMap$values$1).o = function () {
   return this.ua_1.o();
 };
 function AbstractMap() {
-  this.t4_1 = null;
   this.u4_1 = null;
+  this.v4_1 = null;
 }
 protoOf(AbstractMap).g2 = function (key) {
   return !(implFindEntry(this, key) == null);
@@ -6446,7 +6514,7 @@ protoOf(AbstractMap).h2 = function (value) {
   }
   return tmp$ret$0;
 };
-protoOf(AbstractMap).v4 = function (entry) {
+protoOf(AbstractMap).w4 = function (entry) {
   if (!(!(entry == null) ? isInterface(entry, Entry) : false))
     return false;
   var key = entry.y();
@@ -6492,7 +6560,7 @@ protoOf(AbstractMap).equals = function (other) {
     var _iterator__ex2g4s = tmp0.j();
     while (_iterator__ex2g4s.k()) {
       var element = _iterator__ex2g4s.l();
-      if (!this.v4(element)) {
+      if (!this.w4(element)) {
         tmp$ret$0 = false;
         break $l$block_0;
       }
@@ -6515,26 +6583,26 @@ protoOf(AbstractMap).o = function () {
   return this.x().o();
 };
 protoOf(AbstractMap).j2 = function () {
-  if (this.t4_1 == null) {
+  if (this.u4_1 == null) {
     var tmp = this;
-    tmp.t4_1 = new AbstractMap$keys$1(this);
+    tmp.u4_1 = new AbstractMap$keys$1(this);
   }
-  return ensureNotNull(this.t4_1);
+  return ensureNotNull(this.u4_1);
 };
 protoOf(AbstractMap).toString = function () {
   var tmp = this.x();
   return joinToString_0(tmp, ', ', '{', '}', VOID, VOID, AbstractMap$toString$lambda(this));
 };
 protoOf(AbstractMap).k2 = function () {
-  if (this.u4_1 == null) {
+  if (this.v4_1 == null) {
     var tmp = this;
-    tmp.u4_1 = new AbstractMap$values$1(this);
+    tmp.v4_1 = new AbstractMap$values$1(this);
   }
-  return ensureNotNull(this.u4_1);
+  return ensureNotNull(this.v4_1);
 };
 function Companion_7() {
 }
-protoOf(Companion_7).x4 = function (c) {
+protoOf(Companion_7).y4 = function (c) {
   var hashCode_0 = 0;
   var _iterator__ex2g4s = c.j();
   while (_iterator__ex2g4s.k()) {
@@ -6545,7 +6613,7 @@ protoOf(Companion_7).x4 = function (c) {
   }
   return hashCode_0;
 };
-protoOf(Companion_7).w4 = function (c, other) {
+protoOf(Companion_7).x4 = function (c, other) {
   if (!(c.o() === other.o()))
     return false;
   return c.f2(other);
@@ -6562,10 +6630,10 @@ protoOf(AbstractSet).equals = function (other) {
     return true;
   if (!(!(other == null) ? isInterface(other, KtSet) : false))
     return false;
-  return Companion_instance_7.w4(this, other);
+  return Companion_instance_7.x4(this, other);
 };
 protoOf(AbstractSet).hashCode = function () {
-  return Companion_instance_7.x4(this);
+  return Companion_instance_7.y4(this);
 };
 function ArrayDeque_init_$Init$($this) {
   AbstractMutableList.call($this);
@@ -7124,14 +7192,14 @@ protoOf(ArrayDeque).fb = function (array) {
   var tmp_0 = terminateCollectionToArray(this.ya_1, dest);
   return isArray(tmp_0) ? tmp_0 : THROW_CCE();
 };
-protoOf(ArrayDeque).a5 = function () {
+protoOf(ArrayDeque).b5 = function () {
   // Inline function 'kotlin.arrayOfNulls' call
   var size = this.ya_1;
   var tmp$ret$0 = Array(size);
   return this.fb(tmp$ret$0);
 };
 protoOf(ArrayDeque).toArray = function () {
-  return this.a5();
+  return this.b5();
 };
 protoOf(ArrayDeque).j4 = function (fromIndex, toIndex) {
   Companion_instance_5.g3(fromIndex, toIndex, this.ya_1);
@@ -7337,7 +7405,7 @@ protoOf(ArrayAsCollection).n = function () {
   return this.jb_1.length === 0;
 };
 protoOf(ArrayAsCollection).lb = function (element) {
-  return contains_2(this.jb_1, element);
+  return contains_1(this.jb_1, element);
 };
 protoOf(ArrayAsCollection).r = function (element) {
   if (!(element == null ? true : !(element == null)))
@@ -7435,6 +7503,9 @@ function emptyMap() {
   var tmp = EmptyMap_getInstance();
   return isInterface(tmp, KtMap) ? tmp : THROW_CCE();
 }
+function getValue(_this__u8e3s4, key) {
+  return getOrImplicitDefault(_this__u8e3s4, key);
+}
 function toMap(_this__u8e3s4, destination) {
   // Inline function 'kotlin.apply' call
   putAll(destination, _this__u8e3s4);
@@ -7506,9 +7577,6 @@ function putAll(_this__u8e3s4, pairs) {
     var value = _destruct__k2r9zo.yb();
     _this__u8e3s4.l3(key, value);
   }
-}
-function getValue(_this__u8e3s4, key) {
-  return getOrImplicitDefault(_this__u8e3s4, key);
 }
 function mutableMapOf(pairs) {
   // Inline function 'kotlin.apply' call
@@ -8593,7 +8661,7 @@ function trimEnd(_this__u8e3s4, chars) {
         var index = inductionVariable;
         inductionVariable = inductionVariable + -1 | 0;
         var it = charSequenceGet(tmp0, index);
-        if (!contains_1(chars, it)) {
+        if (!contains_2(chars, it)) {
           tmp$ret$1 = charSequenceSubSequence(tmp0, 0, index + 1 | 0);
           break $l$block;
         }
@@ -8748,7 +8816,7 @@ function trimStart(_this__u8e3s4, chars) {
         var index = inductionVariable;
         inductionVariable = inductionVariable + 1 | 0;
         var it = charSequenceGet(tmp0, index);
-        if (!contains_1(chars, it)) {
+        if (!contains_2(chars, it)) {
           tmp$ret$1 = charSequenceSubSequence(tmp0, index, charSequenceLength(tmp0));
           break $l$block;
         }
@@ -9621,6 +9689,7 @@ export {
   checkIndexOverflow as checkIndexOverflow3frtmheghr0th,
   collectionSizeOrDefault as collectionSizeOrDefault36dulx8yinfqm,
   contains_3 as contains2gm06f5aa19ov,
+  contains_1 as contains1tccixv8iwdcq,
   copyToArray as copyToArray2j022khrow2yi,
   distinct as distinct10qe1scfdvu5k,
   dropLast as dropLast1vpiyky649o34,
@@ -9824,7 +9893,7 @@ export {
   Triple as Triple1vhi3d0dgpnjb,
   createFailure as createFailure8paxfkfa5dc7,
   ensureNotNull as ensureNotNull1e947j3ixpazm,
-  isFinite as isFinite2t9l5a275mxm6,
+  isFinite_0 as isFinite2t9l5a275mxm6,
   isInfinite as isInfinite12nl8hpz1hbp2,
   isNaN_0 as isNaNymqb93xtq8w8,
   lazy as lazy2hsh8ze7j6ikd,

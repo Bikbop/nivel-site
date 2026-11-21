@@ -218,6 +218,8 @@ import {
 var log10 = Math.log10;
 var imul = Math.imul;
 var hypot = Math.hypot;
+var asinh = Math.asinh;
+var sinh = Math.sinh;
 //endregion
 //region block: pre-declaration
 initMetadataForObject(CadBuildKit, 'CadBuildKit');
@@ -436,6 +438,7 @@ initMetadataForObject(CoordinateFormat, 'CoordinateFormat');
 initMetadataForClass(AngleFormat, 'AngleFormat', VOID, Enum);
 initMetadataForClass(MapProjection, 'MapProjection', VOID, Enum);
 initMetadataForObject(Gost32453, 'Gost32453');
+initMetadataForObject(WebMercator, 'WebMercator');
 initMetadataForClass(RodHeelNominal, 'RodHeelNominal', VOID, Enum);
 initMetadataForClass(LevelingClassPreset, 'LevelingClassPreset', VOID, Enum);
 initMetadataForClass(RodHeelStats, 'RodHeelStats');
@@ -3362,7 +3365,7 @@ protoOf(CadFillGeometry).xj = function (points) {
       }
        while (!(i_0 === last_0));
   }
-  return this_0.z4();
+  return this_0.a5();
 };
 var CadFillGeometry_instance;
 function CadFillGeometry_getInstance() {
@@ -5241,7 +5244,7 @@ protoOf(CadHatchRegion).xr = function (drawing, seed) {
     this_2.f(first(outer.qr_1));
   }
   // Inline function 'kotlin.let' call
-  var it = this_2.z4();
+  var it = this_2.a5();
   return holes.n() ? it : dropLast(it, 1);
 };
 var CadHatchRegion_instance;
@@ -9641,7 +9644,7 @@ protoOf(CadOriginOptions).bz = function (o) {
     // Inline function 'kotlin.let' call
     this_0.l3('startHeight', tmp2_safe_receiver.toString());
   }
-  return this_0.z4();
+  return this_0.a5();
 };
 protoOf(CadOriginOptions).gz = function (m) {
   var tmp0_safe_receiver = m.i2('hScale');
@@ -22612,8 +22615,9 @@ protoOf(ConverterInput).m1l = function (system, first, second, zoneText, local) 
       var southern = _destruct__k2r9zo.yb();
       tmp = new Projected(north_0, east_0, zone_0, southern);
       break;
+    case 4:
     case 3:
-      if (!local.d1m())
+      if (system.t1l_1.equals(MapProjection_LOCAL_getInstance()) && !local.d1m())
         return null;
       var tmp9_elvis_lhs = CoordinateFormat_instance.q14(first);
       var tmp_10;
@@ -23597,7 +23601,7 @@ function gammaWarnings($this, main, control) {
       this_0.f('\u0423\u0433\u043E\u043B \u0437\u0430\u0441\u0435\u0447\u043A\u0438 \u03B3 = ' + fmtDeg(Intersections_instance, fix.y1o_1) + suffix + ' \u0432\u043D\u0435 30\xB0\u2013150\xB0 \u2014 \u0442\u043E\u0447\u043D\u043E\u0441\u0442\u044C \u043D\u0438\u0437\u043A\u0430\u044F');
     }
   }
-  return this_0.z4();
+  return this_0.a5();
 }
 function fmtM($this, v) {
   return formatUs('%.3f', [v]);
@@ -23904,7 +23908,7 @@ protoOf(Intersections).p1p = function (a, b, c, rA, rB, rC, d, rD) {
   if (main.y1o_1 < 30.0) {
     this_0.f('\u041C\u0430\u043B\u044B\u0439 \u0443\u0433\u043E\u043B \u043C\u0435\u0436\u0434\u0443 \u043D\u0430\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u044F\u043C\u0438 (' + fmtDeg(Intersections_instance, main.y1o_1) + ') \u2014 \u0442\u043E\u0447\u043D\u043E\u0441\u0442\u044C \u043D\u0438\u0437\u043A\u0430\u044F');
   }
-  var warnings = this_0.z4();
+  var warnings = this_0.a5();
   return new IntersectionOutcome(main, control, warnings, ratio);
 };
 protoOf(Intersections).q1p = function (mBetaSec, a, b, fix) {
@@ -24967,6 +24971,7 @@ var MapCoordinateSystem_SK42_GK_instance;
 var MapCoordinateSystem_SK95_GK_instance;
 var MapCoordinateSystem_GSK2011_GK_instance;
 var MapCoordinateSystem_WGS84_UTM_instance;
+var MapCoordinateSystem_WEB_MERCATOR_instance;
 var MapCoordinateSystem_MSK_instance;
 function Companion_13() {
 }
@@ -24992,7 +24997,7 @@ function Companion_getInstance_13() {
   return Companion_instance_14;
 }
 function values_30() {
-  return [MapCoordinateSystem_WGS84_getInstance(), MapCoordinateSystem_PZ90_getInstance(), MapCoordinateSystem_GSK2011_getInstance(), MapCoordinateSystem_SK42_getInstance(), MapCoordinateSystem_SK95_getInstance(), MapCoordinateSystem_SK42_GK_getInstance(), MapCoordinateSystem_SK95_GK_getInstance(), MapCoordinateSystem_GSK2011_GK_getInstance(), MapCoordinateSystem_WGS84_UTM_getInstance(), MapCoordinateSystem_MSK_getInstance()];
+  return [MapCoordinateSystem_WGS84_getInstance(), MapCoordinateSystem_PZ90_getInstance(), MapCoordinateSystem_GSK2011_getInstance(), MapCoordinateSystem_SK42_getInstance(), MapCoordinateSystem_SK95_getInstance(), MapCoordinateSystem_SK42_GK_getInstance(), MapCoordinateSystem_SK95_GK_getInstance(), MapCoordinateSystem_GSK2011_GK_getInstance(), MapCoordinateSystem_WGS84_UTM_getInstance(), MapCoordinateSystem_WEB_MERCATOR_getInstance(), MapCoordinateSystem_MSK_getInstance()];
 }
 function get_entries_30() {
   if ($ENTRIES_30 == null)
@@ -25013,7 +25018,8 @@ function MapCoordinateSystem_initEntries() {
   MapCoordinateSystem_SK95_GK_instance = new MapCoordinateSystem('SK95_GK', 6, 'sk95_gk', '\u0421\u041A-95 / \u0413\u0430\u0443\u0441\u0441-\u041A\u0440\u044E\u0433\u0435\u0440', '\u0421\u041A-95 \u0413\u041A', GeodeticDatum_SK95_getInstance(), MapProjection_GAUSS_KRUGER_getInstance(), '\u041F\u043B\u043E\u0441\u043A\u0438\u0435 X/Y, 6\xB0 \u0437\u043E\u043D\u044B');
   MapCoordinateSystem_GSK2011_GK_instance = new MapCoordinateSystem('GSK2011_GK', 7, 'gsk2011_gk', '\u0413\u0421\u041A-2011 / \u0413\u0430\u0443\u0441\u0441-\u041A\u0440\u044E\u0433\u0435\u0440', '\u0413\u0421\u041A-2011 \u0413\u041A', GeodeticDatum_GSK2011_getInstance(), MapProjection_GAUSS_KRUGER_getInstance(), '\u041F\u043B\u043E\u0441\u043A\u0438\u0435 X/Y, 6\xB0 \u0437\u043E\u043D\u044B');
   MapCoordinateSystem_WGS84_UTM_instance = new MapCoordinateSystem('WGS84_UTM', 8, 'wgs84_utm', 'WGS-84 / UTM', 'UTM', GeodeticDatum_WGS84_getInstance(), MapProjection_UTM_getInstance(), '\u041F\u043B\u043E\u0441\u043A\u0438\u0435 E/N, \u043C\u0435\u0436\u0434\u0443\u043D\u0430\u0440\u043E\u0434\u043D\u0430\u044F \u0441\u0435\u0442\u043A\u0430');
-  MapCoordinateSystem_MSK_instance = new MapCoordinateSystem('MSK', 9, 'msk', '\u041C\u0421\u041A (\u043C\u0435\u0441\u0442\u043D\u0430\u044F)', '\u041C\u0421\u041A', null, MapProjection_LOCAL_getInstance(), '\u041F\u043B\u043E\u0441\u043A\u0438\u0435 X/Y \u0441 \u043F\u0430\u0440\u0430\u043C\u0435\u0442\u0440\u0430\u043C\u0438 \u043C\u0435\u0441\u0442\u043D\u043E\u0439 \u0437\u043E\u043D\u044B');
+  MapCoordinateSystem_WEB_MERCATOR_instance = new MapCoordinateSystem('WEB_MERCATOR', 9, 'web_mercator', 'WGS-84 / Web Mercator', 'Web Mercator', GeodeticDatum_WGS84_getInstance(), MapProjection_WEB_MERCATOR_getInstance(), '\u041F\u043B\u043E\u0441\u043A\u0438\u0435 X/Y \u0442\u0430\u0439\u043B\u043E\u0432\u043E\u0439 \u043A\u0430\u0440\u0442\u044B, EPSG:3857');
+  MapCoordinateSystem_MSK_instance = new MapCoordinateSystem('MSK', 10, 'msk', '\u041C\u0421\u041A (\u043C\u0435\u0441\u0442\u043D\u0430\u044F)', '\u041C\u0421\u041A', null, MapProjection_LOCAL_getInstance(), '\u041F\u043B\u043E\u0441\u043A\u0438\u0435 X/Y \u0441 \u043F\u0430\u0440\u0430\u043C\u0435\u0442\u0440\u0430\u043C\u0438 \u043C\u0435\u0441\u0442\u043D\u043E\u0439 \u0437\u043E\u043D\u044B');
 }
 var $ENTRIES_30;
 function MapCoordinateSystem(name, ordinal, id, title, shortTitle, fixedDatum, projection, description) {
@@ -25254,20 +25260,23 @@ protoOf(MapCoordinateConverter).d1s = function (latDeg, lonDeg, system, local, f
     case 0:
       tmp = new Geodetic(geo.k1n_1, this.e1s(geo.l1n_1));
       break;
+    case 3:
+      tmp = WebMercator_instance.i1s(geo.k1n_1, this.e1s(geo.l1n_1));
+      break;
     case 1:
       var zone = forcedZone == null ? GeodeticTransform_instance.f1o(geo.l1n_1) : forcedZone;
-      var params = this.f1s(zone);
+      var params = this.j1s(zone);
       var p = GeodeticTransform_instance.x1n(withLonNear(this, geo, params.y1n_1), datum.q1r_1, params);
       tmp = new Projected(p.d1o_1, p.e1o_1, zone);
       break;
     case 2:
-      var zone_0 = forcedZone == null ? this.g1s(lonDeg) : forcedZone;
+      var zone_0 = forcedZone == null ? this.k1s(lonDeg) : forcedZone;
       var southern = latDeg < 0;
-      var params_0 = this.h1s(zone_0, southern);
+      var params_0 = this.l1s(zone_0, southern);
       var p_0 = GeodeticTransform_instance.x1n(withLonNear(this, geo, params_0.y1n_1), datum.q1r_1, params_0);
       tmp = new Projected(p_0.d1o_1, p_0.e1o_1, zone_0, southern);
       break;
-    case 3:
+    case 4:
       var tmp3_elvis_lhs = local.w1r();
       var tmp_0;
       if (tmp3_elvis_lhs == null) {
@@ -25316,6 +25325,8 @@ protoOf(MapCoordinateConverter).e1m = function (coordinate, system, local) {
       switch (system.t1l_1.m2_1) {
         case 0:
           return null;
+        case 3:
+          return WebMercator_instance.m1s(coordinate.z1r_1, coordinate.a1s_1);
         case 1:
           var tmp2_elvis_lhs = coordinate.b1s_1;
           var tmp_2;
@@ -25331,7 +25342,7 @@ protoOf(MapCoordinateConverter).e1m = function (coordinate, system, local) {
           var zone = tmp_2;
           if (!(1 <= zone ? zone <= 60 : false))
             return null;
-          tmp_1 = this.f1s(zone);
+          tmp_1 = this.j1s(zone);
           break;
         case 2:
           var tmp3_elvis_lhs = coordinate.b1s_1;
@@ -25345,9 +25356,9 @@ protoOf(MapCoordinateConverter).e1m = function (coordinate, system, local) {
           var zone_0 = tmp_3;
           if (!(1 <= zone_0 ? zone_0 <= 60 : false))
             return null;
-          tmp_1 = this.h1s(zone_0, coordinate.c1s_1);
+          tmp_1 = this.l1s(zone_0, coordinate.c1s_1);
           break;
-        case 3:
+        case 4:
           var tmp4_elvis_lhs = local.w1r();
           var tmp_4;
           if (tmp4_elvis_lhs == null) {
@@ -25386,16 +25397,16 @@ protoOf(MapCoordinateConverter).e1m = function (coordinate, system, local) {
   var wgs = datum.v1r(geo);
   return new GeoPointData(wgs.k1n_1, this.e1s(wgs.l1n_1));
 };
-protoOf(MapCoordinateConverter).f1s = function (zone) {
+protoOf(MapCoordinateConverter).j1s = function (zone) {
   return new ProjectionZone(zone * 6.0 - 3.0, zone * 1000000.0 + 500000.0, 0.0, 1.0);
 };
-protoOf(MapCoordinateConverter).g1s = function (lonDeg) {
+protoOf(MapCoordinateConverter).k1s = function (lonDeg) {
   // Inline function 'kotlin.math.floor' call
   var x = (this.e1s(lonDeg) + 180.0) / 6.0;
   var tmp$ret$0 = Math.floor(x);
   return coerceIn(numberToInt(tmp$ret$0) + 1 | 0, 1, 60);
 };
-protoOf(MapCoordinateConverter).h1s = function (zone, southern) {
+protoOf(MapCoordinateConverter).l1s = function (zone, southern) {
   return new ProjectionZone(zone * 6.0 - 183.0, 500000.0, southern ? 1.0E7 : 0.0, 0.9996);
 };
 protoOf(MapCoordinateConverter).e1s = function (lon) {
@@ -25418,13 +25429,13 @@ function plain($this, value) {
 }
 function CoordinateFormat() {
 }
-protoOf(CoordinateFormat).i1s = function (coordinate, system, angleFormat) {
+protoOf(CoordinateFormat).n1s = function (coordinate, system, angleFormat) {
   var tmp;
   if (coordinate instanceof Geodetic) {
     var tmp_0;
     switch (angleFormat.m2_1) {
       case 0:
-        tmp_0 = to(this.k1s(coordinate.x1r_1, true), this.k1s(coordinate.y1r_1, false));
+        tmp_0 = to(this.p1s(coordinate.x1r_1, true), this.p1s(coordinate.y1r_1, false));
         break;
       case 1:
         tmp_0 = to('B ' + degrees(this, coordinate.x1r_1) + '\xB0', 'L ' + degrees(this, coordinate.y1r_1) + '\xB0');
@@ -25438,9 +25449,9 @@ protoOf(CoordinateFormat).i1s = function (coordinate, system, angleFormat) {
     if (coordinate instanceof Projected) {
       var tmp_1;
       if (system.t1l_1.equals(MapProjection_UTM_getInstance())) {
-        tmp_1 = to('N ' + this.j1s(coordinate.z1r_1), 'E ' + this.j1s(coordinate.a1s_1));
+        tmp_1 = to('N ' + this.o1s(coordinate.z1r_1), 'E ' + this.o1s(coordinate.a1s_1));
       } else {
-        tmp_1 = to('X ' + this.j1s(coordinate.z1r_1), 'Y ' + this.j1s(coordinate.a1s_1));
+        tmp_1 = to('X ' + this.o1s(coordinate.z1r_1), 'Y ' + this.o1s(coordinate.a1s_1));
       }
       tmp = tmp_1;
     } else {
@@ -25450,7 +25461,7 @@ protoOf(CoordinateFormat).i1s = function (coordinate, system, angleFormat) {
   return tmp;
 };
 protoOf(CoordinateFormat).s1m = function (coordinate, system, angleFormat) {
-  var _destruct__k2r9zo = this.i1s(coordinate, system, angleFormat);
+  var _destruct__k2r9zo = this.n1s(coordinate, system, angleFormat);
   var a = _destruct__k2r9zo.xb();
   var b = _destruct__k2r9zo.yb();
   return a + '  ' + b;
@@ -25463,7 +25474,7 @@ protoOf(CoordinateFormat).u1m = function (coordinate, system) {
     if (coordinate instanceof Projected) {
       var tmp_0;
       if (system.t1l_1.equals(MapProjection_UTM_getInstance())) {
-        tmp_0 = this.l1s(coordinate) + ' ' + plain(this, coordinate.a1s_1) + ' ' + plain(this, coordinate.z1r_1);
+        tmp_0 = this.q1s(coordinate) + ' ' + plain(this, coordinate.a1s_1) + ' ' + plain(this, coordinate.z1r_1);
       } else {
         tmp_0 = plain(this, coordinate.z1r_1) + ', ' + plain(this, coordinate.a1s_1);
       }
@@ -25497,13 +25508,13 @@ protoOf(CoordinateFormat).q1m = function (system, coordinate, local) {
         tmp_1 = null;
       } else {
         // Inline function 'kotlin.let' call
-        tmp_1 = 'UTM ' + CoordinateFormat_instance.l1s(projected);
+        tmp_1 = 'UTM ' + CoordinateFormat_instance.q1s(projected);
       }
 
       var tmp5_elvis_lhs = tmp_1;
       tmp = tmp5_elvis_lhs == null ? system.r1l_1 : tmp5_elvis_lhs;
       break;
-    case 3:
+    case 4:
       // Inline function 'kotlin.text.ifBlank' call
 
       var this_0 = local.x1l_1;
@@ -25517,6 +25528,7 @@ protoOf(CoordinateFormat).q1m = function (system, coordinate, local) {
       tmp = tmp_2;
       break;
     case 0:
+    case 3:
       tmp = system.r1l_1;
       break;
     default:
@@ -25525,11 +25537,11 @@ protoOf(CoordinateFormat).q1m = function (system, coordinate, local) {
   }
   return tmp;
 };
-protoOf(CoordinateFormat).l1s = function (coordinate) {
+protoOf(CoordinateFormat).q1s = function (coordinate) {
   var tmp0_elvis_lhs = coordinate.b1s_1;
   return toString(tmp0_elvis_lhs == null ? '?' : tmp0_elvis_lhs) + (coordinate.c1s_1 ? 'S' : 'N');
 };
-protoOf(CoordinateFormat).m1s = function (coordinate, system) {
+protoOf(CoordinateFormat).r1s = function (coordinate, system) {
   var tmp;
   if (coordinate == null) {
     tmp = new Triple('', '', '');
@@ -25538,7 +25550,7 @@ protoOf(CoordinateFormat).m1s = function (coordinate, system) {
       tmp = new Triple(degrees(this, coordinate.x1r_1), degrees(this, coordinate.y1r_1), '');
     } else {
       if (coordinate instanceof Projected) {
-        tmp = new Triple(plain(this, coordinate.z1r_1), plain(this, coordinate.a1s_1), system.t1l_1.equals(MapProjection_UTM_getInstance()) ? this.l1s(coordinate) : '');
+        tmp = new Triple(plain(this, coordinate.z1r_1), plain(this, coordinate.a1s_1), system.t1l_1.equals(MapProjection_UTM_getInstance()) ? this.q1s(coordinate) : '');
       } else {
         noWhenBranchMatchedException();
       }
@@ -25724,7 +25736,7 @@ protoOf(CoordinateFormat).v1l = function (text) {
   var value = tmp_4 + (tmp1_elvis_lhs == null ? 0.0 : tmp1_elvis_lhs) / 3600.0;
   return sign * value;
 };
-protoOf(CoordinateFormat).k1s = function (value, isLatitude) {
+protoOf(CoordinateFormat).p1s = function (value, isLatitude) {
   // Inline function 'kotlin.math.abs' call
   var absValue = Math.abs(value);
   var degrees = numberToInt(absValue);
@@ -25741,7 +25753,7 @@ protoOf(CoordinateFormat).k1s = function (value, isLatitude) {
   var direction = isLatitude ? value >= 0 ? 'N' : 'S' : value >= 0 ? 'E' : 'W';
   return formatUs('%d\xB0%02d\'%05.2f" %s', [degrees, minutes, seconds, direction]);
 };
-protoOf(CoordinateFormat).j1s = function (value) {
+protoOf(CoordinateFormat).o1s = function (value) {
   var text = formatUs('%.2f', [value]);
   var negative = startsWith(text, '-');
   var body = removePrefix(text, '-');
@@ -25760,6 +25772,14 @@ function CoordinateFormat_getInstance() {
 }
 var AngleFormat_DMS_instance;
 var AngleFormat_DEGREES_instance;
+function values_32() {
+  return [AngleFormat_DMS_getInstance(), AngleFormat_DEGREES_getInstance()];
+}
+function get_entries_32() {
+  if ($ENTRIES_32 == null)
+    $ENTRIES_32 = enumEntries(values_32());
+  return $ENTRIES_32;
+}
 var AngleFormat_entriesInitialized;
 function AngleFormat_initEntries() {
   if (AngleFormat_entriesInitialized)
@@ -25768,12 +25788,14 @@ function AngleFormat_initEntries() {
   AngleFormat_DMS_instance = new AngleFormat('DMS', 0);
   AngleFormat_DEGREES_instance = new AngleFormat('DEGREES', 1);
 }
+var $ENTRIES_32;
 function AngleFormat(name, ordinal) {
   Enum.call(this, name, ordinal);
 }
 var MapProjection_NONE_instance;
 var MapProjection_GAUSS_KRUGER_instance;
 var MapProjection_UTM_instance;
+var MapProjection_WEB_MERCATOR_instance;
 var MapProjection_LOCAL_instance;
 var MapProjection_entriesInitialized;
 function MapProjection_initEntries() {
@@ -25783,7 +25805,8 @@ function MapProjection_initEntries() {
   MapProjection_NONE_instance = new MapProjection('NONE', 0);
   MapProjection_GAUSS_KRUGER_instance = new MapProjection('GAUSS_KRUGER', 1);
   MapProjection_UTM_instance = new MapProjection('UTM', 2);
-  MapProjection_LOCAL_instance = new MapProjection('LOCAL', 3);
+  MapProjection_WEB_MERCATOR_instance = new MapProjection('WEB_MERCATOR', 3);
+  MapProjection_LOCAL_instance = new MapProjection('LOCAL', 4);
 }
 function MapProjection(name, ordinal) {
   Enum.call(this, name, ordinal);
@@ -25799,6 +25822,59 @@ function Gost32453_getInstance() {
   if (Gost32453_instance == null)
     new Gost32453();
   return Gost32453_instance;
+}
+function WebMercator() {
+  this.f1s_1 = 85.05112877980659;
+  this.g1s_1 = 6378137.0;
+  this.h1s_1 = 2.0037508342789244E7;
+}
+protoOf(WebMercator).i1s = function (lat, lon) {
+  var tmp;
+  if ((-85.05112877980659 <= lat ? lat <= 85.05112877980659 : false) && (-180.0 <= lon ? lon <= 180.0 : false)) {
+    // Inline function 'kotlin.math.tan' call
+    var x = lat * 3.141592653589793 / 180;
+    // Inline function 'kotlin.math.asinh' call
+    var x_0 = Math.tan(x);
+    var tmp$ret$1 = asinh(x_0);
+    tmp = new Projected(coerceIn_0(6378137.0 * tmp$ret$1, -2.0037508342789244E7, 2.0037508342789244E7), 6378137.0 * (lon / 180 * 3.141592653589793));
+  } else {
+    tmp = null;
+  }
+  return tmp;
+};
+protoOf(WebMercator).m1s = function (north, east) {
+  var tmp;
+  var tmp_0;
+  var tmp_1;
+  // Inline function 'kotlin.math.abs' call
+  if (Math.abs(north) > 2.0037508342789244E7 + 1.0E-5) {
+    tmp_1 = true;
+  } else {
+    // Inline function 'kotlin.math.abs' call
+    tmp_1 = Math.abs(east) > 2.0037508342789244E7 + 1.0E-5;
+  }
+  if (tmp_1) {
+    tmp_0 = true;
+  } else {
+    tmp_0 = !isFinite(north);
+  }
+  if (tmp_0) {
+    tmp = true;
+  } else {
+    tmp = !isFinite(east);
+  }
+  if (tmp)
+    return null;
+  // Inline function 'kotlin.math.sinh' call
+  var x = north / 6378137.0;
+  // Inline function 'kotlin.math.atan' call
+  var x_0 = sinh(x);
+  var tmp$ret$3 = Math.atan(x_0);
+  return new GeoPointData(coerceIn_0(tmp$ret$3 * 180 / 3.141592653589793, -85.05112877980659, 85.05112877980659), coerceIn_0(east / 2.0037508342789244E7 * 180, -180.0, 180.0));
+};
+var WebMercator_instance;
+function WebMercator_getInstance() {
+  return WebMercator_instance;
 }
 function MapCoordinateSystem_WGS84_getInstance() {
   MapCoordinateSystem_initEntries();
@@ -25835,6 +25911,10 @@ function MapCoordinateSystem_GSK2011_GK_getInstance() {
 function MapCoordinateSystem_WGS84_UTM_getInstance() {
   MapCoordinateSystem_initEntries();
   return MapCoordinateSystem_WGS84_UTM_instance;
+}
+function MapCoordinateSystem_WEB_MERCATOR_getInstance() {
+  MapCoordinateSystem_initEntries();
+  return MapCoordinateSystem_WEB_MERCATOR_instance;
 }
 function MapCoordinateSystem_MSK_getInstance() {
   MapCoordinateSystem_initEntries();
@@ -25880,6 +25960,10 @@ function MapProjection_UTM_getInstance() {
   MapProjection_initEntries();
   return MapProjection_UTM_instance;
 }
+function MapProjection_WEB_MERCATOR_getInstance() {
+  MapProjection_initEntries();
+  return MapProjection_WEB_MERCATOR_instance;
+}
 function MapProjection_LOCAL_getInstance() {
   MapProjection_initEntries();
   return MapProjection_LOCAL_instance;
@@ -25895,13 +25979,13 @@ function _init_properties_MapCoordinateSystems_kt__pfli5s() {
 var RodHeelNominal_N4687_instance;
 var RodHeelNominal_N4787_instance;
 var RodHeelNominal_CUSTOM_instance;
-function values_32() {
+function values_33() {
   return [RodHeelNominal_N4687_getInstance(), RodHeelNominal_N4787_getInstance(), RodHeelNominal_CUSTOM_getInstance()];
 }
-function get_entries_32() {
-  if ($ENTRIES_32 == null)
-    $ENTRIES_32 = enumEntries(values_32());
-  return $ENTRIES_32;
+function get_entries_33() {
+  if ($ENTRIES_33 == null)
+    $ENTRIES_33 = enumEntries(values_33());
+  return $ENTRIES_33;
 }
 var RodHeelNominal_entriesInitialized;
 function RodHeelNominal_initEntries() {
@@ -25912,23 +25996,23 @@ function RodHeelNominal_initEntries() {
   RodHeelNominal_N4787_instance = new RodHeelNominal('N4787', 1, '4787', 4787.0);
   RodHeelNominal_CUSTOM_instance = new RodHeelNominal('CUSTOM', 2, '\u0421\u0432\u043E\u044F', null);
 }
-var $ENTRIES_32;
+var $ENTRIES_33;
 function RodHeelNominal(name, ordinal, label, valueMm) {
   Enum.call(this, name, ordinal);
-  this.p1s_1 = label;
-  this.q1s_1 = valueMm;
+  this.u1s_1 = label;
+  this.v1s_1 = valueMm;
 }
 var LevelingClassPreset_CLASS_II_instance;
 var LevelingClassPreset_CLASS_III_instance;
 var LevelingClassPreset_CLASS_IV_instance;
 var LevelingClassPreset_CUSTOM_instance;
-function values_33() {
+function values_34() {
   return [LevelingClassPreset_CLASS_II_getInstance(), LevelingClassPreset_CLASS_III_getInstance(), LevelingClassPreset_CLASS_IV_getInstance(), LevelingClassPreset_CUSTOM_getInstance()];
 }
-function get_entries_33() {
-  if ($ENTRIES_33 == null)
-    $ENTRIES_33 = enumEntries(values_33());
-  return $ENTRIES_33;
+function get_entries_34() {
+  if ($ENTRIES_34 == null)
+    $ENTRIES_34 = enumEntries(values_34());
+  return $ENTRIES_34;
 }
 var LevelingClassPreset_entriesInitialized;
 function LevelingClassPreset_initEntries() {
@@ -25940,28 +26024,28 @@ function LevelingClassPreset_initEntries() {
   LevelingClassPreset_CLASS_IV_instance = new LevelingClassPreset('CLASS_IV', 2, 'IV \u043A\u043B\u0430\u0441\u0441', 2.0);
   LevelingClassPreset_CUSTOM_instance = new LevelingClassPreset('CUSTOM', 3, '\u0421\u0432\u043E\u0439', null);
 }
-var $ENTRIES_33;
+var $ENTRIES_34;
 function LevelingClassPreset(name, ordinal, label, toleranceMm) {
   Enum.call(this, name, ordinal);
-  this.t1s_1 = label;
-  this.u1s_1 = toleranceMm;
+  this.y1s_1 = label;
+  this.z1s_1 = toleranceMm;
 }
 function RodHeelStats(differences, meanMm, spreadMm, nominalMm, deviationFromNominalMm) {
-  this.v1s_1 = differences;
-  this.w1s_1 = meanMm;
-  this.x1s_1 = spreadMm;
-  this.y1s_1 = nominalMm;
-  this.z1s_1 = deviationFromNominalMm;
+  this.a1t_1 = differences;
+  this.b1t_1 = meanMm;
+  this.c1t_1 = spreadMm;
+  this.d1t_1 = nominalMm;
+  this.e1t_1 = deviationFromNominalMm;
 }
 protoOf(RodHeelStats).toString = function () {
-  return 'RodHeelStats(differences=' + toString(this.v1s_1) + ', meanMm=' + this.w1s_1 + ', spreadMm=' + this.x1s_1 + ', nominalMm=' + this.y1s_1 + ', deviationFromNominalMm=' + this.z1s_1 + ')';
+  return 'RodHeelStats(differences=' + toString(this.a1t_1) + ', meanMm=' + this.b1t_1 + ', spreadMm=' + this.c1t_1 + ', nominalMm=' + this.d1t_1 + ', deviationFromNominalMm=' + this.e1t_1 + ')';
 };
 protoOf(RodHeelStats).hashCode = function () {
-  var result = hashCode(this.v1s_1);
-  result = imul(result, 31) + getNumberHashCode(this.w1s_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.x1s_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.y1s_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.z1s_1) | 0;
+  var result = hashCode(this.a1t_1);
+  result = imul(result, 31) + getNumberHashCode(this.b1t_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.c1t_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.d1t_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.e1t_1) | 0;
   return result;
 };
 protoOf(RodHeelStats).equals = function (other) {
@@ -25970,23 +26054,23 @@ protoOf(RodHeelStats).equals = function (other) {
   if (!(other instanceof RodHeelStats))
     return false;
   var tmp0_other_with_cast = other instanceof RodHeelStats ? other : THROW_CCE();
-  if (!equals(this.v1s_1, tmp0_other_with_cast.v1s_1))
+  if (!equals(this.a1t_1, tmp0_other_with_cast.a1t_1))
     return false;
-  if (!equals(this.w1s_1, tmp0_other_with_cast.w1s_1))
+  if (!equals(this.b1t_1, tmp0_other_with_cast.b1t_1))
     return false;
-  if (!equals(this.x1s_1, tmp0_other_with_cast.x1s_1))
+  if (!equals(this.c1t_1, tmp0_other_with_cast.c1t_1))
     return false;
-  if (!equals(this.y1s_1, tmp0_other_with_cast.y1s_1))
+  if (!equals(this.d1t_1, tmp0_other_with_cast.d1t_1))
     return false;
-  if (!equals(this.z1s_1, tmp0_other_with_cast.z1s_1))
+  if (!equals(this.e1t_1, tmp0_other_with_cast.e1t_1))
     return false;
   return true;
 };
 function RodHeel() {
-  this.a1t_1 = 100.0;
-  this.b1t_1 = 5.0;
+  this.f1t_1 = 100.0;
+  this.g1t_1 = 5.0;
 }
-protoOf(RodHeel).c1t = function (readings, nominalMm) {
+protoOf(RodHeel).h1t = function (readings, nominalMm) {
   if (readings.n())
     return null;
   // Inline function 'kotlin.collections.map' call
@@ -26009,11 +26093,11 @@ protoOf(RodHeel).c1t = function (readings, nominalMm) {
     tmp = tmp0_elvis_lhs;
   }
   var stats = tmp;
-  return new RodHeelStats(differences, stats.e1t_1, stats.f1t_1, nominalMm, stats.e1t_1 - nominalMm);
+  return new RodHeelStats(differences, stats.j1t_1, stats.k1t_1, nominalMm, stats.j1t_1 - nominalMm);
 };
-protoOf(RodHeel).i1t = function (first, second) {
+protoOf(RodHeel).n1t = function (first, second) {
   // Inline function 'kotlin.math.abs' call
-  var x = first.w1s_1 - second.w1s_1;
+  var x = first.b1t_1 - second.b1t_1;
   return Math.abs(x) - 100.0;
 };
 var RodHeel_instance;
@@ -26404,12 +26488,12 @@ function SectionComparison(forward, backward, allowedMm) {
   this.t17_1 = backward;
   this.u17_1 = allowedMm;
 }
-protoOf(SectionComparison).j1t = function () {
+protoOf(SectionComparison).o1t = function () {
   var tmp0_safe_receiver = this.s17_1;
   var tmp1_elvis_lhs = tmp0_safe_receiver == null ? null : tmp0_safe_receiver.w17_1;
   return tmp1_elvis_lhs == null ? ensureNotNull(this.t17_1).x17_1 : tmp1_elvis_lhs;
 };
-protoOf(SectionComparison).k1t = function () {
+protoOf(SectionComparison).p1t = function () {
   var tmp0_safe_receiver = this.s17_1;
   var tmp1_elvis_lhs = tmp0_safe_receiver == null ? null : tmp0_safe_receiver.x17_1;
   return tmp1_elvis_lhs == null ? ensureNotNull(this.t17_1).w17_1 : tmp1_elvis_lhs;
@@ -26503,21 +26587,21 @@ protoOf(RunSection).equals = function (other) {
   return true;
 };
 function SeriesStats(values, mean, spread, min, max) {
-  this.d1t_1 = values;
-  this.e1t_1 = mean;
-  this.f1t_1 = spread;
-  this.g1t_1 = min;
-  this.h1t_1 = max;
+  this.i1t_1 = values;
+  this.j1t_1 = mean;
+  this.k1t_1 = spread;
+  this.l1t_1 = min;
+  this.m1t_1 = max;
 }
 protoOf(SeriesStats).toString = function () {
-  return 'SeriesStats(values=' + toString(this.d1t_1) + ', mean=' + this.e1t_1 + ', spread=' + this.f1t_1 + ', min=' + this.g1t_1 + ', max=' + this.h1t_1 + ')';
+  return 'SeriesStats(values=' + toString(this.i1t_1) + ', mean=' + this.j1t_1 + ', spread=' + this.k1t_1 + ', min=' + this.l1t_1 + ', max=' + this.m1t_1 + ')';
 };
 protoOf(SeriesStats).hashCode = function () {
-  var result = hashCode(this.d1t_1);
-  result = imul(result, 31) + getNumberHashCode(this.e1t_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.f1t_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.g1t_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.h1t_1) | 0;
+  var result = hashCode(this.i1t_1);
+  result = imul(result, 31) + getNumberHashCode(this.j1t_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.k1t_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.l1t_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.m1t_1) | 0;
   return result;
 };
 protoOf(SeriesStats).equals = function (other) {
@@ -26526,15 +26610,15 @@ protoOf(SeriesStats).equals = function (other) {
   if (!(other instanceof SeriesStats))
     return false;
   var tmp0_other_with_cast = other instanceof SeriesStats ? other : THROW_CCE();
-  if (!equals(this.d1t_1, tmp0_other_with_cast.d1t_1))
+  if (!equals(this.i1t_1, tmp0_other_with_cast.i1t_1))
     return false;
-  if (!equals(this.e1t_1, tmp0_other_with_cast.e1t_1))
+  if (!equals(this.j1t_1, tmp0_other_with_cast.j1t_1))
     return false;
-  if (!equals(this.f1t_1, tmp0_other_with_cast.f1t_1))
+  if (!equals(this.k1t_1, tmp0_other_with_cast.k1t_1))
     return false;
-  if (!equals(this.g1t_1, tmp0_other_with_cast.g1t_1))
+  if (!equals(this.l1t_1, tmp0_other_with_cast.l1t_1))
     return false;
-  if (!equals(this.h1t_1, tmp0_other_with_cast.h1t_1))
+  if (!equals(this.m1t_1, tmp0_other_with_cast.m1t_1))
     return false;
   return true;
 };
@@ -26546,40 +26630,40 @@ function seriesStats(values) {
   return new SeriesStats(values, average(values), max_0 - min_0, min_0, max_0);
 }
 function Point3(x, y, z) {
-  this.l1t_1 = x;
-  this.m1t_1 = y;
-  this.n1t_1 = z;
+  this.q1t_1 = x;
+  this.r1t_1 = y;
+  this.s1t_1 = z;
 }
-protoOf(Point3).o1t = function (o) {
-  return new Point3(this.l1t_1 - o.l1t_1, this.m1t_1 - o.m1t_1, this.n1t_1 - o.n1t_1);
+protoOf(Point3).t1t = function (o) {
+  return new Point3(this.q1t_1 - o.q1t_1, this.r1t_1 - o.r1t_1, this.s1t_1 - o.s1t_1);
 };
-protoOf(Point3).p1t = function (o) {
-  return new Point3(this.l1t_1 + o.l1t_1, this.m1t_1 + o.m1t_1, this.n1t_1 + o.n1t_1);
+protoOf(Point3).u1t = function (o) {
+  return new Point3(this.q1t_1 + o.q1t_1, this.r1t_1 + o.r1t_1, this.s1t_1 + o.s1t_1);
 };
 protoOf(Point3).eh = function (k) {
-  return new Point3(this.l1t_1 * k, this.m1t_1 * k, this.n1t_1 * k);
+  return new Point3(this.q1t_1 * k, this.r1t_1 * k, this.s1t_1 * k);
 };
-protoOf(Point3).q1t = function (o) {
-  return this.l1t_1 * o.l1t_1 + this.m1t_1 * o.m1t_1 + this.n1t_1 * o.n1t_1;
+protoOf(Point3).v1t = function (o) {
+  return this.q1t_1 * o.q1t_1 + this.r1t_1 * o.r1t_1 + this.s1t_1 * o.s1t_1;
 };
-protoOf(Point3).r1t = function (o) {
-  return new Point3(this.m1t_1 * o.n1t_1 - this.n1t_1 * o.m1t_1, this.n1t_1 * o.l1t_1 - this.l1t_1 * o.n1t_1, this.l1t_1 * o.m1t_1 - this.m1t_1 * o.l1t_1);
+protoOf(Point3).w1t = function (o) {
+  return new Point3(this.r1t_1 * o.s1t_1 - this.s1t_1 * o.r1t_1, this.s1t_1 * o.q1t_1 - this.q1t_1 * o.s1t_1, this.q1t_1 * o.r1t_1 - this.r1t_1 * o.q1t_1);
 };
-protoOf(Point3).s1t = function () {
+protoOf(Point3).x1t = function () {
   // Inline function 'kotlin.math.sqrt' call
-  var x = this.q1t(this);
+  var x = this.v1t(this);
   return Math.sqrt(x);
 };
-protoOf(Point3).t1t = function (o) {
-  return this.o1t(o).s1t();
+protoOf(Point3).y1t = function (o) {
+  return this.t1t(o).x1t();
 };
 protoOf(Point3).toString = function () {
-  return 'Point3(x=' + this.l1t_1 + ', y=' + this.m1t_1 + ', z=' + this.n1t_1 + ')';
+  return 'Point3(x=' + this.q1t_1 + ', y=' + this.r1t_1 + ', z=' + this.s1t_1 + ')';
 };
 protoOf(Point3).hashCode = function () {
-  var result = getNumberHashCode(this.l1t_1);
-  result = imul(result, 31) + getNumberHashCode(this.m1t_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.n1t_1) | 0;
+  var result = getNumberHashCode(this.q1t_1);
+  result = imul(result, 31) + getNumberHashCode(this.r1t_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.s1t_1) | 0;
   return result;
 };
 protoOf(Point3).equals = function (other) {
@@ -26588,11 +26672,11 @@ protoOf(Point3).equals = function (other) {
   if (!(other instanceof Point3))
     return false;
   var tmp0_other_with_cast = other instanceof Point3 ? other : THROW_CCE();
-  if (!equals(this.l1t_1, tmp0_other_with_cast.l1t_1))
+  if (!equals(this.q1t_1, tmp0_other_with_cast.q1t_1))
     return false;
-  if (!equals(this.m1t_1, tmp0_other_with_cast.m1t_1))
+  if (!equals(this.r1t_1, tmp0_other_with_cast.r1t_1))
     return false;
-  if (!equals(this.n1t_1, tmp0_other_with_cast.n1t_1))
+  if (!equals(this.s1t_1, tmp0_other_with_cast.s1t_1))
     return false;
   return true;
 };
@@ -26611,67 +26695,67 @@ function QuadFilter(name, ordinal) {
 }
 function Solution(center, radius, radiusFixed, residuals, tiltsDeg, m0, mX, mY, mZ, mR, pdop, iterations, outliers) {
   outliers = outliers === VOID ? emptyList() : outliers;
-  this.u1t_1 = center;
-  this.v1t_1 = radius;
-  this.w1t_1 = radiusFixed;
-  this.x1t_1 = residuals;
-  this.y1t_1 = tiltsDeg;
-  this.z1t_1 = m0;
-  this.a1u_1 = mX;
-  this.b1u_1 = mY;
-  this.c1u_1 = mZ;
-  this.d1u_1 = mR;
-  this.e1u_1 = pdop;
-  this.f1u_1 = iterations;
-  this.g1u_1 = outliers;
+  this.z1t_1 = center;
+  this.a1u_1 = radius;
+  this.b1u_1 = radiusFixed;
+  this.c1u_1 = residuals;
+  this.d1u_1 = tiltsDeg;
+  this.e1u_1 = m0;
+  this.f1u_1 = mX;
+  this.g1u_1 = mY;
+  this.h1u_1 = mZ;
+  this.i1u_1 = mR;
+  this.j1u_1 = pdop;
+  this.k1u_1 = iterations;
+  this.l1u_1 = outliers;
 }
-protoOf(Solution).h1u = function () {
+protoOf(Solution).m1u = function () {
   var tmp;
-  if (!(this.a1u_1 == null) && !(this.b1u_1 == null)) {
+  if (!(this.f1u_1 == null) && !(this.g1u_1 == null)) {
     // Inline function 'kotlin.math.sqrt' call
-    var x = this.a1u_1 * this.a1u_1 + this.b1u_1 * this.b1u_1;
+    var x = this.f1u_1 * this.f1u_1 + this.g1u_1 * this.g1u_1;
     tmp = Math.sqrt(x);
   } else {
     tmp = null;
   }
   return tmp;
 };
-protoOf(Solution).i1u = function (center, radius, radiusFixed, residuals, tiltsDeg, m0, mX, mY, mZ, mR, pdop, iterations, outliers) {
+protoOf(Solution).n1u = function (center, radius, radiusFixed, residuals, tiltsDeg, m0, mX, mY, mZ, mR, pdop, iterations, outliers) {
   return new Solution(center, radius, radiusFixed, residuals, tiltsDeg, m0, mX, mY, mZ, mR, pdop, iterations, outliers);
 };
-protoOf(Solution).j1u = function (center, radius, radiusFixed, residuals, tiltsDeg, m0, mX, mY, mZ, mR, pdop, iterations, outliers, $super) {
-  center = center === VOID ? this.u1t_1 : center;
-  radius = radius === VOID ? this.v1t_1 : radius;
-  radiusFixed = radiusFixed === VOID ? this.w1t_1 : radiusFixed;
-  residuals = residuals === VOID ? this.x1t_1 : residuals;
-  tiltsDeg = tiltsDeg === VOID ? this.y1t_1 : tiltsDeg;
-  m0 = m0 === VOID ? this.z1t_1 : m0;
-  mX = mX === VOID ? this.a1u_1 : mX;
-  mY = mY === VOID ? this.b1u_1 : mY;
-  mZ = mZ === VOID ? this.c1u_1 : mZ;
-  mR = mR === VOID ? this.d1u_1 : mR;
-  pdop = pdop === VOID ? this.e1u_1 : pdop;
-  iterations = iterations === VOID ? this.f1u_1 : iterations;
-  outliers = outliers === VOID ? this.g1u_1 : outliers;
-  return $super === VOID ? this.i1u(center, radius, radiusFixed, residuals, tiltsDeg, m0, mX, mY, mZ, mR, pdop, iterations, outliers) : $super.i1u.call(this, center, radius, radiusFixed, residuals, tiltsDeg, m0, mX, mY, mZ, mR, pdop, iterations, outliers);
+protoOf(Solution).o1u = function (center, radius, radiusFixed, residuals, tiltsDeg, m0, mX, mY, mZ, mR, pdop, iterations, outliers, $super) {
+  center = center === VOID ? this.z1t_1 : center;
+  radius = radius === VOID ? this.a1u_1 : radius;
+  radiusFixed = radiusFixed === VOID ? this.b1u_1 : radiusFixed;
+  residuals = residuals === VOID ? this.c1u_1 : residuals;
+  tiltsDeg = tiltsDeg === VOID ? this.d1u_1 : tiltsDeg;
+  m0 = m0 === VOID ? this.e1u_1 : m0;
+  mX = mX === VOID ? this.f1u_1 : mX;
+  mY = mY === VOID ? this.g1u_1 : mY;
+  mZ = mZ === VOID ? this.h1u_1 : mZ;
+  mR = mR === VOID ? this.i1u_1 : mR;
+  pdop = pdop === VOID ? this.j1u_1 : pdop;
+  iterations = iterations === VOID ? this.k1u_1 : iterations;
+  outliers = outliers === VOID ? this.l1u_1 : outliers;
+  return $super === VOID ? this.n1u(center, radius, radiusFixed, residuals, tiltsDeg, m0, mX, mY, mZ, mR, pdop, iterations, outliers) : $super.n1u.call(this, center, radius, radiusFixed, residuals, tiltsDeg, m0, mX, mY, mZ, mR, pdop, iterations, outliers);
 };
 protoOf(Solution).toString = function () {
-  return 'Solution(center=' + this.u1t_1.toString() + ', radius=' + this.v1t_1 + ', radiusFixed=' + this.w1t_1 + ', residuals=' + toString(this.x1t_1) + ', tiltsDeg=' + toString(this.y1t_1) + ', m0=' + this.z1t_1 + ', mX=' + this.a1u_1 + ', mY=' + this.b1u_1 + ', mZ=' + this.c1u_1 + ', mR=' + this.d1u_1 + ', pdop=' + this.e1u_1 + ', iterations=' + this.f1u_1 + ', outliers=' + toString(this.g1u_1) + ')';
+  return 'Solution(center=' + this.z1t_1.toString() + ', radius=' + this.a1u_1 + ', radiusFixed=' + this.b1u_1 + ', residuals=' + toString(this.c1u_1) + ', tiltsDeg=' + toString(this.d1u_1) + ', m0=' + this.e1u_1 + ', mX=' + this.f1u_1 + ', mY=' + this.g1u_1 + ', mZ=' + this.h1u_1 + ', mR=' + this.i1u_1 + ', pdop=' + this.j1u_1 + ', iterations=' + this.k1u_1 + ', outliers=' + toString(this.l1u_1) + ')';
 };
 protoOf(Solution).hashCode = function () {
-  var result = this.u1t_1.hashCode();
-  result = imul(result, 31) + getNumberHashCode(this.v1t_1) | 0;
-  result = imul(result, 31) + getBooleanHashCode(this.w1t_1) | 0;
-  result = imul(result, 31) + hashCode(this.x1t_1) | 0;
-  result = imul(result, 31) + hashCode(this.y1t_1) | 0;
-  result = imul(result, 31) + (this.z1t_1 == null ? 0 : getNumberHashCode(this.z1t_1)) | 0;
-  result = imul(result, 31) + (this.a1u_1 == null ? 0 : getNumberHashCode(this.a1u_1)) | 0;
-  result = imul(result, 31) + (this.b1u_1 == null ? 0 : getNumberHashCode(this.b1u_1)) | 0;
-  result = imul(result, 31) + (this.c1u_1 == null ? 0 : getNumberHashCode(this.c1u_1)) | 0;
-  result = imul(result, 31) + (this.d1u_1 == null ? 0 : getNumberHashCode(this.d1u_1)) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.e1u_1) | 0;
-  result = imul(result, 31) + this.f1u_1 | 0;
-  result = imul(result, 31) + hashCode(this.g1u_1) | 0;
+  var result = this.z1t_1.hashCode();
+  result = imul(result, 31) + getNumberHashCode(this.a1u_1) | 0;
+  result = imul(result, 31) + getBooleanHashCode(this.b1u_1) | 0;
+  result = imul(result, 31) + hashCode(this.c1u_1) | 0;
+  result = imul(result, 31) + hashCode(this.d1u_1) | 0;
+  result = imul(result, 31) + (this.e1u_1 == null ? 0 : getNumberHashCode(this.e1u_1)) | 0;
+  result = imul(result, 31) + (this.f1u_1 == null ? 0 : getNumberHashCode(this.f1u_1)) | 0;
+  result = imul(result, 31) + (this.g1u_1 == null ? 0 : getNumberHashCode(this.g1u_1)) | 0;
+  result = imul(result, 31) + (this.h1u_1 == null ? 0 : getNumberHashCode(this.h1u_1)) | 0;
+  result = imul(result, 31) + (this.i1u_1 == null ? 0 : getNumberHashCode(this.i1u_1)) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.j1u_1) | 0;
+  result = imul(result, 31) + this.k1u_1 | 0;
+  result = imul(result, 31) + hashCode(this.l1u_1) | 0;
   return result;
 };
 protoOf(Solution).equals = function (other) {
@@ -26680,21 +26764,11 @@ protoOf(Solution).equals = function (other) {
   if (!(other instanceof Solution))
     return false;
   var tmp0_other_with_cast = other instanceof Solution ? other : THROW_CCE();
-  if (!this.u1t_1.equals(tmp0_other_with_cast.u1t_1))
-    return false;
-  if (!equals(this.v1t_1, tmp0_other_with_cast.v1t_1))
-    return false;
-  if (!(this.w1t_1 === tmp0_other_with_cast.w1t_1))
-    return false;
-  if (!equals(this.x1t_1, tmp0_other_with_cast.x1t_1))
-    return false;
-  if (!equals(this.y1t_1, tmp0_other_with_cast.y1t_1))
-    return false;
-  if (!equals(this.z1t_1, tmp0_other_with_cast.z1t_1))
+  if (!this.z1t_1.equals(tmp0_other_with_cast.z1t_1))
     return false;
   if (!equals(this.a1u_1, tmp0_other_with_cast.a1u_1))
     return false;
-  if (!equals(this.b1u_1, tmp0_other_with_cast.b1u_1))
+  if (!(this.b1u_1 === tmp0_other_with_cast.b1u_1))
     return false;
   if (!equals(this.c1u_1, tmp0_other_with_cast.c1u_1))
     return false;
@@ -26702,14 +26776,24 @@ protoOf(Solution).equals = function (other) {
     return false;
   if (!equals(this.e1u_1, tmp0_other_with_cast.e1u_1))
     return false;
-  if (!(this.f1u_1 === tmp0_other_with_cast.f1u_1))
+  if (!equals(this.f1u_1, tmp0_other_with_cast.f1u_1))
     return false;
   if (!equals(this.g1u_1, tmp0_other_with_cast.g1u_1))
+    return false;
+  if (!equals(this.h1u_1, tmp0_other_with_cast.h1u_1))
+    return false;
+  if (!equals(this.i1u_1, tmp0_other_with_cast.i1u_1))
+    return false;
+  if (!equals(this.j1u_1, tmp0_other_with_cast.j1u_1))
+    return false;
+  if (!(this.k1u_1 === tmp0_other_with_cast.k1u_1))
+    return false;
+  if (!equals(this.l1u_1, tmp0_other_with_cast.l1u_1))
     return false;
   return true;
 };
 function fit($this, points, radius) {
-  var need = $this.q1u(!(radius == null));
+  var need = $this.v1u(!(radius == null));
   if (points.o() < need)
     throw new SphereFitException('\u041D\u0443\u0436\u043D\u043E \u043D\u0435 \u043C\u0435\u043D\u044C\u0448\u0435 ' + need + ' \u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0439 \u043E\u0442\u0440\u0430\u0436\u0430\u0442\u0435\u043B\u044F');
   if (!(radius == null) && radius <= 0.0)
@@ -26721,7 +26805,7 @@ function fit($this, points, radius) {
   var _iterator__ex2g4s = points.j();
   while (_iterator__ex2g4s.k()) {
     var item = _iterator__ex2g4s.l();
-    var tmp$ret$0 = item.o1t(g);
+    var tmp$ret$0 = item.t1t(g);
     destination.f(tmp$ret$0);
   }
   var local = destination;
@@ -26729,9 +26813,9 @@ function fit($this, points, radius) {
   var iterator = local.j();
   if (!iterator.k())
     throw NoSuchElementException_init_$Create$();
-  var maxValue = iterator.l().s1t();
+  var maxValue = iterator.l().x1t();
   while (iterator.k()) {
-    var v = iterator.l().s1t();
+    var v = iterator.l().x1t();
     // Inline function 'kotlin.comparisons.maxOf' call
     var a = maxValue;
     maxValue = Math.max(a, v);
@@ -26739,7 +26823,7 @@ function fit($this, points, radius) {
   var scale = maxValue;
   if (scale < 1.0E-6)
     throw new SphereFitException('\u0412\u0441\u0435 \u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u044F \u043E\u0442\u0440\u0430\u0436\u0430\u0442\u0435\u043B\u044F \u0441\u043E\u0432\u043F\u0430\u0434\u0430\u044E\u0442');
-  var algebraic = points.o() >= 4 ? $this.r1u(local) : null;
+  var algebraic = points.o() >= 4 ? $this.w1u(local) : null;
   var meanZ = 0.0;
   var tmp;
   if (radius == null) {
@@ -26751,7 +26835,7 @@ function fit($this, points, radius) {
       tmp_0 = tmp1_elvis_lhs;
     }
     tmp = tmp_0;
-  } else if (!(algebraic == null) && algebraic.vb_1.n1t_1 < meanZ) {
+  } else if (!(algebraic == null) && algebraic.vb_1.s1t_1 < meanZ) {
     tmp = algebraic.vb_1;
   } else {
     tmp = new Point3(0.0, 0.0, -radius);
@@ -26770,7 +26854,7 @@ function fit($this, points, radius) {
       var _destruct__k2r9zo = normalEquations($this, local, c, r, unknowns);
       var n = _destruct__k2r9zo.xb();
       var u = _destruct__k2r9zo.yb();
-      var tmp3_elvis_lhs = Linear_instance.s1u(n, u);
+      var tmp3_elvis_lhs = Linear_instance.x1u(n, u);
       var tmp_1;
       if (tmp3_elvis_lhs == null) {
         throw new SphereFitException('\u0413\u0435\u043E\u043C\u0435\u0442\u0440\u0438\u044F \u0432\u044B\u0440\u043E\u0436\u0434\u0435\u043D\u0430: \u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u044F \u043E\u0442\u0440\u0430\u0436\u0430\u0442\u0435\u043B\u044F \u043F\u043E\u0447\u0442\u0438 \u0432 \u043E\u0434\u043D\u043E\u0439 \u043F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u0438 \u0438\u043B\u0438 \u043D\u0430 \u043E\u0434\u043D\u043E\u0439 \u043E\u043A\u0440\u0443\u0436\u043D\u043E\u0441\u0442\u0438');
@@ -26778,7 +26862,7 @@ function fit($this, points, radius) {
         tmp_1 = tmp3_elvis_lhs;
       }
       var dx = tmp_1;
-      c = new Point3(c.l1t_1 + dx[0], c.m1t_1 + dx[1], c.n1t_1 + dx[2]);
+      c = new Point3(c.q1t_1 + dx[0], c.r1t_1 + dx[1], c.s1t_1 + dx[2]);
       if (radius == null)
         r = r + dx[3];
       // Inline function 'kotlin.collections.maxOf' call
@@ -26807,7 +26891,7 @@ function fit($this, points, radius) {
       var tmp$ret$14 = Math.max(1.0, scale);
     }
      while (tmp_2 >= 1.0E-10 * tmp$ret$14 && inductionVariable <= 50);
-  if (r <= 0.0 || !isFinite(c.l1t_1) || !isFinite(c.n1t_1))
+  if (r <= 0.0 || !isFinite(c.q1t_1) || !isFinite(c.s1t_1))
     throw new SphereFitException('\u0420\u0435\u0448\u0435\u043D\u0438\u0435 \u043D\u0435 \u0441\u043E\u0448\u043B\u043E\u0441\u044C \u2014 \u043F\u0440\u043E\u0432\u0435\u0440\u044C\u0442\u0435 \u043A\u043E\u043E\u0440\u0434\u0438\u043D\u0430\u0442\u044B');
   // Inline function 'kotlin.collections.map' call
   // Inline function 'kotlin.collections.mapTo' call
@@ -26815,12 +26899,12 @@ function fit($this, points, radius) {
   var _iterator__ex2g4s_0 = local.j();
   while (_iterator__ex2g4s_0.k()) {
     var item_0 = _iterator__ex2g4s_0.l();
-    var tmp$ret$15 = item_0.t1t(c) - r;
+    var tmp$ret$15 = item_0.y1t(c) - r;
     destination_0.f(tmp$ret$15);
   }
   var residuals = destination_0;
   var n_0 = normalEquations($this, local, c, r, unknowns).xb();
-  var tmp4_elvis_lhs = Linear_instance.t1u(n_0);
+  var tmp4_elvis_lhs = Linear_instance.y1u(n_0);
   var tmp_3;
   if (tmp4_elvis_lhs == null) {
     throw new SphereFitException('\u0413\u0435\u043E\u043C\u0435\u0442\u0440\u0438\u044F \u0432\u044B\u0440\u043E\u0436\u0434\u0435\u043D\u0430 \u2014 \u0434\u043E\u0431\u0430\u0432\u044C\u0442\u0435 \u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u044F \u0441 \u0434\u0440\u0443\u0433\u0438\u043C \u043D\u0430\u043A\u043B\u043E\u043D\u043E\u043C \u0432\u0435\u0445\u0438');
@@ -26852,16 +26936,16 @@ function fit($this, points, radius) {
   var _iterator__ex2g4s_2 = local.j();
   while (_iterator__ex2g4s_2.k()) {
     var item_1 = _iterator__ex2g4s_2.l();
-    var d = item_1.o1t(c);
+    var d = item_1.t1t(c);
     var tmp_6 = KMath_instance;
     // Inline function 'kotlin.math.acos' call
-    var x_2 = coerceIn_0(d.n1t_1 / d.s1t(), -1.0, 1.0);
+    var x_2 = coerceIn_0(d.s1t_1 / d.x1t(), -1.0, 1.0);
     var tmp$ret$21 = Math.acos(x_2);
     var tmp$ret$22 = tmp_6.hh(tmp$ret$21);
     destination_1.f(tmp$ret$22);
   }
   var tilts = destination_1;
-  var tmp_7 = c.p1t(g);
+  var tmp_7 = c.u1t(g);
   var tmp_8 = r;
   var tmp_9 = !(radius == null);
   var tmp_10 = fit$m(m0, q, 0);
@@ -26895,13 +26979,13 @@ function normalEquations($this, points, c, r, unknowns) {
   var _iterator__ex2g4s = points.j();
   $l$loop: while (_iterator__ex2g4s.k()) {
     var p = _iterator__ex2g4s.l();
-    var d = p.o1t(c);
-    var len = d.s1t();
+    var d = p.t1t(c);
+    var len = d.x1t();
     if (len < 1.0E-12)
       continue $l$loop;
-    row[0] = -d.l1t_1 / len;
-    row[1] = -d.m1t_1 / len;
-    row[2] = -d.n1t_1 / len;
+    row[0] = -d.q1t_1 / len;
+    row[1] = -d.r1t_1 / len;
+    row[2] = -d.s1t_1 / len;
     if (unknowns === 4) {
       row[3] = -1.0;
     }
@@ -26927,29 +27011,29 @@ function normalEquations($this, points, c, r, unknowns) {
   return to(n, u);
 }
 function ArticleResult(center, stdX, stdY, stdZ, used, total, filter, limit, rawZ) {
-  this.u1u_1 = center;
-  this.v1u_1 = stdX;
-  this.w1u_1 = stdY;
-  this.x1u_1 = stdZ;
-  this.y1u_1 = used;
-  this.z1u_1 = total;
-  this.a1v_1 = filter;
-  this.b1v_1 = limit;
-  this.c1v_1 = rawZ;
+  this.z1u_1 = center;
+  this.a1v_1 = stdX;
+  this.b1v_1 = stdY;
+  this.c1v_1 = stdZ;
+  this.d1v_1 = used;
+  this.e1v_1 = total;
+  this.f1v_1 = filter;
+  this.g1v_1 = limit;
+  this.h1v_1 = rawZ;
 }
 protoOf(ArticleResult).toString = function () {
-  return 'ArticleResult(center=' + this.u1u_1.toString() + ', stdX=' + this.v1u_1 + ', stdY=' + this.w1u_1 + ', stdZ=' + this.x1u_1 + ', used=' + this.y1u_1 + ', total=' + this.z1u_1 + ', filter=' + this.a1v_1.toString() + ', limit=' + this.b1v_1 + ', rawZ=' + this.c1v_1 + ')';
+  return 'ArticleResult(center=' + this.z1u_1.toString() + ', stdX=' + this.a1v_1 + ', stdY=' + this.b1v_1 + ', stdZ=' + this.c1v_1 + ', used=' + this.d1v_1 + ', total=' + this.e1v_1 + ', filter=' + this.f1v_1.toString() + ', limit=' + this.g1v_1 + ', rawZ=' + this.h1v_1 + ')';
 };
 protoOf(ArticleResult).hashCode = function () {
-  var result = this.u1u_1.hashCode();
-  result = imul(result, 31) + getNumberHashCode(this.v1u_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.w1u_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.x1u_1) | 0;
-  result = imul(result, 31) + this.y1u_1 | 0;
-  result = imul(result, 31) + this.z1u_1 | 0;
-  result = imul(result, 31) + this.a1v_1.hashCode() | 0;
-  result = imul(result, 31) + (this.b1v_1 == null ? 0 : getNumberHashCode(this.b1v_1)) | 0;
+  var result = this.z1u_1.hashCode();
+  result = imul(result, 31) + getNumberHashCode(this.a1v_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.b1v_1) | 0;
   result = imul(result, 31) + getNumberHashCode(this.c1v_1) | 0;
+  result = imul(result, 31) + this.d1v_1 | 0;
+  result = imul(result, 31) + this.e1v_1 | 0;
+  result = imul(result, 31) + this.f1v_1.hashCode() | 0;
+  result = imul(result, 31) + (this.g1v_1 == null ? 0 : getNumberHashCode(this.g1v_1)) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.h1v_1) | 0;
   return result;
 };
 protoOf(ArticleResult).equals = function (other) {
@@ -26958,28 +27042,28 @@ protoOf(ArticleResult).equals = function (other) {
   if (!(other instanceof ArticleResult))
     return false;
   var tmp0_other_with_cast = other instanceof ArticleResult ? other : THROW_CCE();
-  if (!this.u1u_1.equals(tmp0_other_with_cast.u1u_1))
+  if (!this.z1u_1.equals(tmp0_other_with_cast.z1u_1))
     return false;
-  if (!equals(this.v1u_1, tmp0_other_with_cast.v1u_1))
-    return false;
-  if (!equals(this.w1u_1, tmp0_other_with_cast.w1u_1))
-    return false;
-  if (!equals(this.x1u_1, tmp0_other_with_cast.x1u_1))
-    return false;
-  if (!(this.y1u_1 === tmp0_other_with_cast.y1u_1))
-    return false;
-  if (!(this.z1u_1 === tmp0_other_with_cast.z1u_1))
-    return false;
-  if (!this.a1v_1.equals(tmp0_other_with_cast.a1v_1))
+  if (!equals(this.a1v_1, tmp0_other_with_cast.a1v_1))
     return false;
   if (!equals(this.b1v_1, tmp0_other_with_cast.b1v_1))
     return false;
   if (!equals(this.c1v_1, tmp0_other_with_cast.c1v_1))
     return false;
+  if (!(this.d1v_1 === tmp0_other_with_cast.d1v_1))
+    return false;
+  if (!(this.e1v_1 === tmp0_other_with_cast.e1v_1))
+    return false;
+  if (!this.f1v_1.equals(tmp0_other_with_cast.f1v_1))
+    return false;
+  if (!equals(this.g1v_1, tmp0_other_with_cast.g1v_1))
+    return false;
+  if (!equals(this.h1v_1, tmp0_other_with_cast.h1v_1))
+    return false;
   return true;
 };
 function triangleArea($this, a, b, c) {
-  return b.o1t(a).r1t(c.o1t(a)).s1t() / 2;
+  return b.t1t(a).w1t(c.t1t(a)).x1t() / 2;
 }
 function det3($this, a, b, c, d, e, f, g, h, i) {
   return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
@@ -26991,7 +27075,7 @@ function centroid_0($this, points) {
   var _iterator__ex2g4s = points.j();
   while (_iterator__ex2g4s.k()) {
     var item = _iterator__ex2g4s.l();
-    var tmp$ret$0 = item.l1t_1;
+    var tmp$ret$0 = item.q1t_1;
     destination.f(tmp$ret$0);
   }
   var tmp = average(destination);
@@ -27001,7 +27085,7 @@ function centroid_0($this, points) {
   var _iterator__ex2g4s_0 = points.j();
   while (_iterator__ex2g4s_0.k()) {
     var item_0 = _iterator__ex2g4s_0.l();
-    var tmp$ret$3 = item_0.m1t_1;
+    var tmp$ret$3 = item_0.r1t_1;
     destination_0.f(tmp$ret$3);
   }
   var tmp_0 = average(destination_0);
@@ -27011,7 +27095,7 @@ function centroid_0($this, points) {
   var _iterator__ex2g4s_1 = points.j();
   while (_iterator__ex2g4s_1.k()) {
     var item_1 = _iterator__ex2g4s_1.l();
-    var tmp$ret$6 = item_1.n1t_1;
+    var tmp$ret$6 = item_1.s1t_1;
     destination_1.f(tmp$ret$6);
   }
   return new Point3(tmp, tmp_0, average(destination_1));
@@ -27020,19 +27104,19 @@ function fmt_1($this, v) {
   return replace_0(v.toString(), _Char___init__impl__6a9atx(46), _Char___init__impl__6a9atx(44));
 }
 function Geometry(maxGapDeg, steepCount, maxTiltDeg, minTiltDeg) {
-  this.d1v_1 = maxGapDeg;
-  this.e1v_1 = steepCount;
-  this.f1v_1 = maxTiltDeg;
-  this.g1v_1 = minTiltDeg;
+  this.i1v_1 = maxGapDeg;
+  this.j1v_1 = steepCount;
+  this.k1v_1 = maxTiltDeg;
+  this.l1v_1 = minTiltDeg;
 }
 protoOf(Geometry).toString = function () {
-  return 'Geometry(maxGapDeg=' + this.d1v_1 + ', steepCount=' + this.e1v_1 + ', maxTiltDeg=' + this.f1v_1 + ', minTiltDeg=' + this.g1v_1 + ')';
+  return 'Geometry(maxGapDeg=' + this.i1v_1 + ', steepCount=' + this.j1v_1 + ', maxTiltDeg=' + this.k1v_1 + ', minTiltDeg=' + this.l1v_1 + ')';
 };
 protoOf(Geometry).hashCode = function () {
-  var result = getNumberHashCode(this.d1v_1);
-  result = imul(result, 31) + this.e1v_1 | 0;
-  result = imul(result, 31) + getNumberHashCode(this.f1v_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.g1v_1) | 0;
+  var result = getNumberHashCode(this.i1v_1);
+  result = imul(result, 31) + this.j1v_1 | 0;
+  result = imul(result, 31) + getNumberHashCode(this.k1v_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.l1v_1) | 0;
   return result;
 };
 protoOf(Geometry).equals = function (other) {
@@ -27041,28 +27125,28 @@ protoOf(Geometry).equals = function (other) {
   if (!(other instanceof Geometry))
     return false;
   var tmp0_other_with_cast = other instanceof Geometry ? other : THROW_CCE();
-  if (!equals(this.d1v_1, tmp0_other_with_cast.d1v_1))
+  if (!equals(this.i1v_1, tmp0_other_with_cast.i1v_1))
     return false;
-  if (!(this.e1v_1 === tmp0_other_with_cast.e1v_1))
+  if (!(this.j1v_1 === tmp0_other_with_cast.j1v_1))
     return false;
-  if (!equals(this.f1v_1, tmp0_other_with_cast.f1v_1))
+  if (!equals(this.k1v_1, tmp0_other_with_cast.k1v_1))
     return false;
-  if (!equals(this.g1v_1, tmp0_other_with_cast.g1v_1))
+  if (!equals(this.l1v_1, tmp0_other_with_cast.l1v_1))
     return false;
   return true;
 };
 function PolarObs(hzDeg, vDeg, slope) {
-  this.h1v_1 = hzDeg;
-  this.i1v_1 = vDeg;
-  this.j1v_1 = slope;
+  this.m1v_1 = hzDeg;
+  this.n1v_1 = vDeg;
+  this.o1v_1 = slope;
 }
 protoOf(PolarObs).toString = function () {
-  return 'PolarObs(hzDeg=' + this.h1v_1 + ', vDeg=' + this.i1v_1 + ', slope=' + this.j1v_1 + ')';
+  return 'PolarObs(hzDeg=' + this.m1v_1 + ', vDeg=' + this.n1v_1 + ', slope=' + this.o1v_1 + ')';
 };
 protoOf(PolarObs).hashCode = function () {
-  var result = getNumberHashCode(this.h1v_1);
-  result = imul(result, 31) + getNumberHashCode(this.i1v_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.j1v_1) | 0;
+  var result = getNumberHashCode(this.m1v_1);
+  result = imul(result, 31) + getNumberHashCode(this.n1v_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.o1v_1) | 0;
   return result;
 };
 protoOf(PolarObs).equals = function (other) {
@@ -27071,11 +27155,11 @@ protoOf(PolarObs).equals = function (other) {
   if (!(other instanceof PolarObs))
     return false;
   var tmp0_other_with_cast = other instanceof PolarObs ? other : THROW_CCE();
-  if (!equals(this.h1v_1, tmp0_other_with_cast.h1v_1))
+  if (!equals(this.m1v_1, tmp0_other_with_cast.m1v_1))
     return false;
-  if (!equals(this.i1v_1, tmp0_other_with_cast.i1v_1))
+  if (!equals(this.n1v_1, tmp0_other_with_cast.n1v_1))
     return false;
-  if (!equals(this.j1v_1, tmp0_other_with_cast.j1v_1))
+  if (!equals(this.o1v_1, tmp0_other_with_cast.o1v_1))
     return false;
   return true;
 };
@@ -27138,20 +27222,20 @@ function QuadFilter_GDOP_getInstance() {
   return QuadFilter_GDOP_instance;
 }
 function SphereFit() {
-  this.k1u_1 = 2.5;
-  this.l1u_1 = 9.0;
-  this.m1u_1 = 60;
-  this.n1u_1 = 3.0;
-  this.o1u_1 = 0.002;
-  this.p1u_1 = 30.0;
+  this.p1u_1 = 2.5;
+  this.q1u_1 = 9.0;
+  this.r1u_1 = 60;
+  this.s1u_1 = 3.0;
+  this.t1u_1 = 0.002;
+  this.u1u_1 = 30.0;
 }
-protoOf(SphereFit).k1v = function (poleHeight) {
+protoOf(SphereFit).p1v = function (poleHeight) {
   return !(poleHeight == null) && poleHeight > 0 ? 9.0 / (poleHeight * poleHeight) : 2.5;
 };
-protoOf(SphereFit).q1u = function (radiusKnown) {
+protoOf(SphereFit).v1u = function (radiusKnown) {
   return radiusKnown ? 3 : 4;
 };
-protoOf(SphereFit).l1v = function (points, radius) {
+protoOf(SphereFit).q1v = function (points, radius) {
   var s = fit(this, points, radius);
   var testRadius = !(radius == null) && ((points.o() - 1 | 0) - 4 | 0) >= 2 ? null : radius;
   var unknowns = testRadius == null ? 4 : 3;
@@ -27219,7 +27303,7 @@ protoOf(SphereFit).l1v = function (points, radius) {
           tmp_3 = tmp0_elvis_lhs;
         }
         var rest = tmp_3;
-        var tmp1_elvis_lhs = rest.z1t_1;
+        var tmp1_elvis_lhs = rest.e1u_1;
         var tmp_4;
         if (tmp1_elvis_lhs == null) {
           tmp$ret$10 = false;
@@ -27229,7 +27313,7 @@ protoOf(SphereFit).l1v = function (points, radius) {
         }
         var m = tmp_4;
         // Inline function 'kotlin.math.abs' call
-        var x = points.m(tmp0_0).t1t(rest.u1t_1) - rest.v1t_1;
+        var x = points.m(tmp0_0).y1t(rest.z1t_1) - rest.a1u_1;
         var tmp_5 = Math.abs(x);
         // Inline function 'kotlin.comparisons.maxOf' call
         tmp$ret$10 = tmp_5 > 3.0 * Math.max(m, 0.002);
@@ -27240,9 +27324,9 @@ protoOf(SphereFit).l1v = function (points, radius) {
     }
      while (!(element === last));
   var outliers = destination;
-  return s.j1u(VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, outliers);
+  return s.o1u(VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, VOID, outliers);
 };
-protoOf(SphereFit).r1u = function (points) {
+protoOf(SphereFit).w1u = function (points) {
   var tmp = 0;
   // Inline function 'kotlin.arrayOfNulls' call
   var tmp_0 = Array(4);
@@ -27256,8 +27340,8 @@ protoOf(SphereFit).r1u = function (points) {
   while (_iterator__ex2g4s.k()) {
     var p = _iterator__ex2g4s.l();
     // Inline function 'kotlin.doubleArrayOf' call
-    var row = new Float64Array([2 * p.l1t_1, 2 * p.m1t_1, 2 * p.n1t_1, 1.0]);
-    var rhs = p.q1t(p);
+    var row = new Float64Array([2 * p.q1t_1, 2 * p.r1t_1, 2 * p.s1t_1, 1.0]);
+    var rhs = p.v1t(p);
     var inductionVariable = 0;
     if (inductionVariable <= 3)
       do {
@@ -27276,7 +27360,7 @@ protoOf(SphereFit).r1u = function (points) {
       }
        while (inductionVariable <= 3);
   }
-  var tmp0_elvis_lhs = Linear_instance.s1u(n, u);
+  var tmp0_elvis_lhs = Linear_instance.x1u(n, u);
   var tmp_1;
   if (tmp0_elvis_lhs == null) {
     return null;
@@ -27285,14 +27369,14 @@ protoOf(SphereFit).r1u = function (points) {
   }
   var s = tmp_1;
   var c = new Point3(s[0], s[1], s[2]);
-  var r2 = s[3] + c.q1t(c);
+  var r2 = s[3] + c.v1t(c);
   if (r2 <= 0.0 || !isFinite(r2))
     return null;
   // Inline function 'kotlin.math.sqrt' call
   var tmp$ret$3 = Math.sqrt(r2);
   return to(c, tmp$ret$3);
 };
-protoOf(SphereFit).m1v = function (points, poleHeight, dopLimit, filter) {
+protoOf(SphereFit).r1v = function (points, poleHeight, dopLimit, filter) {
   if (points.o() < 4)
     throw new SphereFitException('\u041D\u0443\u0436\u043D\u043E \u043D\u0435 \u043C\u0435\u043D\u044C\u0448\u0435 4 \u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u0439 \u043E\u0442\u0440\u0430\u0436\u0430\u0442\u0435\u043B\u044F');
   if (points.o() > 60)
@@ -27304,7 +27388,7 @@ protoOf(SphereFit).m1v = function (points, poleHeight, dopLimit, filter) {
   var _iterator__ex2g4s = points.j();
   while (_iterator__ex2g4s.k()) {
     var item = _iterator__ex2g4s.l();
-    var tmp$ret$0 = item.o1t(g);
+    var tmp$ret$0 = item.t1t(g);
     destination.f(tmp$ret$0);
   }
   var local = destination;
@@ -27338,9 +27422,9 @@ protoOf(SphereFit).m1v = function (points, poleHeight, dopLimit, filter) {
                   inductionVariable_2 = inductionVariable_2 + 1 | 0;
                   total = total + 1 | 0;
                   var q = listOf([local.m(i), local.m(j), local.m(k), local.m(l)]);
-                  if (filter.equals(QuadFilter_DOP_getInstance()) && this.n1v(q) >= dopLimit)
+                  if (filter.equals(QuadFilter_DOP_getInstance()) && this.s1v(q) >= dopLimit)
                     continue $l$loop_1;
-                  var tmp0_elvis_lhs = this.o1v(q);
+                  var tmp0_elvis_lhs = this.t1v(q);
                   var tmp;
                   if (tmp0_elvis_lhs == null) {
                     continue $l$loop_1;
@@ -27351,7 +27435,7 @@ protoOf(SphereFit).m1v = function (points, poleHeight, dopLimit, filter) {
                   var tmp_0;
                   if (filter.equals(QuadFilter_GDOP_getInstance())) {
                     // Inline function 'kotlin.let' call
-                    var it = this.p1v(q, c);
+                    var it = this.u1v(q, c);
                     tmp_0 = isFinite(it) && it > 0 ? 1.0 / (it * it) : 0.0;
                   } else {
                     tmp_0 = 1.0;
@@ -27385,7 +27469,7 @@ protoOf(SphereFit).m1v = function (points, poleHeight, dopLimit, filter) {
   var _iterator__ex2g4s_0 = centers.j();
   while (_iterator__ex2g4s_0.k()) {
     var item_0 = _iterator__ex2g4s_0.l();
-    var tmp$ret$12 = item_0.l1t_1;
+    var tmp$ret$12 = item_0.q1t_1;
     destination_0.f(tmp$ret$12);
   }
   var ax = articleMethod$wmean(weights, ws, destination_0);
@@ -27395,7 +27479,7 @@ protoOf(SphereFit).m1v = function (points, poleHeight, dopLimit, filter) {
   var _iterator__ex2g4s_1 = centers.j();
   while (_iterator__ex2g4s_1.k()) {
     var item_1 = _iterator__ex2g4s_1.l();
-    var tmp$ret$15 = item_1.m1t_1;
+    var tmp$ret$15 = item_1.r1t_1;
     destination_1.f(tmp$ret$15);
   }
   var ay = articleMethod$wmean(weights, ws, destination_1);
@@ -27405,7 +27489,7 @@ protoOf(SphereFit).m1v = function (points, poleHeight, dopLimit, filter) {
   var _iterator__ex2g4s_2 = centers.j();
   while (_iterator__ex2g4s_2.k()) {
     var item_2 = _iterator__ex2g4s_2.l();
-    var tmp$ret$18 = item_2.n1t_1;
+    var tmp$ret$18 = item_2.s1t_1;
     destination_2.f(tmp$ret$18);
   }
   var az = articleMethod$wmean(weights, ws, destination_2);
@@ -27415,7 +27499,7 @@ protoOf(SphereFit).m1v = function (points, poleHeight, dopLimit, filter) {
   var _iterator__ex2g4s_3 = centers.j();
   while (_iterator__ex2g4s_3.k()) {
     var item_3 = _iterator__ex2g4s_3.l();
-    var tmp$ret$21 = item_3.n1t_1;
+    var tmp$ret$21 = item_3.s1t_1;
     destination_3.f(tmp$ret$21);
   }
   var zs = destination_3;
@@ -27442,7 +27526,7 @@ protoOf(SphereFit).m1v = function (points, poleHeight, dopLimit, filter) {
           while (inductionVariable_4 < last) {
             var item_5 = item_4[inductionVariable_4];
             inductionVariable_4 = inductionVariable_4 + 1 | 0;
-            var tmp$ret$24 = local.m(item_5).t1t(center);
+            var tmp$ret$24 = local.m(item_5).y1t(center);
             destination_5.f(tmp$ret$24);
           }
           var pseudo = average(destination_5);
@@ -27454,14 +27538,14 @@ protoOf(SphereFit).m1v = function (points, poleHeight, dopLimit, filter) {
       }
        while (inductionVariable_3 < 3);
   }
-  var tmp_1 = (new Point3(ax, ay, cz)).p1t(g);
+  var tmp_1 = (new Point3(ax, ay, cz)).u1t(g);
   // Inline function 'kotlin.collections.map' call
   // Inline function 'kotlin.collections.mapTo' call
   var destination_6 = ArrayList_init_$Create$_0(collectionSizeOrDefault(centers, 10));
   var _iterator__ex2g4s_5 = centers.j();
   while (_iterator__ex2g4s_5.k()) {
     var item_6 = _iterator__ex2g4s_5.l();
-    var tmp$ret$32 = item_6.l1t_1;
+    var tmp$ret$32 = item_6.q1t_1;
     destination_6.f(tmp$ret$32);
   }
   var tmp_2 = articleMethod$wstd(weights, ws, destination_6, ax);
@@ -27471,16 +27555,16 @@ protoOf(SphereFit).m1v = function (points, poleHeight, dopLimit, filter) {
   var _iterator__ex2g4s_6 = centers.j();
   while (_iterator__ex2g4s_6.k()) {
     var item_7 = _iterator__ex2g4s_6.l();
-    var tmp$ret$35 = item_7.m1t_1;
+    var tmp$ret$35 = item_7.r1t_1;
     destination_7.f(tmp$ret$35);
   }
-  return new ArticleResult(tmp_1, tmp_2, articleMethod$wstd(weights, ws, destination_7, ay), articleMethod$wstd(weights, ws, zs, cz), centers.o(), total, filter, filter.equals(QuadFilter_DOP_getInstance()) ? dopLimit : null, az + g.n1t_1);
+  return new ArticleResult(tmp_1, tmp_2, articleMethod$wstd(weights, ws, destination_7, ay), articleMethod$wstd(weights, ws, zs, cz), centers.o(), total, filter, filter.equals(QuadFilter_DOP_getInstance()) ? dopLimit : null, az + g.s1t_1);
 };
-protoOf(SphereFit).n1v = function (q) {
+protoOf(SphereFit).s1v = function (q) {
   var area = triangleArea(this, q.m(0), q.m(1), q.m(2)) + triangleArea(this, q.m(1), q.m(2), q.m(3));
   return area < 1.0E-15 ? Infinity : 1.0 / area;
 };
-protoOf(SphereFit).p1v = function (q, c) {
+protoOf(SphereFit).u1v = function (q, c) {
   var tmp = 0;
   // Inline function 'kotlin.arrayOfNulls' call
   var tmp_0 = Array(4);
@@ -27492,12 +27576,12 @@ protoOf(SphereFit).p1v = function (q, c) {
   var _iterator__ex2g4s = q.j();
   while (_iterator__ex2g4s.k()) {
     var p = _iterator__ex2g4s.l();
-    var d = p.o1t(c);
-    var len = d.s1t();
+    var d = p.t1t(c);
+    var len = d.x1t();
     if (len < 1.0E-12)
       return Infinity;
     // Inline function 'kotlin.doubleArrayOf' call
-    var row = new Float64Array([-d.l1t_1 / len, -d.m1t_1 / len, -d.n1t_1 / len, -1.0]);
+    var row = new Float64Array([-d.q1t_1 / len, -d.r1t_1 / len, -d.s1t_1 / len, -1.0]);
     var inductionVariable = 0;
     if (inductionVariable <= 3)
       do {
@@ -27515,7 +27599,7 @@ protoOf(SphereFit).p1v = function (q, c) {
       }
        while (inductionVariable <= 3);
   }
-  var tmp0_elvis_lhs = Linear_instance.t1u(n);
+  var tmp0_elvis_lhs = Linear_instance.y1u(n);
   var tmp_1;
   if (tmp0_elvis_lhs == null) {
     return Infinity;
@@ -27533,7 +27617,7 @@ protoOf(SphereFit).p1v = function (q, c) {
   }
   return tmp_2;
 };
-protoOf(SphereFit).o1v = function (q) {
+protoOf(SphereFit).t1v = function (q) {
   // Inline function 'kotlin.collections.component1' call
   var p1 = q.m(0);
   // Inline function 'kotlin.collections.component2' call
@@ -27542,17 +27626,17 @@ protoOf(SphereFit).o1v = function (q) {
   var p3 = q.m(2);
   // Inline function 'kotlin.collections.component4' call
   var p4 = q.m(3);
-  var d2 = p2.o1t(p1);
-  var d3 = p3.o1t(p1);
-  var d4 = p4.o1t(p1);
-  var a = (p2.q1t(p2) - p1.q1t(p1)) / 2;
-  var b = (p3.q1t(p3) - p1.q1t(p1)) / 2;
-  var c = (p4.q1t(p4) - p1.q1t(p1)) / 2;
-  var det = det3(this, d2.l1t_1, d2.m1t_1, d2.n1t_1, d3.l1t_1, d3.m1t_1, d3.n1t_1, d4.l1t_1, d4.m1t_1, d4.n1t_1);
-  var tmp0 = d2.s1t();
-  var tmp2 = d3.s1t();
+  var d2 = p2.t1t(p1);
+  var d3 = p3.t1t(p1);
+  var d4 = p4.t1t(p1);
+  var a = (p2.v1t(p2) - p1.v1t(p1)) / 2;
+  var b = (p3.v1t(p3) - p1.v1t(p1)) / 2;
+  var c = (p4.v1t(p4) - p1.v1t(p1)) / 2;
+  var det = det3(this, d2.q1t_1, d2.r1t_1, d2.s1t_1, d3.q1t_1, d3.r1t_1, d3.s1t_1, d4.q1t_1, d4.r1t_1, d4.s1t_1);
+  var tmp0 = d2.x1t();
+  var tmp2 = d3.x1t();
   // Inline function 'kotlin.comparisons.maxOf' call
-  var c_0 = d4.s1t();
+  var c_0 = d4.x1t();
   var size = Math.max(tmp0, tmp2, c_0);
   var tmp;
   // Inline function 'kotlin.math.abs' call
@@ -27563,9 +27647,9 @@ protoOf(SphereFit).o1v = function (q) {
   }
   if (tmp)
     return null;
-  return new Point3(det3(this, a, d2.m1t_1, d2.n1t_1, b, d3.m1t_1, d3.n1t_1, c, d4.m1t_1, d4.n1t_1) / det, det3(this, d2.l1t_1, a, d2.n1t_1, d3.l1t_1, b, d3.n1t_1, d4.l1t_1, c, d4.n1t_1) / det, det3(this, d2.l1t_1, d2.m1t_1, a, d3.l1t_1, d3.m1t_1, b, d4.l1t_1, d4.m1t_1, c) / det);
+  return new Point3(det3(this, a, d2.r1t_1, d2.s1t_1, b, d3.r1t_1, d3.s1t_1, c, d4.r1t_1, d4.s1t_1) / det, det3(this, d2.q1t_1, a, d2.s1t_1, d3.q1t_1, b, d3.s1t_1, d4.q1t_1, c, d4.s1t_1) / det, det3(this, d2.q1t_1, d2.r1t_1, a, d3.q1t_1, d3.r1t_1, b, d4.q1t_1, d4.r1t_1, c) / det);
 };
-protoOf(SphereFit).q1v = function (station, orientationDeg, hzDeg, vDeg, vIsZenith, slope, prismConstant) {
+protoOf(SphereFit).v1v = function (station, orientationDeg, hzDeg, vDeg, vIsZenith, slope, prismConstant) {
   var s = slope + prismConstant;
   var zenith = KMath_instance.dj(vIsZenith ? vDeg : 90.0 - vDeg);
   var dir = KMath_instance.dj(orientationDeg + hzDeg);
@@ -27573,35 +27657,35 @@ protoOf(SphereFit).q1v = function (station, orientationDeg, hzDeg, vDeg, vIsZeni
   var horizontal = s * Math.sin(zenith);
   // Inline function 'kotlin.math.cos' call
   var tmp$ret$1 = Math.cos(dir);
-  var tmp = station.l1t_1 + horizontal * tmp$ret$1;
+  var tmp = station.q1t_1 + horizontal * tmp$ret$1;
   // Inline function 'kotlin.math.sin' call
   var tmp$ret$2 = Math.sin(dir);
-  var tmp_0 = station.m1t_1 + horizontal * tmp$ret$2;
+  var tmp_0 = station.r1t_1 + horizontal * tmp$ret$2;
   // Inline function 'kotlin.math.cos' call
   var tmp$ret$3 = Math.cos(zenith);
-  return new Point3(tmp, tmp_0, station.n1t_1 + s * tmp$ret$3);
+  return new Point3(tmp, tmp_0, station.s1t_1 + s * tmp$ret$3);
 };
-protoOf(SphereFit).r1v = function (point, station, prismConstant) {
-  var d = point.o1t(station);
-  var len = d.s1t();
+protoOf(SphereFit).w1v = function (point, station, prismConstant) {
+  var d = point.t1t(station);
+  var len = d.x1t();
   if (len < 1.0E-9 || prismConstant === 0.0)
     return point;
-  return point.p1t(d.eh(prismConstant / len));
+  return point.u1t(d.eh(prismConstant / len));
 };
-protoOf(SphereFit).s1v = function (point, height) {
-  return new Point3(point.l1t_1, point.m1t_1, point.n1t_1 + height);
+protoOf(SphereFit).x1v = function (point, height) {
+  return new Point3(point.q1t_1, point.r1t_1, point.s1t_1 + height);
 };
-protoOf(SphereFit).t1v = function (center, points) {
+protoOf(SphereFit).y1v = function (center, points) {
   // Inline function 'kotlin.collections.map' call
   // Inline function 'kotlin.collections.mapTo' call
   var destination = ArrayList_init_$Create$_0(collectionSizeOrDefault(points, 10));
   var _iterator__ex2g4s = points.j();
   while (_iterator__ex2g4s.k()) {
     var item = _iterator__ex2g4s.l();
-    var d = item.o1t(center);
+    var d = item.t1t(center);
     var tmp = KMath_instance;
     // Inline function 'kotlin.math.acos' call
-    var x = coerceIn_0(d.n1t_1 / d.s1t(), -1.0, 1.0);
+    var x = coerceIn_0(d.s1t_1 / d.x1t(), -1.0, 1.0);
     var tmp$ret$0 = Math.acos(x);
     var tmp$ret$1 = tmp.hh(tmp$ret$0);
     destination.f(tmp$ret$1);
@@ -27627,9 +27711,9 @@ protoOf(SphereFit).t1v = function (center, points) {
     var p = item_0.xb();
     var tmp_0 = TraverseAngles_instance;
     var tmp_1 = KMath_instance;
-    var tmp0_0 = p.m1t_1 - center.m1t_1;
+    var tmp0_0 = p.r1t_1 - center.r1t_1;
     // Inline function 'kotlin.math.atan2' call
-    var x_0 = p.l1t_1 - center.l1t_1;
+    var x_0 = p.q1t_1 - center.q1t_1;
     var tmp$ret$7 = Math.atan2(tmp0_0, x_0);
     var tmp$ret$8 = tmp_0.rj(tmp_1.hh(tmp$ret$7));
     destination_1.f(tmp$ret$8);
@@ -27695,22 +27779,22 @@ protoOf(SphereFit).t1v = function (center, points) {
   var tmp2_elvis_lhs = minOrNull(tilts);
   return new Geometry(gap, tmp_4, tmp_5, tmp2_elvis_lhs == null ? 0.0 : tmp2_elvis_lhs);
 };
-protoOf(SphereFit).u1v = function (g, radiusKnown) {
+protoOf(SphereFit).z1v = function (g, radiusKnown) {
   // Inline function 'kotlin.collections.buildList' call
   // Inline function 'kotlin.collections.buildListInternal' call
   // Inline function 'kotlin.apply' call
   var this_0 = ArrayList_init_$Create$();
-  if (g.f1v_1 < 10.0) {
+  if (g.k1v_1 < 10.0) {
     this_0.f('\u041D\u0430\u043A\u043B\u043E\u043D \u0432\u0435\u0445\u0438 \u043C\u0435\u043D\u044C\u0448\u0435 10\xB0 \u2014 \u0432\u044B\u0441\u043E\u0442\u0430 \u043E\u043F\u0440\u0435\u0434\u0435\u043B\u044F\u0435\u0442\u0441\u044F \u043F\u043B\u043E\u0445\u043E, \u043D\u0430\u043A\u043B\u043E\u043D\u044F\u0439\u0442\u0435 \u0441\u0438\u043B\u044C\u043D\u0435\u0435');
-  } else if (g.e1v_1 < 2) {
-    this_0.f('\u041D\u0430\u043A\u043B\u043E\u043D \u043E\u0442 ' + numberToInt(30.0) + '\xB0 \u2014 \u0442\u043E\u043B\u044C\u043A\u043E \u0443 ' + g.e1v_1 + ' \u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438' + (g.e1v_1 === 1 ? '\u044F' : '\u0439') + ': \u0434\u043E\u0431\u0430\u0432\u044C\u0442\u0435 2\u20134 \u0441\u0438\u043B\u044C\u043D\u043E \u043D\u0430\u043A\u043B\u043E\u043D\u0451\u043D\u043D\u044B\u0445, ' + '\u043E\u043D\u0438 \u043E\u043F\u0440\u0435\u0434\u0435\u043B\u044F\u044E\u0442 \u0432\u044B\u0441\u043E\u0442\u0443' + (!radiusKnown ? ' (\u0431\u0435\u0437 \u0432\u044B\u0441\u043E\u0442\u044B \u0432\u0435\u0445\u0438 \u2014 \u043E\u0441\u043E\u0431\u0435\u043D\u043D\u043E: \u0440\u0430\u0434\u0438\u0443\u0441 \u0438 Z \u0438\u043D\u0430\u0447\u0435 \u043F\u043E\u0447\u0442\u0438 \u043D\u0435\u0440\u0430\u0437\u0434\u0435\u043B\u0438\u043C\u044B)' : ''));
+  } else if (g.j1v_1 < 2) {
+    this_0.f('\u041D\u0430\u043A\u043B\u043E\u043D \u043E\u0442 ' + numberToInt(30.0) + '\xB0 \u2014 \u0442\u043E\u043B\u044C\u043A\u043E \u0443 ' + g.j1v_1 + ' \u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438' + (g.j1v_1 === 1 ? '\u044F' : '\u0439') + ': \u0434\u043E\u0431\u0430\u0432\u044C\u0442\u0435 2\u20134 \u0441\u0438\u043B\u044C\u043D\u043E \u043D\u0430\u043A\u043B\u043E\u043D\u0451\u043D\u043D\u044B\u0445, ' + '\u043E\u043D\u0438 \u043E\u043F\u0440\u0435\u0434\u0435\u043B\u044F\u044E\u0442 \u0432\u044B\u0441\u043E\u0442\u0443' + (!radiusKnown ? ' (\u0431\u0435\u0437 \u0432\u044B\u0441\u043E\u0442\u044B \u0432\u0435\u0445\u0438 \u2014 \u043E\u0441\u043E\u0431\u0435\u043D\u043D\u043E: \u0440\u0430\u0434\u0438\u0443\u0441 \u0438 Z \u0438\u043D\u0430\u0447\u0435 \u043F\u043E\u0447\u0442\u0438 \u043D\u0435\u0440\u0430\u0437\u0434\u0435\u043B\u0438\u043C\u044B)' : ''));
   }
-  if (g.d1v_1 > 180.0) {
-    this_0.f('\u0412\u0441\u0435 \u043D\u0430\u043A\u043B\u043E\u043D\u044B \u2014 \u0432 \u043E\u0434\u043D\u0443 \u0441\u0442\u043E\u0440\u043E\u043D\u0443 (\u043F\u0440\u043E\u043F\u0443\u0441\u043A ' + numberToInt(g.d1v_1) + '\xB0 \u043F\u043E \u0430\u0437\u0438\u043C\u0443\u0442\u0443): \u0435\u0441\u043B\u0438 \u0432\u0438\u0434\u043D\u043E, \u043D\u0430\u043A\u043B\u043E\u043D\u0438\u0442\u0435 \u0432\u0435\u0445\u0443 \u0438 \u0432 \u043F\u0440\u043E\u0442\u0438\u0432\u043E\u043F\u043E\u043B\u043E\u0436\u043D\u0443\u044E');
+  if (g.i1v_1 > 180.0) {
+    this_0.f('\u0412\u0441\u0435 \u043D\u0430\u043A\u043B\u043E\u043D\u044B \u2014 \u0432 \u043E\u0434\u043D\u0443 \u0441\u0442\u043E\u0440\u043E\u043D\u0443 (\u043F\u0440\u043E\u043F\u0443\u0441\u043A ' + numberToInt(g.i1v_1) + '\xB0 \u043F\u043E \u0430\u0437\u0438\u043C\u0443\u0442\u0443): \u0435\u0441\u043B\u0438 \u0432\u0438\u0434\u043D\u043E, \u043D\u0430\u043A\u043B\u043E\u043D\u0438\u0442\u0435 \u0432\u0435\u0445\u0443 \u0438 \u0432 \u043F\u0440\u043E\u0442\u0438\u0432\u043E\u043F\u043E\u043B\u043E\u0436\u043D\u0443\u044E');
   }
-  return this_0.z4();
+  return this_0.a5();
 };
-protoOf(SphereFit).v1v = function (text) {
+protoOf(SphereFit).a1w = function (text) {
   // Inline function 'kotlin.collections.mapNotNull' call
   var tmp0 = lines(text);
   // Inline function 'kotlin.collections.mapNotNullTo' call
@@ -27831,7 +27915,7 @@ protoOf(SphereFit).v1v = function (text) {
   }
   return destination;
 };
-protoOf(SphereFit).w1v = function (text) {
+protoOf(SphereFit).b1w = function (text) {
   // Inline function 'kotlin.collections.mapNotNull' call
   var tmp0 = lines(text);
   // Inline function 'kotlin.collections.mapNotNullTo' call
@@ -28006,7 +28090,7 @@ function SphereFitException(message) {
 }
 function Linear_0() {
 }
-protoOf(Linear_0).s1u = function (a, b) {
+protoOf(Linear_0).x1u = function (a, b) {
   var n = b.length;
   var tmp = 0;
   // Inline function 'kotlin.arrayOfNulls' call
@@ -28162,7 +28246,7 @@ protoOf(Linear_0).s1u = function (a, b) {
   }
   return tmp_7;
 };
-protoOf(Linear_0).t1u = function (a) {
+protoOf(Linear_0).y1u = function (a) {
   var n = a.length;
   // Inline function 'kotlin.collections.map' call
   var this_0 = until(0, n);
@@ -28183,7 +28267,7 @@ protoOf(Linear_0).t1u = function (a) {
         tmp_1[tmp_2] = tmp_2 === j ? 1.0 : 0.0;
         tmp_0 = tmp_0 + 1 | 0;
       }
-      var tmp0_elvis_lhs = tmp.s1u(a, tmp_1);
+      var tmp0_elvis_lhs = tmp.x1u(a, tmp_1);
       var tmp_3;
       if (tmp0_elvis_lhs == null) {
         return null;
@@ -28217,15 +28301,15 @@ function Linear_getInstance() {
   return Linear_instance;
 }
 function StakeTarget(name, p) {
-  this.x1v_1 = name;
-  this.y1v_1 = p;
+  this.c1w_1 = name;
+  this.d1w_1 = p;
 }
 protoOf(StakeTarget).toString = function () {
-  return 'StakeTarget(name=' + this.x1v_1 + ', p=' + this.y1v_1.toString() + ')';
+  return 'StakeTarget(name=' + this.c1w_1 + ', p=' + this.d1w_1.toString() + ')';
 };
 protoOf(StakeTarget).hashCode = function () {
-  var result = getStringHashCode(this.x1v_1);
-  result = imul(result, 31) + this.y1v_1.hashCode() | 0;
+  var result = getStringHashCode(this.c1w_1);
+  result = imul(result, 31) + this.d1w_1.hashCode() | 0;
   return result;
 };
 protoOf(StakeTarget).equals = function (other) {
@@ -28234,9 +28318,9 @@ protoOf(StakeTarget).equals = function (other) {
   if (!(other instanceof StakeTarget))
     return false;
   var tmp0_other_with_cast = other instanceof StakeTarget ? other : THROW_CCE();
-  if (!(this.x1v_1 === tmp0_other_with_cast.x1v_1))
+  if (!(this.c1w_1 === tmp0_other_with_cast.c1w_1))
     return false;
-  if (!this.y1v_1.equals(tmp0_other_with_cast.y1v_1))
+  if (!this.d1w_1.equals(tmp0_other_with_cast.d1w_1))
     return false;
   return true;
 };
@@ -28273,17 +28357,17 @@ protoOf(Polar).equals = function (other) {
   return true;
 };
 function Rectangular(target, along, offset) {
-  this.z1v_1 = target;
-  this.a1w_1 = along;
-  this.b1w_1 = offset;
+  this.e1w_1 = target;
+  this.f1w_1 = along;
+  this.g1w_1 = offset;
 }
 protoOf(Rectangular).toString = function () {
-  return 'Rectangular(target=' + this.z1v_1.toString() + ', along=' + this.a1w_1 + ', offset=' + this.b1w_1 + ')';
+  return 'Rectangular(target=' + this.e1w_1.toString() + ', along=' + this.f1w_1 + ', offset=' + this.g1w_1 + ')';
 };
 protoOf(Rectangular).hashCode = function () {
-  var result = this.z1v_1.hashCode();
-  result = imul(result, 31) + getNumberHashCode(this.a1w_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.b1w_1) | 0;
+  var result = this.e1w_1.hashCode();
+  result = imul(result, 31) + getNumberHashCode(this.f1w_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.g1w_1) | 0;
   return result;
 };
 protoOf(Rectangular).equals = function (other) {
@@ -28292,28 +28376,28 @@ protoOf(Rectangular).equals = function (other) {
   if (!(other instanceof Rectangular))
     return false;
   var tmp0_other_with_cast = other instanceof Rectangular ? other : THROW_CCE();
-  if (!this.z1v_1.equals(tmp0_other_with_cast.z1v_1))
+  if (!this.e1w_1.equals(tmp0_other_with_cast.e1w_1))
     return false;
-  if (!equals(this.a1w_1, tmp0_other_with_cast.a1w_1))
+  if (!equals(this.f1w_1, tmp0_other_with_cast.f1w_1))
     return false;
-  if (!equals(this.b1w_1, tmp0_other_with_cast.b1w_1))
+  if (!equals(this.g1w_1, tmp0_other_with_cast.g1w_1))
     return false;
   return true;
 };
 function Linear_1(target, fromA, fromB, side) {
-  this.c1w_1 = target;
-  this.d1w_1 = fromA;
-  this.e1w_1 = fromB;
-  this.f1w_1 = side;
+  this.h1w_1 = target;
+  this.i1w_1 = fromA;
+  this.j1w_1 = fromB;
+  this.k1w_1 = side;
 }
 protoOf(Linear_1).toString = function () {
-  return 'Linear(target=' + this.c1w_1.toString() + ', fromA=' + this.d1w_1 + ', fromB=' + this.e1w_1 + ', side=' + toString_1(this.f1w_1) + ')';
+  return 'Linear(target=' + this.h1w_1.toString() + ', fromA=' + this.i1w_1 + ', fromB=' + this.j1w_1 + ', side=' + toString_1(this.k1w_1) + ')';
 };
 protoOf(Linear_1).hashCode = function () {
-  var result = this.c1w_1.hashCode();
-  result = imul(result, 31) + getNumberHashCode(this.d1w_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.e1w_1) | 0;
-  result = imul(result, 31) + (this.f1w_1 == null ? 0 : this.f1w_1.hashCode()) | 0;
+  var result = this.h1w_1.hashCode();
+  result = imul(result, 31) + getNumberHashCode(this.i1w_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.j1w_1) | 0;
+  result = imul(result, 31) + (this.k1w_1 == null ? 0 : this.k1w_1.hashCode()) | 0;
   return result;
 };
 protoOf(Linear_1).equals = function (other) {
@@ -28322,30 +28406,30 @@ protoOf(Linear_1).equals = function (other) {
   if (!(other instanceof Linear_1))
     return false;
   var tmp0_other_with_cast = other instanceof Linear_1 ? other : THROW_CCE();
-  if (!this.c1w_1.equals(tmp0_other_with_cast.c1w_1))
+  if (!this.h1w_1.equals(tmp0_other_with_cast.h1w_1))
     return false;
-  if (!equals(this.d1w_1, tmp0_other_with_cast.d1w_1))
+  if (!equals(this.i1w_1, tmp0_other_with_cast.i1w_1))
     return false;
-  if (!equals(this.e1w_1, tmp0_other_with_cast.e1w_1))
+  if (!equals(this.j1w_1, tmp0_other_with_cast.j1w_1))
     return false;
-  if (!equals(this.f1w_1, tmp0_other_with_cast.f1w_1))
+  if (!equals(this.k1w_1, tmp0_other_with_cast.k1w_1))
     return false;
   return true;
 };
 function Angular(target, angleAtA, angleAtB, gammaDeg) {
-  this.g1w_1 = target;
-  this.h1w_1 = angleAtA;
-  this.i1w_1 = angleAtB;
-  this.j1w_1 = gammaDeg;
+  this.l1w_1 = target;
+  this.m1w_1 = angleAtA;
+  this.n1w_1 = angleAtB;
+  this.o1w_1 = gammaDeg;
 }
 protoOf(Angular).toString = function () {
-  return 'Angular(target=' + this.g1w_1.toString() + ', angleAtA=' + this.h1w_1 + ', angleAtB=' + this.i1w_1 + ', gammaDeg=' + this.j1w_1 + ')';
+  return 'Angular(target=' + this.l1w_1.toString() + ', angleAtA=' + this.m1w_1 + ', angleAtB=' + this.n1w_1 + ', gammaDeg=' + this.o1w_1 + ')';
 };
 protoOf(Angular).hashCode = function () {
-  var result = this.g1w_1.hashCode();
-  result = imul(result, 31) + getNumberHashCode(this.h1w_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.i1w_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.j1w_1) | 0;
+  var result = this.l1w_1.hashCode();
+  result = imul(result, 31) + getNumberHashCode(this.m1w_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.n1w_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.o1w_1) | 0;
   return result;
 };
 protoOf(Angular).equals = function (other) {
@@ -28354,36 +28438,36 @@ protoOf(Angular).equals = function (other) {
   if (!(other instanceof Angular))
     return false;
   var tmp0_other_with_cast = other instanceof Angular ? other : THROW_CCE();
-  if (!this.g1w_1.equals(tmp0_other_with_cast.g1w_1))
+  if (!this.l1w_1.equals(tmp0_other_with_cast.l1w_1))
     return false;
-  if (!equals(this.h1w_1, tmp0_other_with_cast.h1w_1))
+  if (!equals(this.m1w_1, tmp0_other_with_cast.m1w_1))
     return false;
-  if (!equals(this.i1w_1, tmp0_other_with_cast.i1w_1))
+  if (!equals(this.n1w_1, tmp0_other_with_cast.n1w_1))
     return false;
-  if (!equals(this.j1w_1, tmp0_other_with_cast.j1w_1))
+  if (!equals(this.o1w_1, tmp0_other_with_cast.o1w_1))
     return false;
   return true;
 };
 function Deviation(dx, dy, total, toward, right, angleSec, distance) {
-  this.k1w_1 = dx;
-  this.l1w_1 = dy;
-  this.m1w_1 = total;
-  this.n1w_1 = toward;
-  this.o1w_1 = right;
-  this.p1w_1 = angleSec;
-  this.q1w_1 = distance;
+  this.p1w_1 = dx;
+  this.q1w_1 = dy;
+  this.r1w_1 = total;
+  this.s1w_1 = toward;
+  this.t1w_1 = right;
+  this.u1w_1 = angleSec;
+  this.v1w_1 = distance;
 }
 protoOf(Deviation).toString = function () {
-  return 'Deviation(dx=' + this.k1w_1 + ', dy=' + this.l1w_1 + ', total=' + this.m1w_1 + ', toward=' + this.n1w_1 + ', right=' + this.o1w_1 + ', angleSec=' + this.p1w_1 + ', distance=' + this.q1w_1 + ')';
+  return 'Deviation(dx=' + this.p1w_1 + ', dy=' + this.q1w_1 + ', total=' + this.r1w_1 + ', toward=' + this.s1w_1 + ', right=' + this.t1w_1 + ', angleSec=' + this.u1w_1 + ', distance=' + this.v1w_1 + ')';
 };
 protoOf(Deviation).hashCode = function () {
-  var result = getNumberHashCode(this.k1w_1);
-  result = imul(result, 31) + getNumberHashCode(this.l1w_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.m1w_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.n1w_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.o1w_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.p1w_1) | 0;
+  var result = getNumberHashCode(this.p1w_1);
   result = imul(result, 31) + getNumberHashCode(this.q1w_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.r1w_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.s1w_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.t1w_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.u1w_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.v1w_1) | 0;
   return result;
 };
 protoOf(Deviation).equals = function (other) {
@@ -28392,19 +28476,19 @@ protoOf(Deviation).equals = function (other) {
   if (!(other instanceof Deviation))
     return false;
   var tmp0_other_with_cast = other instanceof Deviation ? other : THROW_CCE();
-  if (!equals(this.k1w_1, tmp0_other_with_cast.k1w_1))
-    return false;
-  if (!equals(this.l1w_1, tmp0_other_with_cast.l1w_1))
-    return false;
-  if (!equals(this.m1w_1, tmp0_other_with_cast.m1w_1))
-    return false;
-  if (!equals(this.n1w_1, tmp0_other_with_cast.n1w_1))
-    return false;
-  if (!equals(this.o1w_1, tmp0_other_with_cast.o1w_1))
-    return false;
   if (!equals(this.p1w_1, tmp0_other_with_cast.p1w_1))
     return false;
   if (!equals(this.q1w_1, tmp0_other_with_cast.q1w_1))
+    return false;
+  if (!equals(this.r1w_1, tmp0_other_with_cast.r1w_1))
+    return false;
+  if (!equals(this.s1w_1, tmp0_other_with_cast.s1w_1))
+    return false;
+  if (!equals(this.t1w_1, tmp0_other_with_cast.t1w_1))
+    return false;
+  if (!equals(this.u1w_1, tmp0_other_with_cast.u1w_1))
+    return false;
+  if (!equals(this.v1w_1, tmp0_other_with_cast.v1w_1))
     return false;
   return true;
 };
@@ -28426,7 +28510,7 @@ protoOf(Stakeout).c13 = function (station, zeroDirDeg, targets) {
   var _iterator__ex2g4s = targets.j();
   while (_iterator__ex2g4s.k()) {
     var element = _iterator__ex2g4s.l();
-    if (element.y1v_1.i1o(station) > 1.0E-9) {
+    if (element.d1w_1.i1o(station) > 1.0E-9) {
       destination.f(element);
     }
   }
@@ -28436,13 +28520,13 @@ protoOf(Stakeout).c13 = function (station, zeroDirDeg, targets) {
   var _iterator__ex2g4s_0 = destination.j();
   while (_iterator__ex2g4s_0.k()) {
     var item = _iterator__ex2g4s_0.l();
-    var dir = PlaneGeo_instance.k1o(station, item.y1v_1);
-    var tmp$ret$3 = new Polar(item, dir, TraverseAngles_instance.rj(dir - zeroDirDeg), station.i1o(item.y1v_1));
+    var dir = PlaneGeo_instance.k1o(station, item.d1w_1);
+    var tmp$ret$3 = new Polar(item, dir, TraverseAngles_instance.rj(dir - zeroDirDeg), station.i1o(item.d1w_1));
     destination_0.f(tmp$ret$3);
   }
   return destination_0;
 };
-protoOf(Stakeout).r1w = function (a, b, targets) {
+protoOf(Stakeout).w1w = function (a, b, targets) {
   requireBase(this, a, b);
   // Inline function 'kotlin.collections.map' call
   // Inline function 'kotlin.collections.mapTo' call
@@ -28450,12 +28534,12 @@ protoOf(Stakeout).r1w = function (a, b, targets) {
   var _iterator__ex2g4s = targets.j();
   while (_iterator__ex2g4s.k()) {
     var item = _iterator__ex2g4s.l();
-    var tmp$ret$0 = new Rectangular(item, PlaneGeo_instance.o1o(a, b, item.y1v_1), PlaneGeo_instance.n1o(a, b, item.y1v_1));
+    var tmp$ret$0 = new Rectangular(item, PlaneGeo_instance.o1o(a, b, item.d1w_1), PlaneGeo_instance.n1o(a, b, item.d1w_1));
     destination.f(tmp$ret$0);
   }
   return destination;
 };
-protoOf(Stakeout).s1w = function (a, b, targets) {
+protoOf(Stakeout).x1w = function (a, b, targets) {
   requireBase(this, a, b);
   // Inline function 'kotlin.collections.map' call
   // Inline function 'kotlin.collections.mapTo' call
@@ -28463,14 +28547,14 @@ protoOf(Stakeout).s1w = function (a, b, targets) {
   var _iterator__ex2g4s = targets.j();
   while (_iterator__ex2g4s.k()) {
     var item = _iterator__ex2g4s.l();
-    var off = PlaneGeo_instance.n1o(a, b, item.y1v_1);
+    var off = PlaneGeo_instance.n1o(a, b, item.d1w_1);
     var side = off > 1.0E-9 ? Side_RIGHT_getInstance() : off < -1.0E-9 ? Side_LEFT_getInstance() : null;
-    var tmp$ret$0 = new Linear_1(item, a.i1o(item.y1v_1), b.i1o(item.y1v_1), side);
+    var tmp$ret$0 = new Linear_1(item, a.i1o(item.d1w_1), b.i1o(item.d1w_1), side);
     destination.f(tmp$ret$0);
   }
   return destination;
 };
-protoOf(Stakeout).t1w = function (a, b, targets) {
+protoOf(Stakeout).y1w = function (a, b, targets) {
   requireBase(this, a, b);
   var ab = PlaneGeo_instance.k1o(a, b);
   var ba = PlaneGeo_instance.k1o(b, a);
@@ -28480,7 +28564,7 @@ protoOf(Stakeout).t1w = function (a, b, targets) {
   var _iterator__ex2g4s = targets.j();
   while (_iterator__ex2g4s.k()) {
     var element = _iterator__ex2g4s.l();
-    if (element.y1v_1.i1o(a) > 1.0E-9 && element.y1v_1.i1o(b) > 1.0E-9) {
+    if (element.d1w_1.i1o(a) > 1.0E-9 && element.d1w_1.i1o(b) > 1.0E-9) {
       destination.f(element);
     }
   }
@@ -28490,15 +28574,15 @@ protoOf(Stakeout).t1w = function (a, b, targets) {
   var _iterator__ex2g4s_0 = destination.j();
   while (_iterator__ex2g4s_0.k()) {
     var item = _iterator__ex2g4s_0.l();
-    var tmp$ret$3 = new Angular(item, TraverseAngles_instance.rj(PlaneGeo_instance.k1o(a, item.y1v_1) - ab), TraverseAngles_instance.rj(PlaneGeo_instance.k1o(b, item.y1v_1) - ba), PlaneGeo_instance.m1o(item.y1v_1, a, b));
+    var tmp$ret$3 = new Angular(item, TraverseAngles_instance.rj(PlaneGeo_instance.k1o(a, item.d1w_1) - ab), TraverseAngles_instance.rj(PlaneGeo_instance.k1o(b, item.d1w_1) - ba), PlaneGeo_instance.m1o(item.d1w_1, a, b));
     destination_0.f(tmp$ret$3);
   }
   return destination_0;
 };
-protoOf(Stakeout).u1w = function (station, zeroDirDeg, angleDeg, distance) {
+protoOf(Stakeout).z1w = function (station, zeroDirDeg, angleDeg, distance) {
   return PlaneGeo_instance.l1o(station, TraverseAngles_instance.rj(zeroDirDeg + angleDeg), distance);
 };
-protoOf(Stakeout).v1w = function (station, design, actual) {
+protoOf(Stakeout).a1x = function (station, design, actual) {
   var dx = design.g1o_1 - actual.g1o_1;
   var dy = design.h1o_1 - actual.h1o_1;
   var sight = station.i1o(actual);
@@ -28533,36 +28617,36 @@ function fmt_2($this, pattern, value) {
 }
 function StationChecks() {
 }
-protoOf(StationChecks).w1w = function (backMiddleMm, foreMiddleMm) {
+protoOf(StationChecks).b1x = function (backMiddleMm, foreMiddleMm) {
   return (backMiddleMm - foreMiddleMm) / 1000.0;
 };
-protoOf(StationChecks).x1w = function (backDistM, foreDistM) {
+protoOf(StationChecks).c1x = function (backDistM, foreDistM) {
   return foreDistM - backDistM;
 };
-protoOf(StationChecks).y1w = function (upper, lower) {
+protoOf(StationChecks).d1x = function (upper, lower) {
   return (upper - lower) / 10.0;
 };
-protoOf(StationChecks).z1w = function (back1, fore1, back2, fore2) {
+protoOf(StationChecks).e1x = function (back1, fore1, back2, fore2) {
   // Inline function 'kotlin.math.abs' call
   var x = back1 - fore1 - (back2 - fore2);
   return Math.abs(x);
 };
-protoOf(StationChecks).a1x = function (ex1, ex2, ex3) {
+protoOf(StationChecks).f1x = function (ex1, ex2, ex3) {
   var all = listOfNotNull([ex1, ex2, ex3]);
   return all.o() < 2 ? 0.0 : (max(all) - min(all)) * 1000.0;
 };
-protoOf(StationChecks).b1x = function (upper, middle, lower) {
+protoOf(StationChecks).g1x = function (upper, middle, lower) {
   // Inline function 'kotlin.math.abs' call
   var x = (upper + lower) / 2.0 - middle;
   return Math.abs(x);
 };
-protoOf(StationChecks).c1x = function (s) {
+protoOf(StationChecks).h1x = function (s) {
   return s.s1f() === 0.0 && s.u1f() === 0.0 && s.v1f() === 0.0 && s.x1f() === 0.0;
 };
-protoOf(StationChecks).d1x = function (s, settings) {
-  return settings.z18_1.equals(RodType_DOUBLE_SIDED_getInstance()) && !this.c1x(s);
+protoOf(StationChecks).i1x = function (s, settings) {
+  return settings.z18_1.equals(RodType_DOUBLE_SIDED_getInstance()) && !this.h1x(s);
 };
-protoOf(StationChecks).e1x = function (s) {
+protoOf(StationChecks).j1x = function (s) {
   var tmp0 = s.v18();
   var tmp2 = s.w18();
   var tmp0_0 = s.c1g();
@@ -28576,12 +28660,12 @@ protoOf(StationChecks).e1x = function (s) {
   var c_0 = Math.max(tmp0_0, tmp2_0, c);
   return Math.max(tmp0, tmp2, c_0);
 };
-protoOf(StationChecks).f1x = function (s, settings, armAccumM) {
-  var robot = this.c1x(s);
-  var twoSided = this.d1x(s, settings);
-  var ex1 = this.w1w(s.t1f(), s.w1f());
-  var ex2 = !(s.y1f() === 0.0) && !(s.z1f() === 0.0) ? this.w1w(s.y1f(), s.z1f()) : null;
-  var ex3 = !twoSided && !(s.a1g() === 0.0) && !(s.b1g() === 0.0) ? this.w1w(s.a1g(), s.b1g()) : null;
+protoOf(StationChecks).k1x = function (s, settings, armAccumM) {
+  var robot = this.h1x(s);
+  var twoSided = this.i1x(s, settings);
+  var ex1 = this.b1x(s.t1f(), s.w1f());
+  var ex2 = !(s.y1f() === 0.0) && !(s.z1f() === 0.0) ? this.b1x(s.y1f(), s.z1f()) : null;
+  var ex3 = !twoSided && !(s.a1g() === 0.0) && !(s.b1g() === 0.0) ? this.b1x(s.a1g(), s.b1g()) : null;
   var tmp;
   if (twoSided) {
     var tmp_0;
@@ -28589,19 +28673,19 @@ protoOf(StationChecks).f1x = function (s, settings, armAccumM) {
       tmp_0 = null;
     } else {
       // Inline function 'kotlin.let' call
-      tmp_0 = StationChecks_instance.z1w(s.t1f(), s.w1f(), s.y1f(), s.z1f());
+      tmp_0 = StationChecks_instance.e1x(s.t1f(), s.w1f(), s.y1f(), s.z1f());
     }
     tmp = tmp_0;
   } else if (!(ex2 == null) || !(ex3 == null)) {
-    tmp = this.a1x(ex1, ex2, ex3);
+    tmp = this.f1x(ex1, ex2, ex3);
   } else {
     tmp = null;
   }
   var stationDiff = tmp;
   var threadCheck = settings.d19_1 && !robot;
-  var backDev = threadCheck ? this.b1x(s.s1f(), s.t1f(), s.u1f()) : null;
-  var foreDev = threadCheck ? this.b1x(s.v1f(), s.w1f(), s.x1f()) : null;
-  var sight = this.e1x(s);
+  var backDev = threadCheck ? this.g1x(s.s1f(), s.t1f(), s.u1f()) : null;
+  var foreDev = threadCheck ? this.g1x(s.v1f(), s.w1f(), s.x1f()) : null;
+  var sight = this.j1x(s);
   // Inline function 'kotlin.math.abs' call
   var x = s.g1g();
   var armOk = Math.abs(x) <= settings.b19_1;
@@ -28642,10 +28726,10 @@ protoOf(StationChecks).f1x = function (s, settings, armAccumM) {
   if (!foreThreadOk) {
     this_0.f('\u041A\u043E\u043D\u0442\u0440\u043E\u043B\u044C \u0441\u0440\u0435\u0434\u043D\u0435\u0439 \u043D\u0438\u0442\u0438 (\u043F\u0435\u0440\u0435\u0434\u043D\u044F\u044F) ' + fmt_2(StationChecks_instance, '%.1f', ensureNotNull(foreDev)) + ' \u043C\u043C > ' + fmt_2(StationChecks_instance, '%.1f', settings.e19_1) + ' \u043C\u043C');
   }
-  var problems = this_0.z4();
+  var problems = this_0.a5();
   return new StationCheck(listOfNotNull([ex1, ex2, ex3]), stationDiff, backDev, foreDev, sight, armAccumM, armOk, stationDiffOk, backThreadOk, foreThreadOk, sightOk, armAccumOk, problems);
 };
-protoOf(StationChecks).g1x = function (stations, settings) {
+protoOf(StationChecks).l1x = function (stations, settings) {
   // Inline function 'kotlin.collections.associateWith' call
   var this_0 = get_entries_20();
   var result = LinkedHashMap_init_$Create$_0(coerceAtLeast_0(mapCapacity(collectionSizeOrDefault(this_0, 10)), 16));
@@ -28668,12 +28752,12 @@ protoOf(StationChecks).g1x = function (stations, settings) {
     var key = element_0.yo();
     accum.l3(key, a);
     // Inline function 'kotlin.collections.plusAssign' call
-    var pair = to(element_0.vs(), StationChecks_instance.f1x(element_0, settings, a));
+    var pair = to(element_0.vs(), StationChecks_instance.k1x(element_0, settings, a));
     destination.l3(pair.vb_1, pair.wb_1);
   }
   return destination;
 };
-protoOf(StationChecks).h1x = function (stations, direction) {
+protoOf(StationChecks).m1x = function (stations, direction) {
   // Inline function 'kotlin.collections.filter' call
   // Inline function 'kotlin.collections.filterTo' call
   var destination = ArrayList_init_$Create$();
@@ -28720,41 +28804,41 @@ function StationChecks_getInstance() {
   return StationChecks_instance;
 }
 function StationCheck(passExcesses, stationDiffMm, backThreadDevMm, foreThreadDevMm, maxSightM, armAccumM, armOk, stationDiffOk, backThreadOk, foreThreadOk, sightOk, armAccumOk, problems) {
-  this.i1x_1 = passExcesses;
-  this.j1x_1 = stationDiffMm;
-  this.k1x_1 = backThreadDevMm;
-  this.l1x_1 = foreThreadDevMm;
-  this.m1x_1 = maxSightM;
-  this.n1x_1 = armAccumM;
-  this.o1x_1 = armOk;
-  this.p1x_1 = stationDiffOk;
-  this.q1x_1 = backThreadOk;
-  this.r1x_1 = foreThreadOk;
-  this.s1x_1 = sightOk;
-  this.t1x_1 = armAccumOk;
-  this.u1x_1 = problems;
+  this.n1x_1 = passExcesses;
+  this.o1x_1 = stationDiffMm;
+  this.p1x_1 = backThreadDevMm;
+  this.q1x_1 = foreThreadDevMm;
+  this.r1x_1 = maxSightM;
+  this.s1x_1 = armAccumM;
+  this.t1x_1 = armOk;
+  this.u1x_1 = stationDiffOk;
+  this.v1x_1 = backThreadOk;
+  this.w1x_1 = foreThreadOk;
+  this.x1x_1 = sightOk;
+  this.y1x_1 = armAccumOk;
+  this.z1x_1 = problems;
 }
-protoOf(StationCheck).v1x = function () {
+protoOf(StationCheck).a1y = function () {
   // Inline function 'kotlin.collections.isNotEmpty' call
-  return !this.u1x_1.n();
+  return !this.z1x_1.n();
 };
 protoOf(StationCheck).toString = function () {
-  return 'StationCheck(passExcesses=' + toString(this.i1x_1) + ', stationDiffMm=' + this.j1x_1 + ', backThreadDevMm=' + this.k1x_1 + ', foreThreadDevMm=' + this.l1x_1 + ', maxSightM=' + this.m1x_1 + ', armAccumM=' + this.n1x_1 + ', armOk=' + this.o1x_1 + ', stationDiffOk=' + this.p1x_1 + ', backThreadOk=' + this.q1x_1 + ', foreThreadOk=' + this.r1x_1 + ', sightOk=' + this.s1x_1 + ', armAccumOk=' + this.t1x_1 + ', problems=' + toString(this.u1x_1) + ')';
+  return 'StationCheck(passExcesses=' + toString(this.n1x_1) + ', stationDiffMm=' + this.o1x_1 + ', backThreadDevMm=' + this.p1x_1 + ', foreThreadDevMm=' + this.q1x_1 + ', maxSightM=' + this.r1x_1 + ', armAccumM=' + this.s1x_1 + ', armOk=' + this.t1x_1 + ', stationDiffOk=' + this.u1x_1 + ', backThreadOk=' + this.v1x_1 + ', foreThreadOk=' + this.w1x_1 + ', sightOk=' + this.x1x_1 + ', armAccumOk=' + this.y1x_1 + ', problems=' + toString(this.z1x_1) + ')';
 };
 protoOf(StationCheck).hashCode = function () {
-  var result = hashCode(this.i1x_1);
-  result = imul(result, 31) + (this.j1x_1 == null ? 0 : getNumberHashCode(this.j1x_1)) | 0;
-  result = imul(result, 31) + (this.k1x_1 == null ? 0 : getNumberHashCode(this.k1x_1)) | 0;
-  result = imul(result, 31) + (this.l1x_1 == null ? 0 : getNumberHashCode(this.l1x_1)) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.m1x_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.n1x_1) | 0;
-  result = imul(result, 31) + getBooleanHashCode(this.o1x_1) | 0;
-  result = imul(result, 31) + getBooleanHashCode(this.p1x_1) | 0;
-  result = imul(result, 31) + getBooleanHashCode(this.q1x_1) | 0;
-  result = imul(result, 31) + getBooleanHashCode(this.r1x_1) | 0;
-  result = imul(result, 31) + getBooleanHashCode(this.s1x_1) | 0;
+  var result = hashCode(this.n1x_1);
+  result = imul(result, 31) + (this.o1x_1 == null ? 0 : getNumberHashCode(this.o1x_1)) | 0;
+  result = imul(result, 31) + (this.p1x_1 == null ? 0 : getNumberHashCode(this.p1x_1)) | 0;
+  result = imul(result, 31) + (this.q1x_1 == null ? 0 : getNumberHashCode(this.q1x_1)) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.r1x_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.s1x_1) | 0;
   result = imul(result, 31) + getBooleanHashCode(this.t1x_1) | 0;
-  result = imul(result, 31) + hashCode(this.u1x_1) | 0;
+  result = imul(result, 31) + getBooleanHashCode(this.u1x_1) | 0;
+  result = imul(result, 31) + getBooleanHashCode(this.v1x_1) | 0;
+  result = imul(result, 31) + getBooleanHashCode(this.w1x_1) | 0;
+  result = imul(result, 31) + getBooleanHashCode(this.x1x_1) | 0;
+  result = imul(result, 31) + getBooleanHashCode(this.y1x_1) | 0;
+  result = imul(result, 31) + hashCode(this.z1x_1) | 0;
   return result;
 };
 protoOf(StationCheck).equals = function (other) {
@@ -28763,50 +28847,50 @@ protoOf(StationCheck).equals = function (other) {
   if (!(other instanceof StationCheck))
     return false;
   var tmp0_other_with_cast = other instanceof StationCheck ? other : THROW_CCE();
-  if (!equals(this.i1x_1, tmp0_other_with_cast.i1x_1))
-    return false;
-  if (!equals(this.j1x_1, tmp0_other_with_cast.j1x_1))
-    return false;
-  if (!equals(this.k1x_1, tmp0_other_with_cast.k1x_1))
-    return false;
-  if (!equals(this.l1x_1, tmp0_other_with_cast.l1x_1))
-    return false;
-  if (!equals(this.m1x_1, tmp0_other_with_cast.m1x_1))
-    return false;
   if (!equals(this.n1x_1, tmp0_other_with_cast.n1x_1))
     return false;
-  if (!(this.o1x_1 === tmp0_other_with_cast.o1x_1))
+  if (!equals(this.o1x_1, tmp0_other_with_cast.o1x_1))
     return false;
-  if (!(this.p1x_1 === tmp0_other_with_cast.p1x_1))
+  if (!equals(this.p1x_1, tmp0_other_with_cast.p1x_1))
     return false;
-  if (!(this.q1x_1 === tmp0_other_with_cast.q1x_1))
+  if (!equals(this.q1x_1, tmp0_other_with_cast.q1x_1))
     return false;
-  if (!(this.r1x_1 === tmp0_other_with_cast.r1x_1))
+  if (!equals(this.r1x_1, tmp0_other_with_cast.r1x_1))
     return false;
-  if (!(this.s1x_1 === tmp0_other_with_cast.s1x_1))
+  if (!equals(this.s1x_1, tmp0_other_with_cast.s1x_1))
     return false;
   if (!(this.t1x_1 === tmp0_other_with_cast.t1x_1))
     return false;
-  if (!equals(this.u1x_1, tmp0_other_with_cast.u1x_1))
+  if (!(this.u1x_1 === tmp0_other_with_cast.u1x_1))
+    return false;
+  if (!(this.v1x_1 === tmp0_other_with_cast.v1x_1))
+    return false;
+  if (!(this.w1x_1 === tmp0_other_with_cast.w1x_1))
+    return false;
+  if (!(this.x1x_1 === tmp0_other_with_cast.x1x_1))
+    return false;
+  if (!(this.y1x_1 === tmp0_other_with_cast.y1x_1))
+    return false;
+  if (!equals(this.z1x_1, tmp0_other_with_cast.z1x_1))
     return false;
   return true;
 };
 function RunStats(direction, count, sumExcess, sumArmDiff, lengthM) {
-  this.w1x_1 = direction;
-  this.x1x_1 = count;
-  this.y1x_1 = sumExcess;
-  this.z1x_1 = sumArmDiff;
-  this.a1y_1 = lengthM;
+  this.b1y_1 = direction;
+  this.c1y_1 = count;
+  this.d1y_1 = sumExcess;
+  this.e1y_1 = sumArmDiff;
+  this.f1y_1 = lengthM;
 }
 protoOf(RunStats).toString = function () {
-  return 'RunStats(direction=' + this.w1x_1.toString() + ', count=' + this.x1x_1 + ', sumExcess=' + this.y1x_1 + ', sumArmDiff=' + this.z1x_1 + ', lengthM=' + this.a1y_1 + ')';
+  return 'RunStats(direction=' + this.b1y_1.toString() + ', count=' + this.c1y_1 + ', sumExcess=' + this.d1y_1 + ', sumArmDiff=' + this.e1y_1 + ', lengthM=' + this.f1y_1 + ')';
 };
 protoOf(RunStats).hashCode = function () {
-  var result = this.w1x_1.hashCode();
-  result = imul(result, 31) + this.x1x_1 | 0;
-  result = imul(result, 31) + getNumberHashCode(this.y1x_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.z1x_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.a1y_1) | 0;
+  var result = this.b1y_1.hashCode();
+  result = imul(result, 31) + this.c1y_1 | 0;
+  result = imul(result, 31) + getNumberHashCode(this.d1y_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.e1y_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.f1y_1) | 0;
   return result;
 };
 protoOf(RunStats).equals = function (other) {
@@ -28815,15 +28899,15 @@ protoOf(RunStats).equals = function (other) {
   if (!(other instanceof RunStats))
     return false;
   var tmp0_other_with_cast = other instanceof RunStats ? other : THROW_CCE();
-  if (!this.w1x_1.equals(tmp0_other_with_cast.w1x_1))
+  if (!this.b1y_1.equals(tmp0_other_with_cast.b1y_1))
     return false;
-  if (!(this.x1x_1 === tmp0_other_with_cast.x1x_1))
+  if (!(this.c1y_1 === tmp0_other_with_cast.c1y_1))
     return false;
-  if (!equals(this.y1x_1, tmp0_other_with_cast.y1x_1))
+  if (!equals(this.d1y_1, tmp0_other_with_cast.d1y_1))
     return false;
-  if (!equals(this.z1x_1, tmp0_other_with_cast.z1x_1))
+  if (!equals(this.e1y_1, tmp0_other_with_cast.e1y_1))
     return false;
-  if (!equals(this.a1y_1, tmp0_other_with_cast.a1y_1))
+  if (!equals(this.f1y_1, tmp0_other_with_cast.f1y_1))
     return false;
   return true;
 };
@@ -28853,7 +28937,7 @@ protoOf(TraverseClosure).u1d = function () {
   }
   return tmp;
 };
-protoOf(TraverseClosure).b1y = function () {
+protoOf(TraverseClosure).g1y = function () {
   var tmp;
   if (this.k1d_1 == null || this.l1d_1 == null) {
     tmp = true;
@@ -28864,7 +28948,7 @@ protoOf(TraverseClosure).b1y = function () {
   }
   return tmp;
 };
-protoOf(TraverseClosure).c1y = function () {
+protoOf(TraverseClosure).h1y = function () {
   return this.p1d_1 == null || this.p1d_1 >= this.q1d_1;
 };
 protoOf(TraverseClosure).toString = function () {
@@ -28954,15 +29038,15 @@ protoOf(TraverseResult).equals = function (other) {
   return true;
 };
 function Xy(x, y) {
-  this.d1y_1 = x;
-  this.e1y_1 = y;
+  this.i1y_1 = x;
+  this.j1y_1 = y;
 }
 protoOf(Xy).toString = function () {
-  return 'Xy(x=' + this.d1y_1 + ', y=' + this.e1y_1 + ')';
+  return 'Xy(x=' + this.i1y_1 + ', y=' + this.j1y_1 + ')';
 };
 protoOf(Xy).hashCode = function () {
-  var result = getNumberHashCode(this.d1y_1);
-  result = imul(result, 31) + getNumberHashCode(this.e1y_1) | 0;
+  var result = getNumberHashCode(this.i1y_1);
+  result = imul(result, 31) + getNumberHashCode(this.j1y_1) | 0;
   return result;
 };
 protoOf(Xy).equals = function (other) {
@@ -28971,9 +29055,9 @@ protoOf(Xy).equals = function (other) {
   if (!(other instanceof Xy))
     return false;
   var tmp0_other_with_cast = other instanceof Xy ? other : THROW_CCE();
-  if (!equals(this.d1y_1, tmp0_other_with_cast.d1y_1))
+  if (!equals(this.i1y_1, tmp0_other_with_cast.i1y_1))
     return false;
-  if (!equals(this.e1y_1, tmp0_other_with_cast.e1y_1))
+  if (!equals(this.j1y_1, tmp0_other_with_cast.j1y_1))
     return false;
   return true;
 };
@@ -28987,7 +29071,7 @@ function sideLength($this, sides, a, b) {
     var _iterator__ex2g4s = sides.j();
     while (_iterator__ex2g4s.k()) {
       var element = _iterator__ex2g4s.l();
-      if (key(TraverseAdjustment_instance, element.f1y_1) === key(TraverseAdjustment_instance, a) && key(TraverseAdjustment_instance, element.g1y_1) === key(TraverseAdjustment_instance, b) || (key(TraverseAdjustment_instance, element.f1y_1) === key(TraverseAdjustment_instance, b) && key(TraverseAdjustment_instance, element.g1y_1) === key(TraverseAdjustment_instance, a))) {
+      if (key(TraverseAdjustment_instance, element.k1y_1) === key(TraverseAdjustment_instance, a) && key(TraverseAdjustment_instance, element.l1y_1) === key(TraverseAdjustment_instance, b) || (key(TraverseAdjustment_instance, element.k1y_1) === key(TraverseAdjustment_instance, b) && key(TraverseAdjustment_instance, element.l1y_1) === key(TraverseAdjustment_instance, a))) {
         tmp$ret$1 = element;
         break $l$block;
       }
@@ -28995,7 +29079,7 @@ function sideLength($this, sides, a, b) {
     tmp$ret$1 = null;
   }
   var tmp0_safe_receiver = tmp$ret$1;
-  return tmp0_safe_receiver == null ? null : tmp0_safe_receiver.i1y_1;
+  return tmp0_safe_receiver == null ? null : tmp0_safe_receiver.n1y_1;
 }
 function closure($this, stations, angles, sides, known, settings) {
   if (stations.n())
@@ -29064,7 +29148,7 @@ function closure($this, stations, angles, sides, known, settings) {
      while (inductionVariable < last_1);
   var endPoint = known.i2(key($this, last_0.n1c()));
   var endOrient = known.i2(key($this, last_0.o1c()));
-  var alpha = $this.l1y(start.d1y_1, start.e1y_1, orient.d1y_1, orient.e1y_1);
+  var alpha = $this.q1y(start.i1y_1, start.j1y_1, orient.i1y_1, orient.j1y_1);
   // Inline function 'kotlin.collections.forEachIndexed' call
   var index = 0;
   var _iterator__ex2g4s_0 = stations.j();
@@ -29077,14 +29161,14 @@ function closure($this, stations, angles, sides, known, settings) {
   }
   var tmp_3;
   if (!(endPoint == null) && !(endOrient == null)) {
-    tmp_3 = TraverseAngles_instance.j1p(alpha - $this.l1y(endPoint.d1y_1, endPoint.e1y_1, endOrient.d1y_1, endOrient.e1y_1)) * 3600.0;
+    tmp_3 = TraverseAngles_instance.j1p(alpha - $this.q1y(endPoint.i1y_1, endPoint.j1y_1, endOrient.i1y_1, endOrient.j1y_1)) * 3600.0;
   } else {
     tmp_3 = null;
   }
   var fBeta = tmp_3;
   var correction = (fBeta == null ? 0.0 : fBeta) / stations.o() / 3600.0;
   var cur = start;
-  var backAz = $this.l1y(start.d1y_1, start.e1y_1, orient.d1y_1, orient.e1y_1);
+  var backAz = $this.q1y(start.i1y_1, start.j1y_1, orient.i1y_1, orient.j1y_1);
   var perimeter = 0.0;
   var closeAt = null;
   var closePerimeter = 0.0;
@@ -29104,11 +29188,11 @@ function closure($this, stations, angles, sides, known, settings) {
         tmp_4 = tmp1_elvis_lhs;
       }
       var d = tmp_4;
-      var tmp_5 = cur.d1y_1;
+      var tmp_5 = cur.i1y_1;
       // Inline function 'kotlin.math.cos' call
       var x = KMath_instance.dj(foreAz);
       var tmp_6 = tmp_5 + d * Math.cos(x);
-      var tmp_7 = cur.e1y_1;
+      var tmp_7 = cur.j1y_1;
       // Inline function 'kotlin.math.sin' call
       var x_0 = KMath_instance.dj(foreAz);
       var tmp$ret$9 = Math.sin(x_0);
@@ -29136,25 +29220,25 @@ function closure($this, stations, angles, sides, known, settings) {
   var _destruct__k2r9zo = tmp_8;
   var computed = _destruct__k2r9zo.xb();
   var reference = _destruct__k2r9zo.yb();
-  return closure$result$default(stations, first_0, last_0, settings, null, fBeta, computed.d1y_1 - reference.d1y_1, computed.e1y_1 - reference.e1y_1, closePerimeter);
+  return closure$result$default(stations, first_0, last_0, settings, null, fBeta, computed.i1y_1 - reference.i1y_1, computed.j1y_1 - reference.j1y_1, closePerimeter);
 }
 function TraverseAdjustmentException(message) {
   Exception_init_$Init$(message, this);
   captureStack(this, TraverseAdjustmentException);
 }
 function AngleObs(station, s, b, f, value) {
-  this.m1y_1 = station;
-  this.n1y_1 = s;
-  this.o1y_1 = b;
-  this.p1y_1 = f;
-  this.q1y_1 = value;
+  this.r1y_1 = station;
+  this.s1y_1 = s;
+  this.t1y_1 = b;
+  this.u1y_1 = f;
+  this.v1y_1 = value;
 }
 function DistObs(side, a, b, value, sigmaMm) {
-  this.r1y_1 = side;
-  this.s1y_1 = a;
-  this.t1y_1 = b;
-  this.u1y_1 = value;
-  this.v1y_1 = sigmaMm;
+  this.w1y_1 = side;
+  this.x1y_1 = a;
+  this.y1y_1 = b;
+  this.z1y_1 = value;
+  this.a1z_1 = sigmaMm;
 }
 function adjust($this, stations, angles, sides, controls, settings) {
   if (stations.n())
@@ -29341,8 +29425,8 @@ function adjust($this, stations, angles, sides, controls, settings) {
     var element_8 = _iterator__ex2g4s_6.l();
     var tmp$ret$55;
     $l$block_4: {
-      var a = key(TraverseAdjustment_instance, element_8.f1y_1);
-      var b_0 = key(TraverseAdjustment_instance, element_8.g1y_1);
+      var a = key(TraverseAdjustment_instance, element_8.k1y_1);
+      var b_0 = key(TraverseAdjustment_instance, element_8.l1y_1);
       var tmp_6;
       // Inline function 'kotlin.collections.contains' call
       // Inline function 'kotlin.collections.containsKey' call
@@ -29355,16 +29439,16 @@ function adjust($this, stations, angles, sides, controls, settings) {
       }
       if (tmp_6) {
         // Inline function 'kotlin.collections.plusAssign' call
-        var element_9 = '\u0421\u0442\u043E\u0440\u043E\u043D\u0430 ' + element_8.f1y_1 + '\u2013' + element_8.g1y_1 + ': \u043D\u0435\u0442 \u043F\u0440\u0435\u0434\u0432\u0430\u0440\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0445 \u043A\u043E\u043E\u0440\u0434\u0438\u043D\u0430\u0442';
+        var element_9 = '\u0421\u0442\u043E\u0440\u043E\u043D\u0430 ' + element_8.k1y_1 + '\u2013' + element_8.l1y_1 + ': \u043D\u0435\u0442 \u043F\u0440\u0435\u0434\u0432\u0430\u0440\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0445 \u043A\u043E\u043E\u0440\u0434\u0438\u043D\u0430\u0442';
         skipped.f(element_9);
         tmp$ret$55 = null;
         break $l$block_4;
       }
-      var tmp_7 = coerceAtLeast(settings.a1i_1 + settings.b1i_1 * element_8.i1y_1 / 1000.0, 0.1);
+      var tmp_7 = coerceAtLeast(settings.a1i_1 + settings.b1i_1 * element_8.n1y_1 / 1000.0, 0.1);
       // Inline function 'kotlin.math.sqrt' call
-      var x = element_8.h1y_1.o();
+      var x = element_8.m1y_1.o();
       var sigma = tmp_7 / Math.sqrt(x);
-      tmp$ret$55 = new DistObs(element_8, a, b_0, element_8.i1y_1, sigma);
+      tmp$ret$55 = new DistObs(element_8, a, b_0, element_8.n1y_1, sigma);
     }
     var tmp0_safe_receiver_0 = tmp$ret$55;
     if (tmp0_safe_receiver_0 == null)
@@ -29381,14 +29465,14 @@ function adjust($this, stations, angles, sides, controls, settings) {
   var _iterator__ex2g4s_7 = angleObs.j();
   while (_iterator__ex2g4s_7.k()) {
     var element_10 = _iterator__ex2g4s_7.l();
-    this_1.q(listOf([element_10.n1y_1, element_10.o1y_1, element_10.p1y_1]));
+    this_1.q(listOf([element_10.s1y_1, element_10.t1y_1, element_10.u1y_1]));
   }
   // Inline function 'kotlin.collections.forEach' call
   var _iterator__ex2g4s_8 = distObs.j();
   while (_iterator__ex2g4s_8.k()) {
     var element_11 = _iterator__ex2g4s_8.l();
-    this_1.f(element_11.s1y_1);
-    this_1.f(element_11.t1y_1);
+    this_1.f(element_11.x1y_1);
+    this_1.f(element_11.y1y_1);
   }
   var observed = this_1;
   // Inline function 'kotlin.collections.filter' call
@@ -29476,7 +29560,7 @@ function adjust($this, stations, angles, sides, controls, settings) {
       var _destruct__k2r9zo = angleRow(TraverseAdjustment_instance, element_17, coords, index_0);
       var row = _destruct__k2r9zo.xb();
       var calc = _destruct__k2r9zo.yb();
-      adjust$accumulate(rhs, nMat, row, TraverseAngles_instance.j1p(element_17.q1y_1 - calc) * 3600.0, weightAngle);
+      adjust$accumulate(rhs, nMat, row, TraverseAngles_instance.j1p(element_17.v1y_1 - calc) * 3600.0, weightAngle);
     }
     // Inline function 'kotlin.collections.forEach' call
     var _iterator__ex2g4s_14 = distObs.j();
@@ -29485,9 +29569,9 @@ function adjust($this, stations, angles, sides, controls, settings) {
       var _destruct__k2r9zo_0 = distRow(TraverseAdjustment_instance, element_18, coords, index_0);
       var row_0 = _destruct__k2r9zo_0.xb();
       var calc_0 = _destruct__k2r9zo_0.yb();
-      adjust$accumulate(rhs, nMat, row_0, (element_18.u1y_1 - calc_0) * 1000.0, 1.0 / (element_18.v1y_1 * element_18.v1y_1));
+      adjust$accumulate(rhs, nMat, row_0, (element_18.z1y_1 - calc_0) * 1000.0, 1.0 / (element_18.a1z_1 * element_18.a1z_1));
     }
-    var tmp0_elvis_lhs_0 = $this.w1y(nMat);
+    var tmp0_elvis_lhs_0 = $this.b1z(nMat);
     var tmp_12;
     if (tmp0_elvis_lhs_0 == null) {
       throw new TraverseAdjustmentException('\u0421\u0445\u0435\u043C\u0430 \u043D\u0435 \u043E\u043F\u0440\u0435\u0434\u0435\u043B\u044F\u0435\u0442\u0441\u044F: \u043D\u0435 \u0445\u0432\u0430\u0442\u0430\u0435\u0442 \u0438\u0441\u0445\u043E\u0434\u043D\u044B\u0445 \u043F\u0443\u043D\u043A\u0442\u043E\u0432 (\u043D\u0443\u0436\u043D\u044B \u043F\u0443\u043D\u043A\u0442 \u0438 \u043E\u0440\u0438\u0435\u043D\u0442\u0438\u0440) \u0438\u043B\u0438 \u0438\u0437\u043C\u0435\u0440\u0435\u043D\u0438\u0439');
@@ -29527,7 +29611,7 @@ function adjust($this, stations, angles, sides, controls, settings) {
       var k_0 = checkIndexOverflow(_unary__edvuaz_0);
       var p = getValue(coords, item_0);
       // Inline function 'kotlin.collections.set' call
-      var value_0 = new Xy(p.d1y_1 + delta[imul(2, k_0)], p.e1y_1 + delta[imul(2, k_0) + 1 | 0]);
+      var value_0 = new Xy(p.i1y_1 + delta[imul(2, k_0)], p.j1y_1 + delta[imul(2, k_0) + 1 | 0]);
       coords.l3(item_0, value_0);
     }
     var tmp_17;
@@ -29568,18 +29652,18 @@ function adjust($this, stations, angles, sides, controls, settings) {
   while (_iterator__ex2g4s_16.k()) {
     var item_1 = _iterator__ex2g4s_16.l();
     var calc_1 = angleValue(TraverseAdjustment_instance, item_1, coords);
-    var v_1 = TraverseAngles_instance.j1p(calc_1 - item_1.q1y_1) * 3600.0;
+    var v_1 = TraverseAngles_instance.j1p(calc_1 - item_1.v1y_1) * 3600.0;
     vpv = vpv + v_1 * v_1 * weightAngle;
     // Inline function 'kotlin.text.trim' call
-    var this_3 = item_1.m1y_1.n1c();
+    var this_3 = item_1.r1y_1.n1c();
     var tmp_18 = toString(trim(isCharSequence(this_3) ? this_3 : THROW_CCE()));
     // Inline function 'kotlin.text.trim' call
-    var this_4 = item_1.m1y_1.m1c();
+    var this_4 = item_1.r1y_1.m1c();
     var tmp_19 = toString(trim(isCharSequence(this_4) ? this_4 : THROW_CCE()));
     // Inline function 'kotlin.text.trim' call
-    var this_5 = item_1.m1y_1.o1c();
+    var this_5 = item_1.r1y_1.o1c();
     var tmp$ret$109 = toString(trim(isCharSequence(this_5) ? this_5 : THROW_CCE()));
-    var tmp$ret$110 = new AdjustedAngle(tmp_18, tmp_19, tmp$ret$109, item_1.q1y_1, calc_1, v_1);
+    var tmp$ret$110 = new AdjustedAngle(tmp_18, tmp_19, tmp$ret$109, item_1.v1y_1, calc_1, v_1);
     destination_6.f(tmp$ret$110);
   }
   var adjustedAngles = destination_6;
@@ -29589,15 +29673,15 @@ function adjust($this, stations, angles, sides, controls, settings) {
   var _iterator__ex2g4s_17 = distObs.j();
   while (_iterator__ex2g4s_17.k()) {
     var item_2 = _iterator__ex2g4s_17.l();
-    var a_1 = getValue(coords, item_2.s1y_1);
-    var b_1 = getValue(coords, item_2.t1y_1);
-    var tmp0_3 = b_1.d1y_1 - a_1.d1y_1;
+    var a_1 = getValue(coords, item_2.x1y_1);
+    var b_1 = getValue(coords, item_2.y1y_1);
+    var tmp0_3 = b_1.i1y_1 - a_1.i1y_1;
     // Inline function 'kotlin.math.hypot' call
-    var y = b_1.e1y_1 - a_1.e1y_1;
+    var y = b_1.j1y_1 - a_1.j1y_1;
     var calc_2 = hypot(tmp0_3, y);
-    var vMm = (calc_2 - item_2.u1y_1) * 1000.0;
-    vpv = vpv + vMm * vMm / (item_2.v1y_1 * item_2.v1y_1);
-    var tmp$ret$114 = new AdjustedSide(item_2.r1y_1.f1y_1, item_2.r1y_1.g1y_1, item_2.u1y_1, calc_2, vMm, TraverseAdjustment_instance.l1y(a_1.d1y_1, a_1.e1y_1, b_1.d1y_1, b_1.e1y_1));
+    var vMm = (calc_2 - item_2.z1y_1) * 1000.0;
+    vpv = vpv + vMm * vMm / (item_2.a1z_1 * item_2.a1z_1);
+    var tmp$ret$114 = new AdjustedSide(item_2.w1y_1.k1y_1, item_2.w1y_1.l1y_1, item_2.z1y_1, calc_2, vMm, TraverseAdjustment_instance.q1y(a_1.i1y_1, a_1.j1y_1, b_1.i1y_1, b_1.j1y_1));
     destination_7.f(tmp$ret$114);
   }
   var adjustedSides = destination_7;
@@ -29638,7 +29722,7 @@ function adjust($this, stations, angles, sides, controls, settings) {
         // Inline function 'kotlin.collections.contains' call
         // Inline function 'kotlin.collections.containsKey' call
         var tmp$ret$120 = (isInterface(controlMap, KtMap) ? controlMap : THROW_CCE()).g2(element_20);
-        tmp$ret$118 = new AdjustedPoint(name, p_0.d1y_1, p_0.e1y_1, tmp$ret$120);
+        tmp$ret$118 = new AdjustedPoint(name, p_0.i1y_1, p_0.j1y_1, tmp$ret$120);
         break $l$block_6;
       } else {
         tmp_22 = tmp1_elvis_lhs;
@@ -29674,7 +29758,7 @@ function adjust($this, stations, angles, sides, controls, settings) {
       // Inline function 'kotlin.math.atan2' call
       var x_8 = qxx - qyy;
       var tmp$ret$130 = Math.atan2(tmp0_5, x_8);
-      tmp$ret$118 = new AdjustedPoint(name, p_0.d1y_1, p_0.e1y_1, false, tmp_23, tmp_24, tmp_25, tmp_26, tmp_27.rj(tmp_28.hh(0.5 * tmp$ret$130)));
+      tmp$ret$118 = new AdjustedPoint(name, p_0.i1y_1, p_0.j1y_1, false, tmp_23, tmp_24, tmp_25, tmp_26, tmp_27.rj(tmp_28.hh(0.5 * tmp$ret$130)));
     }
     var tmp0_safe_receiver_1 = tmp$ret$118;
     if (tmp0_safe_receiver_1 == null)
@@ -29775,14 +29859,14 @@ function approximate($this, stations, angles, sides, coords) {
             tmp_1 = tmp2_elvis_lhs;
           }
           var d = tmp_1;
-          var az = KMath_instance.dj(TraverseAdjustment_instance.l1y(ps.d1y_1, ps.e1y_1, pb.d1y_1, pb.e1y_1) + beta);
+          var az = KMath_instance.dj(TraverseAdjustment_instance.q1y(ps.i1y_1, ps.j1y_1, pb.i1y_1, pb.j1y_1) + beta);
           // Inline function 'kotlin.math.cos' call
           var tmp$ret$1 = Math.cos(az);
-          var tmp_2 = ps.d1y_1 + d * tmp$ret$1;
+          var tmp_2 = ps.i1y_1 + d * tmp$ret$1;
           // Inline function 'kotlin.math.sin' call
           var tmp$ret$2 = Math.sin(az);
           // Inline function 'kotlin.collections.set' call
-          var value = new Xy(tmp_2, ps.e1y_1 + d * tmp$ret$2);
+          var value = new Xy(tmp_2, ps.j1y_1 + d * tmp$ret$2);
           coords.l3(f, value);
           progress = true;
         } else if (!(pf == null) && pb == null) {
@@ -29794,14 +29878,14 @@ function approximate($this, stations, angles, sides, coords) {
             tmp_3 = tmp3_elvis_lhs;
           }
           var d_0 = tmp_3;
-          var az_0 = KMath_instance.dj(TraverseAdjustment_instance.l1y(ps.d1y_1, ps.e1y_1, pf.d1y_1, pf.e1y_1) - beta);
+          var az_0 = KMath_instance.dj(TraverseAdjustment_instance.q1y(ps.i1y_1, ps.j1y_1, pf.i1y_1, pf.j1y_1) - beta);
           // Inline function 'kotlin.math.cos' call
           var tmp$ret$4 = Math.cos(az_0);
-          var tmp_4 = ps.d1y_1 + d_0 * tmp$ret$4;
+          var tmp_4 = ps.i1y_1 + d_0 * tmp$ret$4;
           // Inline function 'kotlin.math.sin' call
           var tmp$ret$5 = Math.sin(az_0);
           // Inline function 'kotlin.collections.set' call
-          var value_0 = new Xy(tmp_4, ps.e1y_1 + d_0 * tmp$ret$5);
+          var value_0 = new Xy(tmp_4, ps.j1y_1 + d_0 * tmp$ret$5);
           coords.l3(b, value_0);
           progress = true;
         }
@@ -29810,29 +29894,29 @@ function approximate($this, stations, angles, sides, coords) {
   }
 }
 function angleValue($this, o, c) {
-  var s = getValue(c, o.n1y_1);
-  var b = getValue(c, o.o1y_1);
-  var f = getValue(c, o.p1y_1);
-  return TraverseAngles_instance.rj($this.l1y(s.d1y_1, s.e1y_1, f.d1y_1, f.e1y_1) - $this.l1y(s.d1y_1, s.e1y_1, b.d1y_1, b.e1y_1));
+  var s = getValue(c, o.s1y_1);
+  var b = getValue(c, o.t1y_1);
+  var f = getValue(c, o.u1y_1);
+  return TraverseAngles_instance.rj($this.q1y(s.i1y_1, s.j1y_1, f.i1y_1, f.j1y_1) - $this.q1y(s.i1y_1, s.j1y_1, b.i1y_1, b.j1y_1));
 }
 function angleRow($this, o, c, index) {
-  var s = getValue(c, o.n1y_1);
-  var b = getValue(c, o.o1y_1);
-  var f = getValue(c, o.p1y_1);
+  var s = getValue(c, o.s1y_1);
+  var b = getValue(c, o.t1y_1);
+  var f = getValue(c, o.u1y_1);
   var coeff = HashMap_init_$Create$();
-  angleRow$addDir(s, index, coeff, o, f, o.p1y_1, 1.0);
-  angleRow$addDir(s, index, coeff, o, b, o.o1y_1, -1.0);
+  angleRow$addDir(s, index, coeff, o, f, o.u1y_1, 1.0);
+  angleRow$addDir(s, index, coeff, o, b, o.t1y_1, -1.0);
   return to(toList_3(coeff), angleValue($this, o, c));
 }
 function distRow($this, o, c, index) {
-  var a = getValue(c, o.s1y_1);
-  var b = getValue(c, o.t1y_1);
-  var dx = b.d1y_1 - a.d1y_1;
-  var dy = b.e1y_1 - a.e1y_1;
+  var a = getValue(c, o.x1y_1);
+  var b = getValue(c, o.y1y_1);
+  var dx = b.i1y_1 - a.i1y_1;
+  var dy = b.j1y_1 - a.j1y_1;
   // Inline function 'kotlin.math.hypot' call
   var d = hypot(dx, dy);
   var coeff = ArrayList_init_$Create$_0(4);
-  var tmp0_safe_receiver = index.i2(o.t1y_1);
+  var tmp0_safe_receiver = index.i2(o.y1y_1);
   if (tmp0_safe_receiver == null)
     null;
   else {
@@ -29844,7 +29928,7 @@ function distRow($this, o, c, index) {
     var element_0 = to(imul(2, tmp0_safe_receiver) + 1 | 0, 1000.0 * dy / d);
     coeff.f(element_0);
   }
-  var tmp1_safe_receiver = index.i2(o.s1y_1);
+  var tmp1_safe_receiver = index.i2(o.x1y_1);
   if (tmp1_safe_receiver == null)
     null;
   else {
@@ -29859,16 +29943,16 @@ function distRow($this, o, c, index) {
   return to(coeff, d);
 }
 function sam$kotlin_Comparator$0_7(function_0) {
-  this.x1y_1 = function_0;
+  this.c1z_1 = function_0;
 }
 protoOf(sam$kotlin_Comparator$0_7).ia = function (a, b) {
-  return this.x1y_1(a, b);
+  return this.c1z_1(a, b);
 };
 protoOf(sam$kotlin_Comparator$0_7).compare = function (a, b) {
   return this.ia(a, b);
 };
 protoOf(sam$kotlin_Comparator$0_7).c3 = function () {
-  return this.x1y_1;
+  return this.c1z_1;
 };
 protoOf(sam$kotlin_Comparator$0_7).equals = function (other) {
   var tmp;
@@ -29933,7 +30017,7 @@ function sides$add(map, a, b, d) {
     tmp_2 = value;
   }
   // Inline function 'kotlin.collections.plusAssign' call
-  tmp_2.a1z_1.f(d);
+  tmp_2.f1z_1.f(d);
 }
 function closure$result($stations, first, last, $settings, hint, fBeta, fx, fy, perimeter, n) {
   var tmp = first.n1c();
@@ -29988,8 +30072,8 @@ function adjust$accumulate(rhs, nMat, coeffs, l, p) {
   }
 }
 function angleRow$addDir(s, $index, coeff, $o, to, toKey, sign) {
-  var dx = to.d1y_1 - s.d1y_1;
-  var dy = to.e1y_1 - s.e1y_1;
+  var dx = to.i1y_1 - s.i1y_1;
+  var dy = to.j1y_1 - s.j1y_1;
   var d2 = dx * dx + dy * dy;
   var tmp0_safe_receiver = $index.i2(toKey);
   if (tmp0_safe_receiver == null)
@@ -30007,7 +30091,7 @@ function angleRow$addDir(s, $index, coeff, $o, to, toKey, sign) {
     var value_0 = (tmp1_elvis_lhs == null ? 0.0 : tmp1_elvis_lhs) + sign * 206264.80624709636 * (dx / d2);
     coeff.l3(tmp2_0, value_0);
   }
-  var tmp1_safe_receiver = $index.i2($o.n1y_1);
+  var tmp1_safe_receiver = $index.i2($o.s1y_1);
   if (tmp1_safe_receiver == null)
     null;
   else {
@@ -30025,17 +30109,17 @@ function angleRow$addDir(s, $index, coeff, $o, to, toKey, sign) {
   }
 }
 function TraverseAdjustment$sides$Acc(from, to, values) {
-  this.y1y_1 = from;
-  this.z1y_1 = to;
-  this.a1z_1 = values;
+  this.d1z_1 = from;
+  this.e1z_1 = to;
+  this.f1z_1 = values;
 }
 protoOf(TraverseAdjustment$sides$Acc).toString = function () {
-  return 'Acc(from=' + this.y1y_1 + ', to=' + this.z1y_1 + ', values=' + toString(this.a1z_1) + ')';
+  return 'Acc(from=' + this.d1z_1 + ', to=' + this.e1z_1 + ', values=' + toString(this.f1z_1) + ')';
 };
 protoOf(TraverseAdjustment$sides$Acc).hashCode = function () {
-  var result = getStringHashCode(this.y1y_1);
-  result = imul(result, 31) + getStringHashCode(this.z1y_1) | 0;
-  result = imul(result, 31) + hashCode(this.a1z_1) | 0;
+  var result = getStringHashCode(this.d1z_1);
+  result = imul(result, 31) + getStringHashCode(this.e1z_1) | 0;
+  result = imul(result, 31) + hashCode(this.f1z_1) | 0;
   return result;
 };
 protoOf(TraverseAdjustment$sides$Acc).equals = function (other) {
@@ -30044,11 +30128,11 @@ protoOf(TraverseAdjustment$sides$Acc).equals = function (other) {
   if (!(other instanceof TraverseAdjustment$sides$Acc))
     return false;
   var tmp0_other_with_cast = other instanceof TraverseAdjustment$sides$Acc ? other : THROW_CCE();
-  if (!(this.y1y_1 === tmp0_other_with_cast.y1y_1))
+  if (!(this.d1z_1 === tmp0_other_with_cast.d1z_1))
     return false;
-  if (!(this.z1y_1 === tmp0_other_with_cast.z1y_1))
+  if (!(this.e1z_1 === tmp0_other_with_cast.e1z_1))
     return false;
-  if (!equals(this.a1z_1, tmp0_other_with_cast.a1z_1))
+  if (!equals(this.f1z_1, tmp0_other_with_cast.f1z_1))
     return false;
   return true;
 };
@@ -30069,7 +30153,7 @@ function TraverseAdjustment$adjust$lambda_0($names) {
 function TraverseAdjustment() {
   this.u1b_1 = 206264.80624709636;
 }
-protoOf(TraverseAdjustment).l1y = function (ax, ay, bx, by) {
+protoOf(TraverseAdjustment).q1y = function (ax, ay, bx, by) {
   var tmp = TraverseAngles_instance;
   var tmp_0 = KMath_instance;
   var tmp0 = by - ay;
@@ -30078,7 +30162,7 @@ protoOf(TraverseAdjustment).l1y = function (ax, ay, bx, by) {
   var tmp$ret$0 = Math.atan2(tmp0, x);
   return tmp.rj(tmp_0.hh(tmp$ret$0));
 };
-protoOf(TraverseAdjustment).b1z = function (stations, settings) {
+protoOf(TraverseAdjustment).g1z = function (stations, settings) {
   var map = LinkedHashMap_init_$Create$();
   // Inline function 'kotlin.collections.forEach' call
   var _iterator__ex2g4s = stations.j();
@@ -30094,14 +30178,14 @@ protoOf(TraverseAdjustment).b1z = function (stations, settings) {
   var _iterator__ex2g4s_0 = this_0.j();
   while (_iterator__ex2g4s_0.k()) {
     var item = _iterator__ex2g4s_0.l();
-    var diff = item.a1z_1.o() >= 2 ? (max(item.a1z_1) - min(item.a1z_1)) * 1000.0 : null;
-    var tmp$ret$2 = new TraverseSide(item.y1y_1, item.z1y_1, toList_0(item.a1z_1), average(item.a1z_1), diff, diff == null || diff <= settings.t1h_1);
+    var diff = item.f1z_1.o() >= 2 ? (max(item.f1z_1) - min(item.f1z_1)) * 1000.0 : null;
+    var tmp$ret$2 = new TraverseSide(item.d1z_1, item.e1z_1, toList_0(item.f1z_1), average(item.f1z_1), diff, diff == null || diff <= settings.t1h_1);
     destination.f(tmp$ret$2);
   }
   return destination;
 };
 protoOf(TraverseAdjustment).v1b = function (stations, controls, settings) {
-  var sides = this.b1z(stations, settings);
+  var sides = this.g1z(stations, settings);
   // Inline function 'kotlin.collections.associate' call
   var capacity = coerceAtLeast_0(mapCapacity(collectionSizeOrDefault(controls, 10)), 16);
   // Inline function 'kotlin.collections.associateTo' call
@@ -30141,7 +30225,7 @@ protoOf(TraverseAdjustment).v1b = function (stations, controls, settings) {
       }
     }
      while (inductionVariable < last);
-  var chainWarnings = this_0.z4();
+  var chainWarnings = this_0.a5();
   var closure_0 = closure(this, stations, angles, sides, known, settings);
   var tmp;
   try {
@@ -30227,7 +30311,7 @@ protoOf(TraverseAdjustment).b1c = function (stations, controls, settings) {
     destination_0.f(tmp$ret$20);
   }
   var angles = destination_0;
-  var sides = this.b1z(stations, settings);
+  var sides = this.g1z(stations, settings);
   var conditional = false;
   var first_0 = first(stations);
   var s0 = key(this, first_0.n1c());
@@ -30261,7 +30345,7 @@ protoOf(TraverseAdjustment).b1c = function (stations, controls, settings) {
     if (measured == null)
       helperKey = b0;
     // Inline function 'kotlin.collections.set' call
-    var value_1 = new Xy(start.d1y_1 + (measured == null ? 100.0 : measured), start.e1y_1);
+    var value_1 = new Xy(start.i1y_1 + (measured == null ? 100.0 : measured), start.j1y_1);
     coords.l3(b0, value_1);
     conditional = true;
   }
@@ -30293,7 +30377,7 @@ protoOf(TraverseAdjustment).b1c = function (stations, controls, settings) {
         // Inline function 'kotlin.collections.contains' call
         // Inline function 'kotlin.collections.containsKey' call
         var tmp$ret$34 = (isInterface(controlMap, KtMap) ? controlMap : THROW_CCE()).g2(k_0);
-        tmp_2 = new AdjustedPoint(name, tmp0_safe_receiver.d1y_1, tmp0_safe_receiver.e1y_1, tmp$ret$34);
+        tmp_2 = new AdjustedPoint(name, tmp0_safe_receiver.i1y_1, tmp0_safe_receiver.j1y_1, tmp$ret$34);
       }
       tmp$ret$32 = tmp_2;
     }
@@ -30308,7 +30392,7 @@ protoOf(TraverseAdjustment).b1c = function (stations, controls, settings) {
   var points = destination_1;
   return to(points, conditional);
 };
-protoOf(TraverseAdjustment).w1y = function (a) {
+protoOf(TraverseAdjustment).b1z = function (a) {
   var n = a.length;
   var tmp0 = until(0, n);
   var tmp$ret$0;
@@ -30450,23 +30534,23 @@ function TraverseAdjustment_getInstance() {
   return TraverseAdjustment_instance;
 }
 function TraverseSide(from, to, measurements, mean, diffMm, ok) {
-  this.f1y_1 = from;
-  this.g1y_1 = to;
-  this.h1y_1 = measurements;
-  this.i1y_1 = mean;
-  this.j1y_1 = diffMm;
-  this.k1y_1 = ok;
+  this.k1y_1 = from;
+  this.l1y_1 = to;
+  this.m1y_1 = measurements;
+  this.n1y_1 = mean;
+  this.o1y_1 = diffMm;
+  this.p1y_1 = ok;
 }
 protoOf(TraverseSide).toString = function () {
-  return 'TraverseSide(from=' + this.f1y_1 + ', to=' + this.g1y_1 + ', measurements=' + toString(this.h1y_1) + ', mean=' + this.i1y_1 + ', diffMm=' + this.j1y_1 + ', ok=' + this.k1y_1 + ')';
+  return 'TraverseSide(from=' + this.k1y_1 + ', to=' + this.l1y_1 + ', measurements=' + toString(this.m1y_1) + ', mean=' + this.n1y_1 + ', diffMm=' + this.o1y_1 + ', ok=' + this.p1y_1 + ')';
 };
 protoOf(TraverseSide).hashCode = function () {
-  var result = getStringHashCode(this.f1y_1);
-  result = imul(result, 31) + getStringHashCode(this.g1y_1) | 0;
-  result = imul(result, 31) + hashCode(this.h1y_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.i1y_1) | 0;
-  result = imul(result, 31) + (this.j1y_1 == null ? 0 : getNumberHashCode(this.j1y_1)) | 0;
-  result = imul(result, 31) + getBooleanHashCode(this.k1y_1) | 0;
+  var result = getStringHashCode(this.k1y_1);
+  result = imul(result, 31) + getStringHashCode(this.l1y_1) | 0;
+  result = imul(result, 31) + hashCode(this.m1y_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.n1y_1) | 0;
+  result = imul(result, 31) + (this.o1y_1 == null ? 0 : getNumberHashCode(this.o1y_1)) | 0;
+  result = imul(result, 31) + getBooleanHashCode(this.p1y_1) | 0;
   return result;
 };
 protoOf(TraverseSide).equals = function (other) {
@@ -30475,17 +30559,17 @@ protoOf(TraverseSide).equals = function (other) {
   if (!(other instanceof TraverseSide))
     return false;
   var tmp0_other_with_cast = other instanceof TraverseSide ? other : THROW_CCE();
-  if (!(this.f1y_1 === tmp0_other_with_cast.f1y_1))
-    return false;
-  if (!(this.g1y_1 === tmp0_other_with_cast.g1y_1))
-    return false;
-  if (!equals(this.h1y_1, tmp0_other_with_cast.h1y_1))
-    return false;
-  if (!equals(this.i1y_1, tmp0_other_with_cast.i1y_1))
-    return false;
-  if (!equals(this.j1y_1, tmp0_other_with_cast.j1y_1))
-    return false;
   if (!(this.k1y_1 === tmp0_other_with_cast.k1y_1))
+    return false;
+  if (!(this.l1y_1 === tmp0_other_with_cast.l1y_1))
+    return false;
+  if (!equals(this.m1y_1, tmp0_other_with_cast.m1y_1))
+    return false;
+  if (!equals(this.n1y_1, tmp0_other_with_cast.n1y_1))
+    return false;
+  if (!equals(this.o1y_1, tmp0_other_with_cast.o1y_1))
+    return false;
+  if (!(this.p1y_1 === tmp0_other_with_cast.p1y_1))
     return false;
   return true;
 };
@@ -30501,7 +30585,7 @@ function TraverseLsq(points, angles, sides, observationCount, unknownCount, iter
   this.k1c_1 = weakestPoint;
   this.l1c_1 = skipped;
 }
-protoOf(TraverseLsq).c1z = function () {
+protoOf(TraverseLsq).h1z = function () {
   return this.f1c_1 - this.g1c_1 | 0;
 };
 protoOf(TraverseLsq).toString = function () {
@@ -30657,23 +30741,23 @@ protoOf(AdjustedAngle).equals = function (other) {
   return true;
 };
 function AdjustedSide(from, to, measured, adjusted, vMm, azimuth) {
-  this.d1z_1 = from;
-  this.e1z_1 = to;
-  this.f1z_1 = measured;
-  this.g1z_1 = adjusted;
-  this.h1z_1 = vMm;
-  this.i1z_1 = azimuth;
+  this.i1z_1 = from;
+  this.j1z_1 = to;
+  this.k1z_1 = measured;
+  this.l1z_1 = adjusted;
+  this.m1z_1 = vMm;
+  this.n1z_1 = azimuth;
 }
 protoOf(AdjustedSide).toString = function () {
-  return 'AdjustedSide(from=' + this.d1z_1 + ', to=' + this.e1z_1 + ', measured=' + this.f1z_1 + ', adjusted=' + this.g1z_1 + ', vMm=' + this.h1z_1 + ', azimuth=' + this.i1z_1 + ')';
+  return 'AdjustedSide(from=' + this.i1z_1 + ', to=' + this.j1z_1 + ', measured=' + this.k1z_1 + ', adjusted=' + this.l1z_1 + ', vMm=' + this.m1z_1 + ', azimuth=' + this.n1z_1 + ')';
 };
 protoOf(AdjustedSide).hashCode = function () {
-  var result = getStringHashCode(this.d1z_1);
-  result = imul(result, 31) + getStringHashCode(this.e1z_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.f1z_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.g1z_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.h1z_1) | 0;
-  result = imul(result, 31) + getNumberHashCode(this.i1z_1) | 0;
+  var result = getStringHashCode(this.i1z_1);
+  result = imul(result, 31) + getStringHashCode(this.j1z_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.k1z_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.l1z_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.m1z_1) | 0;
+  result = imul(result, 31) + getNumberHashCode(this.n1z_1) | 0;
   return result;
 };
 protoOf(AdjustedSide).equals = function (other) {
@@ -30682,17 +30766,17 @@ protoOf(AdjustedSide).equals = function (other) {
   if (!(other instanceof AdjustedSide))
     return false;
   var tmp0_other_with_cast = other instanceof AdjustedSide ? other : THROW_CCE();
-  if (!(this.d1z_1 === tmp0_other_with_cast.d1z_1))
+  if (!(this.i1z_1 === tmp0_other_with_cast.i1z_1))
     return false;
-  if (!(this.e1z_1 === tmp0_other_with_cast.e1z_1))
+  if (!(this.j1z_1 === tmp0_other_with_cast.j1z_1))
     return false;
-  if (!equals(this.f1z_1, tmp0_other_with_cast.f1z_1))
+  if (!equals(this.k1z_1, tmp0_other_with_cast.k1z_1))
     return false;
-  if (!equals(this.g1z_1, tmp0_other_with_cast.g1z_1))
+  if (!equals(this.l1z_1, tmp0_other_with_cast.l1z_1))
     return false;
-  if (!equals(this.h1z_1, tmp0_other_with_cast.h1z_1))
+  if (!equals(this.m1z_1, tmp0_other_with_cast.m1z_1))
     return false;
-  if (!equals(this.i1z_1, tmp0_other_with_cast.i1z_1))
+  if (!equals(this.n1z_1, tmp0_other_with_cast.n1z_1))
     return false;
   return true;
 };
@@ -30847,11 +30931,11 @@ protoOf(TraverseAngles).t10 = function (deg, secDecimals) {
   var sText = secDecimals === 0 ? formatUs('%02d', [numberToLong(s)]) : formatUs('%0' + (3 + secDecimals | 0) + '.' + secDecimals + 'f', [s]);
   return (negative ? '\u2212' : '') + (d.toString() + '\xB0') + formatUs('%02d', [m]) + '\u2032' + sText + '\u2033';
 };
-protoOf(TraverseAngles).j1z = function (deg, secDecimals, $super) {
+protoOf(TraverseAngles).o1z = function (deg, secDecimals, $super) {
   secDecimals = secDecimals === VOID ? 0 : secDecimals;
   return $super === VOID ? this.t10(deg, secDecimals) : $super.t10.call(this, deg, secDecimals);
 };
-protoOf(TraverseAngles).k1z = function (deg) {
+protoOf(TraverseAngles).p1z = function (deg) {
   var totalTenths = roundToLong(this.rj(deg) * 36000.0).u2(new Long(12960000, 0));
   // Inline function 'kotlin.Long.div' call
   var d = totalTenths.t2(toLong(36000));
@@ -30877,7 +30961,7 @@ protoOf(TraverseAngles).t1d = function (sec, decimals, signed) {
   if (a < 60.0)
     return sign + formatUs('%.' + decimals + 'f\u2033', [a]);
   if (a >= 3600.0)
-    return sign + this.j1z(a / 3600.0);
+    return sign + this.o1z(a / 3600.0);
   // Inline function 'kotlin.math.floor' call
   var x = a / 60.0;
   var tmp$ret$2 = Math.floor(x);
@@ -30908,14 +30992,14 @@ function TraverseStationResult(rounds, angle, c2VariationSec, roundDeviationsSec
   this.c1d_1 = issues;
   this.d1d_1 = problems;
 }
-protoOf(TraverseStationResult).v1x = function () {
+protoOf(TraverseStationResult).a1y = function () {
   // Inline function 'kotlin.collections.isNotEmpty' call
   return !this.d1d_1.n();
 };
-protoOf(TraverseStationResult).l1z = function (rounds, angle, c2VariationSec, roundDeviationsSec, roundSpreadSec, completeRounds, issues, problems) {
+protoOf(TraverseStationResult).q1z = function (rounds, angle, c2VariationSec, roundDeviationsSec, roundSpreadSec, completeRounds, issues, problems) {
   return new TraverseStationResult(rounds, angle, c2VariationSec, roundDeviationsSec, roundSpreadSec, completeRounds, issues, problems);
 };
-protoOf(TraverseStationResult).m1z = function (rounds, angle, c2VariationSec, roundDeviationsSec, roundSpreadSec, completeRounds, issues, problems, $super) {
+protoOf(TraverseStationResult).r1z = function (rounds, angle, c2VariationSec, roundDeviationsSec, roundSpreadSec, completeRounds, issues, problems, $super) {
   rounds = rounds === VOID ? this.w1c_1 : rounds;
   angle = angle === VOID ? this.x1c_1 : angle;
   c2VariationSec = c2VariationSec === VOID ? this.y1c_1 : c2VariationSec;
@@ -30924,7 +31008,7 @@ protoOf(TraverseStationResult).m1z = function (rounds, angle, c2VariationSec, ro
   completeRounds = completeRounds === VOID ? this.b1d_1 : completeRounds;
   issues = issues === VOID ? this.c1d_1 : issues;
   problems = problems === VOID ? this.d1d_1 : problems;
-  return $super === VOID ? this.l1z(rounds, angle, c2VariationSec, roundDeviationsSec, roundSpreadSec, completeRounds, issues, problems) : $super.l1z.call(this, rounds, angle, c2VariationSec, roundDeviationsSec, roundSpreadSec, completeRounds, issues, problems);
+  return $super === VOID ? this.q1z(rounds, angle, c2VariationSec, roundDeviationsSec, roundSpreadSec, completeRounds, issues, problems) : $super.q1z.call(this, rounds, angle, c2VariationSec, roundDeviationsSec, roundSpreadSec, completeRounds, issues, problems);
 };
 protoOf(TraverseStationResult).toString = function () {
   return 'TraverseStationResult(rounds=' + toString(this.w1c_1) + ', angle=' + this.x1c_1 + ', c2VariationSec=' + this.y1c_1 + ', roundDeviationsSec=' + toString(this.z1c_1) + ', roundSpreadSec=' + this.a1d_1 + ', completeRounds=' + this.b1d_1 + ', issues=' + toString(this.c1d_1) + ', problems=' + toString(this.d1d_1) + ')';
@@ -30980,17 +31064,17 @@ function meanAngle($this, values) {
 }
 function TraverseStationChecks() {
 }
-protoOf(TraverseStationChecks).n1z = function (left, right) {
+protoOf(TraverseStationChecks).s1z = function (left, right) {
   return TraverseAngles_instance.j1p(left - right - 180.0) * 3600.0;
 };
-protoOf(TraverseStationChecks).o1z = function (back, fore) {
+protoOf(TraverseStationChecks).t1z = function (back, fore) {
   return TraverseAngles_instance.rj(fore - back);
 };
-protoOf(TraverseStationChecks).p1z = function (index, r) {
-  var c2Back = !(r.e1i_1 == null) && !(r.g1i_1 == null) ? this.n1z(r.e1i_1, r.g1i_1) : null;
-  var c2Fore = !(r.f1i_1 == null) && !(r.h1i_1 == null) ? this.n1z(r.f1i_1, r.h1i_1) : null;
-  var left = !(r.e1i_1 == null) && !(r.f1i_1 == null) ? this.o1z(r.e1i_1, r.f1i_1) : null;
-  var right = !(r.g1i_1 == null) && !(r.h1i_1 == null) ? this.o1z(r.g1i_1, r.h1i_1) : null;
+protoOf(TraverseStationChecks).u1z = function (index, r) {
+  var c2Back = !(r.e1i_1 == null) && !(r.g1i_1 == null) ? this.s1z(r.e1i_1, r.g1i_1) : null;
+  var c2Fore = !(r.f1i_1 == null) && !(r.h1i_1 == null) ? this.s1z(r.f1i_1, r.h1i_1) : null;
+  var left = !(r.e1i_1 == null) && !(r.f1i_1 == null) ? this.t1z(r.e1i_1, r.f1i_1) : null;
+  var right = !(r.g1i_1 == null) && !(r.h1i_1 == null) ? this.t1z(r.g1i_1, r.h1i_1) : null;
   var diff = !(left == null) && !(right == null) ? TraverseAngles_instance.j1p(left - right) * 3600.0 : null;
   // Inline function 'kotlin.takeIf' call
   var this_0 = listOfNotNull([left, right]);
@@ -31011,7 +31095,7 @@ protoOf(TraverseStationChecks).p1z = function (index, r) {
   }
   return new RoundResult(index, c2Back, c2Fore, left, right, diff, tmp_0);
 };
-protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
+protoOf(TraverseStationChecks).v1z = function (rounds, settings) {
   // Inline function 'kotlin.collections.mapIndexed' call
   // Inline function 'kotlin.collections.mapIndexedTo' call
   var destination = ArrayList_init_$Create$_0(collectionSizeOrDefault(rounds, 10));
@@ -31022,7 +31106,7 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
     var _unary__edvuaz = index;
     index = _unary__edvuaz + 1 | 0;
     var i = checkIndexOverflow(_unary__edvuaz);
-    var tmp$ret$0 = TraverseStationChecks_instance.p1z(i, item);
+    var tmp$ret$0 = TraverseStationChecks_instance.u1z(i, item);
     destination.f(tmp$ret$0);
   }
   var results = destination;
@@ -31032,7 +31116,7 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
   var _iterator__ex2g4s_0 = results.j();
   while (_iterator__ex2g4s_0.k()) {
     var element = _iterator__ex2g4s_0.l();
-    if (element.y1z()) {
+    if (element.d20()) {
       destination_0.f(element);
     }
   }
@@ -31045,7 +31129,7 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
     var _iterator__ex2g4s_1 = results.j();
     while (_iterator__ex2g4s_1.k()) {
       var element_0 = _iterator__ex2g4s_1.l();
-      if (!(element_0.x1z_1 == null)) {
+      if (!(element_0.c20_1 == null)) {
         destination_1.f(element_0);
       }
     }
@@ -31061,7 +31145,7 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
   var _iterator__ex2g4s_2 = basis.j();
   while (_iterator__ex2g4s_2.k()) {
     var element_1 = _iterator__ex2g4s_2.l();
-    var tmp0_safe_receiver = element_1.x1z_1;
+    var tmp0_safe_receiver = element_1.c20_1;
     if (tmp0_safe_receiver == null)
       null;
     else {
@@ -31092,7 +31176,7 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
   var _iterator__ex2g4s_3 = results.j();
   while (_iterator__ex2g4s_3.k()) {
     var element_2 = _iterator__ex2g4s_3.l();
-    var list = listOfNotNull([element_2.s1z_1, element_2.t1z_1]);
+    var list = listOfNotNull([element_2.x1z_1, element_2.y1z_1]);
     addAll(destination_3, list);
   }
   var c2Values = destination_3;
@@ -31103,7 +31187,7 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
   var _iterator__ex2g4s_4 = results.j();
   while (_iterator__ex2g4s_4.k()) {
     var item_0 = _iterator__ex2g4s_4.l();
-    var tmp$ret$26 = !(stationAngle == null) && !(item_0.x1z_1 == null) ? TraverseAngles_instance.j1p(item_0.x1z_1 - stationAngle) * 3600.0 : null;
+    var tmp$ret$26 = !(stationAngle == null) && !(item_0.c20_1 == null) ? TraverseAngles_instance.j1p(item_0.c20_1 - stationAngle) * 3600.0 : null;
     destination_4.f(tmp$ret$26);
   }
   var deviations = destination_4;
@@ -31113,7 +31197,7 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
   var _iterator__ex2g4s_5 = results.j();
   while (_iterator__ex2g4s_5.k()) {
     var element_3 = _iterator__ex2g4s_5.l();
-    if (element_3.y1z()) {
+    if (element_3.d20()) {
       destination_5.f(element_3);
     }
   }
@@ -31124,7 +31208,7 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
   var _iterator__ex2g4s_6 = destination_5.j();
   while (_iterator__ex2g4s_6.k()) {
     var element_4 = _iterator__ex2g4s_6.l();
-    var tmp0_safe_receiver_1 = element_4.x1z_1;
+    var tmp0_safe_receiver_1 = element_4.c20_1;
     if (tmp0_safe_receiver_1 == null)
       null;
     else {
@@ -31161,7 +31245,7 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
     var _iterator__ex2g4s_8 = results.j();
     while (_iterator__ex2g4s_8.k()) {
       var element_5 = _iterator__ex2g4s_8.l();
-      if (element_5.y1z()) {
+      if (element_5.d20()) {
         tmp$ret$45 = element_5;
         break $l$block;
       }
@@ -31169,11 +31253,11 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
     tmp$ret$45 = null;
   }
   var tmp1_safe_receiver = tmp$ret$45;
-  var tmp2_elvis_lhs = tmp1_safe_receiver == null ? null : tmp1_safe_receiver.x1z_1;
+  var tmp2_elvis_lhs = tmp1_safe_receiver == null ? null : tmp1_safe_receiver.c20_1;
   var tmp_3;
   if (tmp2_elvis_lhs == null) {
     var tmp3_safe_receiver = firstOrNull(results);
-    tmp_3 = tmp3_safe_receiver == null ? null : tmp3_safe_receiver.u1z_1;
+    tmp_3 = tmp3_safe_receiver == null ? null : tmp3_safe_receiver.z1z_1;
   } else {
     tmp_3 = tmp2_elvis_lhs;
   }
@@ -31189,9 +31273,9 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
     var r = rounds.m(i_0);
     var n = i_0 + 1 | 0;
     var tmp_4;
-    if (!(item_2.s1z_1 == null)) {
+    if (!(item_2.x1z_1 == null)) {
       // Inline function 'kotlin.math.abs' call
-      var x = item_2.s1z_1;
+      var x = item_2.x1z_1;
       tmp_4 = Math.abs(x) > settings.p1h_1;
     } else {
       tmp_4 = false;
@@ -31199,51 +31283,51 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
     if (tmp_4) {
       var tmp2 = to(i_0, RoundReading_RIGHT_BACK_getInstance());
       // Inline function 'kotlin.collections.set' call
-      var value = new ReadingIssue(TraverseAngles_instance.rj(ensureNotNull(r.e1i_1) + 180.0), item_2.s1z_1, '2C \u043D\u0430 \u0437\u0430\u0434\u043D\u044E\u044E ' + TraverseAngles_instance.s1d(item_2.s1z_1) + ' > ' + TraverseAngles_instance.t1d(settings.p1h_1, 0, false));
+      var value = new ReadingIssue(TraverseAngles_instance.rj(ensureNotNull(r.e1i_1) + 180.0), item_2.x1z_1, '2C \u043D\u0430 \u0437\u0430\u0434\u043D\u044E\u044E ' + TraverseAngles_instance.s1d(item_2.x1z_1) + ' > ' + TraverseAngles_instance.t1d(settings.p1h_1, 0, false));
       issues.l3(tmp2, value);
       // Inline function 'kotlin.collections.plusAssign' call
-      var element_6 = '\u041F\u0440\u0438\u0451\u043C ' + n + ': 2C \u043D\u0430 \u0437\u0430\u0434\u043D\u044E\u044E ' + TraverseAngles_instance.s1d(item_2.s1z_1) + ' (\u0434\u043E\u043F. \xB1' + TraverseAngles_instance.t1d(settings.p1h_1, 0, false) + ')';
+      var element_6 = '\u041F\u0440\u0438\u0451\u043C ' + n + ': 2C \u043D\u0430 \u0437\u0430\u0434\u043D\u044E\u044E ' + TraverseAngles_instance.s1d(item_2.x1z_1) + ' (\u0434\u043E\u043F. \xB1' + TraverseAngles_instance.t1d(settings.p1h_1, 0, false) + ')';
       problems.f(element_6);
     }
     var tmp_5;
-    if (!(item_2.w1z_1 == null)) {
+    if (!(item_2.b20_1 == null)) {
       // Inline function 'kotlin.math.abs' call
-      var x_0 = item_2.w1z_1;
+      var x_0 = item_2.b20_1;
       tmp_5 = Math.abs(x_0) > settings.r1h_1;
     } else {
       tmp_5 = false;
     }
     if (tmp_5) {
       var tmp2_0 = to(i_0, RoundReading_RIGHT_FORE_getInstance());
-      var tmp_6 = TraverseAngles_instance.rj(ensureNotNull(r.g1i_1) + ensureNotNull(item_2.u1z_1));
-      var tmp_7 = -item_2.w1z_1;
+      var tmp_6 = TraverseAngles_instance.rj(ensureNotNull(r.g1i_1) + ensureNotNull(item_2.z1z_1));
+      var tmp_7 = -item_2.b20_1;
       var tmp_8 = TraverseAngles_instance;
       // Inline function 'kotlin.math.abs' call
-      var x_1 = item_2.w1z_1;
+      var x_1 = item_2.b20_1;
       var tmp$ret$50 = Math.abs(x_1);
       // Inline function 'kotlin.collections.set' call
       var value_0 = new ReadingIssue(tmp_6, tmp_7, '\u041F\u043E\u043B\u0443\u043F\u0440\u0438\u0451\u043C\u044B \u0440\u0430\u0441\u0445\u043E\u0434\u044F\u0442\u0441\u044F \u043D\u0430 ' + tmp_8.s1d(tmp$ret$50, VOID, false));
       issues.l3(tmp2_0, value_0);
       // Inline function 'kotlin.collections.plusAssign' call
-      var element_7 = '\u041F\u0440\u0438\u0451\u043C ' + n + ': \u0440\u0430\u0441\u0445\u043E\u0436\u0434\u0435\u043D\u0438\u0435 \u043F\u043E\u043B\u0443\u043F\u0440\u0438\u0451\u043C\u043E\u0432 ' + TraverseAngles_instance.s1d(item_2.w1z_1) + ' (\u0434\u043E\u043F. ' + TraverseAngles_instance.t1d(settings.r1h_1, 0, false) + ')';
+      var element_7 = '\u041F\u0440\u0438\u0451\u043C ' + n + ': \u0440\u0430\u0441\u0445\u043E\u0436\u0434\u0435\u043D\u0438\u0435 \u043F\u043E\u043B\u0443\u043F\u0440\u0438\u0451\u043C\u043E\u0432 ' + TraverseAngles_instance.s1d(item_2.b20_1) + ' (\u0434\u043E\u043F. ' + TraverseAngles_instance.t1d(settings.r1h_1, 0, false) + ')';
       problems.f(element_7);
     }
     var tmp_9;
-    if (!(item_2.t1z_1 == null)) {
+    if (!(item_2.y1z_1 == null)) {
       // Inline function 'kotlin.math.abs' call
-      var x_2 = item_2.t1z_1;
+      var x_2 = item_2.y1z_1;
       tmp_9 = Math.abs(x_2) > settings.p1h_1;
     } else {
       tmp_9 = false;
     }
     if (tmp_9) {
-      putIfMissing(issues, to(i_0, RoundReading_RIGHT_FORE_getInstance()), new ReadingIssue(TraverseAngles_instance.rj(ensureNotNull(r.f1i_1) + 180.0), item_2.t1z_1, '2C \u043D\u0430 \u043F\u0435\u0440\u0435\u0434\u043D\u044E\u044E ' + TraverseAngles_instance.s1d(item_2.t1z_1) + ' > ' + TraverseAngles_instance.t1d(settings.p1h_1, 0, false)));
+      putIfMissing(issues, to(i_0, RoundReading_RIGHT_FORE_getInstance()), new ReadingIssue(TraverseAngles_instance.rj(ensureNotNull(r.f1i_1) + 180.0), item_2.y1z_1, '2C \u043D\u0430 \u043F\u0435\u0440\u0435\u0434\u043D\u044E\u044E ' + TraverseAngles_instance.s1d(item_2.y1z_1) + ' > ' + TraverseAngles_instance.t1d(settings.p1h_1, 0, false)));
       // Inline function 'kotlin.collections.plusAssign' call
-      var element_8 = '\u041F\u0440\u0438\u0451\u043C ' + n + ': 2C \u043D\u0430 \u043F\u0435\u0440\u0435\u0434\u043D\u044E\u044E ' + TraverseAngles_instance.s1d(item_2.t1z_1) + ' (\u0434\u043E\u043F. \xB1' + TraverseAngles_instance.t1d(settings.p1h_1, 0, false) + ')';
+      var element_8 = '\u041F\u0440\u0438\u0451\u043C ' + n + ': 2C \u043D\u0430 \u043F\u0435\u0440\u0435\u0434\u043D\u044E\u044E ' + TraverseAngles_instance.s1d(item_2.y1z_1) + ' (\u0434\u043E\u043F. \xB1' + TraverseAngles_instance.t1d(settings.p1h_1, 0, false) + ')';
       problems.f(element_8);
     }
-    if (i_0 > 0 && !(firstAngle == null) && !(item_2.u1z_1 == null)) {
-      var dev = TraverseAngles_instance.j1p(item_2.u1z_1 - firstAngle) * 3600.0;
+    if (i_0 > 0 && !(firstAngle == null) && !(item_2.z1z_1 == null)) {
+      var dev = TraverseAngles_instance.j1p(item_2.z1z_1 - firstAngle) * 3600.0;
       // Inline function 'kotlin.math.abs' call
       if (Math.abs(dev) > settings.s1h_1) {
         var tmp2_1 = to(i_0, RoundReading_LEFT_FORE_getInstance());
@@ -31284,7 +31368,7 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
     var _iterator__ex2g4s_10 = results.j();
     while (_iterator__ex2g4s_10.k()) {
       var element_11 = _iterator__ex2g4s_10.l();
-      if (element_11.y1z()) {
+      if (element_11.d20()) {
         count = count + 1 | 0;
         checkCountOverflow(count);
       }
@@ -31299,7 +31383,7 @@ protoOf(TraverseStationChecks).q1z = function (rounds, settings) {
   }
   return new TraverseStationResult(results, stationAngle, c2Variation, deviations, spread, complete, issues, problems);
 };
-protoOf(TraverseStationChecks).z1z = function (rounds, index, reading) {
+protoOf(TraverseStationChecks).e20 = function (rounds, index, reading) {
   var tmp0_elvis_lhs = getOrNull(rounds, index);
   var tmp;
   if (tmp0_elvis_lhs == null) {
@@ -31315,7 +31399,7 @@ protoOf(TraverseStationChecks).z1z = function (rounds, index, reading) {
     var _iterator__ex2g4s = tmp0.j();
     while (_iterator__ex2g4s.k()) {
       var element = _iterator__ex2g4s.l();
-      var result = TraverseStationChecks_instance.p1z(0, element).x1z_1;
+      var result = TraverseStationChecks_instance.u1z(0, element).c20_1;
       if (!(result == null)) {
         tmp$ret$1 = result;
         break $l$block;
@@ -31345,7 +31429,7 @@ protoOf(TraverseStationChecks).z1z = function (rounds, index, reading) {
       tmp_0 = tmp_1;
       break;
     case 3:
-      tmp_0 = !(r.g1i_1 == null) && !(r.e1i_1 == null) && !(r.f1i_1 == null) ? TraverseAngles_instance.rj(r.g1i_1 + this.o1z(r.e1i_1, r.f1i_1)) : !(r.f1i_1 == null) ? TraverseAngles_instance.rj(r.f1i_1 + 180.0) : null;
+      tmp_0 = !(r.g1i_1 == null) && !(r.e1i_1 == null) && !(r.f1i_1 == null) ? TraverseAngles_instance.rj(r.g1i_1 + this.t1z(r.e1i_1, r.f1i_1)) : !(r.f1i_1 == null) ? TraverseAngles_instance.rj(r.f1i_1 + 180.0) : null;
       break;
     default:
       noWhenBranchMatchedException();
@@ -31354,7 +31438,7 @@ protoOf(TraverseStationChecks).z1z = function (rounds, index, reading) {
   return tmp_0;
 };
 protoOf(TraverseStationChecks).e1d = function (station, settings) {
-  return this.q1z(station.m1e(), settings);
+  return this.v1z(station.m1e(), settings);
 };
 protoOf(TraverseStationChecks).d18 = function (name) {
   // Inline function 'kotlin.text.trim' call
@@ -31362,7 +31446,7 @@ protoOf(TraverseStationChecks).d18 = function (name) {
   // Inline function 'kotlin.js.asDynamic' call
   return toString(trim(isCharSequence(name) ? name : THROW_CCE())).toLowerCase();
 };
-protoOf(TraverseStationChecks).a20 = function (previous, stationName, backName) {
+protoOf(TraverseStationChecks).f20 = function (previous, stationName, backName) {
   var s = this.d18(stationName);
   var b = this.d18(backName);
   var tmp;
@@ -31412,7 +31496,7 @@ protoOf(TraverseStationChecks).a20 = function (previous, stationName, backName) 
   }
   return tmp_0;
 };
-protoOf(TraverseStationChecks).b20 = function (distance, expected, settings, label) {
+protoOf(TraverseStationChecks).g20 = function (distance, expected, settings, label) {
   // Inline function 'kotlin.collections.buildList' call
   // Inline function 'kotlin.collections.buildListInternal' call
   // Inline function 'kotlin.apply' call
@@ -31432,14 +31516,14 @@ protoOf(TraverseStationChecks).b20 = function (distance, expected, settings, lab
       this_0.f(label + ' ' + formatUs('%.2f', [distance]) + ' \u043C \u0432\u043D\u0435 \u043F\u0440\u0435\u0434\u0435\u043B\u043E\u0432 ' + numberToInt(settings.x1h_1) + '\u2013' + numberToInt(settings.y1h_1) + ' \u043C');
     }
   }
-  return this_0.z4();
+  return this_0.a5();
 };
-protoOf(TraverseStationChecks).c20 = function (station, previous, settings) {
+protoOf(TraverseStationChecks).h20 = function (station, previous, settings) {
   var base = this.e1d(station, settings);
-  var distanceProblems = plus(this.b20(station.v18(), this.a20(previous, station.n1c(), station.m1c()), settings, '\u0414\u043B\u0438\u043D\u0430 \u043D\u0430 \u0437\u0430\u0434\u043D\u044E\u044E'), this.b20(station.w18(), null, settings, '\u0414\u043B\u0438\u043D\u0430 \u043D\u0430 \u043F\u0435\u0440\u0435\u0434\u043D\u044E\u044E'));
-  return distanceProblems.n() ? base : base.m1z(VOID, VOID, VOID, VOID, VOID, VOID, VOID, plus(base.d1d_1, distanceProblems));
+  var distanceProblems = plus(this.g20(station.v18(), this.f20(previous, station.n1c(), station.m1c()), settings, '\u0414\u043B\u0438\u043D\u0430 \u043D\u0430 \u0437\u0430\u0434\u043D\u044E\u044E'), this.g20(station.w18(), null, settings, '\u0414\u043B\u0438\u043D\u0430 \u043D\u0430 \u043F\u0435\u0440\u0435\u0434\u043D\u044E\u044E'));
+  return distanceProblems.n() ? base : base.r1z(VOID, VOID, VOID, VOID, VOID, VOID, VOID, plus(base.d1d_1, distanceProblems));
 };
-protoOf(TraverseStationChecks).d20 = function (stations, settings) {
+protoOf(TraverseStationChecks).i20 = function (stations, settings) {
   // Inline function 'kotlin.collections.mapIndexed' call
   // Inline function 'kotlin.collections.mapIndexedTo' call
   var destination = ArrayList_init_$Create$_0(collectionSizeOrDefault(stations, 10));
@@ -31450,7 +31534,7 @@ protoOf(TraverseStationChecks).d20 = function (stations, settings) {
     var _unary__edvuaz = index;
     index = _unary__edvuaz + 1 | 0;
     var i = checkIndexOverflow(_unary__edvuaz);
-    var tmp$ret$0 = to(item.vs(), TraverseStationChecks_instance.c20(item, stations.e2(0, i), settings));
+    var tmp$ret$0 = to(item.vs(), TraverseStationChecks_instance.h20(item, stations.e2(0, i), settings));
     destination.f(tmp$ret$0);
   }
   return toMap(destination);
@@ -31463,13 +31547,13 @@ var RoundReading_LEFT_BACK_instance;
 var RoundReading_LEFT_FORE_instance;
 var RoundReading_RIGHT_BACK_instance;
 var RoundReading_RIGHT_FORE_instance;
-function values_34() {
+function values_35() {
   return [RoundReading_LEFT_BACK_getInstance(), RoundReading_LEFT_FORE_getInstance(), RoundReading_RIGHT_BACK_getInstance(), RoundReading_RIGHT_FORE_getInstance()];
 }
-function get_entries_34() {
-  if ($ENTRIES_34 == null)
-    $ENTRIES_34 = enumEntries(values_34());
-  return $ENTRIES_34;
+function get_entries_35() {
+  if ($ENTRIES_35 == null)
+    $ENTRIES_35 = enumEntries(values_35());
+  return $ENTRIES_35;
 }
 var RoundReading_entriesInitialized;
 function RoundReading_initEntries() {
@@ -31481,23 +31565,23 @@ function RoundReading_initEntries() {
   RoundReading_RIGHT_BACK_instance = new RoundReading('RIGHT_BACK', 2, '\u041A\u041F, \u0437\u0430\u0434\u043D\u044F\u044F');
   RoundReading_RIGHT_FORE_instance = new RoundReading('RIGHT_FORE', 3, '\u041A\u041F, \u043F\u0435\u0440\u0435\u0434\u043D\u044F\u044F');
 }
-var $ENTRIES_34;
+var $ENTRIES_35;
 function RoundReading(name, ordinal, label) {
   Enum.call(this, name, ordinal);
-  this.g20_1 = label;
+  this.l20_1 = label;
 }
 function ReadingIssue(expectedDeg, deviationSec, message) {
-  this.h20_1 = expectedDeg;
-  this.i20_1 = deviationSec;
-  this.j20_1 = message;
+  this.m20_1 = expectedDeg;
+  this.n20_1 = deviationSec;
+  this.o20_1 = message;
 }
 protoOf(ReadingIssue).toString = function () {
-  return 'ReadingIssue(expectedDeg=' + this.h20_1 + ', deviationSec=' + this.i20_1 + ', message=' + this.j20_1 + ')';
+  return 'ReadingIssue(expectedDeg=' + this.m20_1 + ', deviationSec=' + this.n20_1 + ', message=' + this.o20_1 + ')';
 };
 protoOf(ReadingIssue).hashCode = function () {
-  var result = getNumberHashCode(this.h20_1);
-  result = imul(result, 31) + getNumberHashCode(this.i20_1) | 0;
-  result = imul(result, 31) + getStringHashCode(this.j20_1) | 0;
+  var result = getNumberHashCode(this.m20_1);
+  result = imul(result, 31) + getNumberHashCode(this.n20_1) | 0;
+  result = imul(result, 31) + getStringHashCode(this.o20_1) | 0;
   return result;
 };
 protoOf(ReadingIssue).equals = function (other) {
@@ -31506,37 +31590,37 @@ protoOf(ReadingIssue).equals = function (other) {
   if (!(other instanceof ReadingIssue))
     return false;
   var tmp0_other_with_cast = other instanceof ReadingIssue ? other : THROW_CCE();
-  if (!equals(this.h20_1, tmp0_other_with_cast.h20_1))
+  if (!equals(this.m20_1, tmp0_other_with_cast.m20_1))
     return false;
-  if (!equals(this.i20_1, tmp0_other_with_cast.i20_1))
+  if (!equals(this.n20_1, tmp0_other_with_cast.n20_1))
     return false;
-  if (!(this.j20_1 === tmp0_other_with_cast.j20_1))
+  if (!(this.o20_1 === tmp0_other_with_cast.o20_1))
     return false;
   return true;
 };
 function RoundResult(index, c2Back, c2Fore, angleLeft, angleRight, halfRoundDiffSec, angle) {
-  this.r1z_1 = index;
-  this.s1z_1 = c2Back;
-  this.t1z_1 = c2Fore;
-  this.u1z_1 = angleLeft;
-  this.v1z_1 = angleRight;
-  this.w1z_1 = halfRoundDiffSec;
-  this.x1z_1 = angle;
+  this.w1z_1 = index;
+  this.x1z_1 = c2Back;
+  this.y1z_1 = c2Fore;
+  this.z1z_1 = angleLeft;
+  this.a20_1 = angleRight;
+  this.b20_1 = halfRoundDiffSec;
+  this.c20_1 = angle;
 }
-protoOf(RoundResult).y1z = function () {
-  return !(this.u1z_1 == null) && !(this.v1z_1 == null);
+protoOf(RoundResult).d20 = function () {
+  return !(this.z1z_1 == null) && !(this.a20_1 == null);
 };
 protoOf(RoundResult).toString = function () {
-  return 'RoundResult(index=' + this.r1z_1 + ', c2Back=' + this.s1z_1 + ', c2Fore=' + this.t1z_1 + ', angleLeft=' + this.u1z_1 + ', angleRight=' + this.v1z_1 + ', halfRoundDiffSec=' + this.w1z_1 + ', angle=' + this.x1z_1 + ')';
+  return 'RoundResult(index=' + this.w1z_1 + ', c2Back=' + this.x1z_1 + ', c2Fore=' + this.y1z_1 + ', angleLeft=' + this.z1z_1 + ', angleRight=' + this.a20_1 + ', halfRoundDiffSec=' + this.b20_1 + ', angle=' + this.c20_1 + ')';
 };
 protoOf(RoundResult).hashCode = function () {
-  var result = this.r1z_1;
-  result = imul(result, 31) + (this.s1z_1 == null ? 0 : getNumberHashCode(this.s1z_1)) | 0;
-  result = imul(result, 31) + (this.t1z_1 == null ? 0 : getNumberHashCode(this.t1z_1)) | 0;
-  result = imul(result, 31) + (this.u1z_1 == null ? 0 : getNumberHashCode(this.u1z_1)) | 0;
-  result = imul(result, 31) + (this.v1z_1 == null ? 0 : getNumberHashCode(this.v1z_1)) | 0;
-  result = imul(result, 31) + (this.w1z_1 == null ? 0 : getNumberHashCode(this.w1z_1)) | 0;
+  var result = this.w1z_1;
   result = imul(result, 31) + (this.x1z_1 == null ? 0 : getNumberHashCode(this.x1z_1)) | 0;
+  result = imul(result, 31) + (this.y1z_1 == null ? 0 : getNumberHashCode(this.y1z_1)) | 0;
+  result = imul(result, 31) + (this.z1z_1 == null ? 0 : getNumberHashCode(this.z1z_1)) | 0;
+  result = imul(result, 31) + (this.a20_1 == null ? 0 : getNumberHashCode(this.a20_1)) | 0;
+  result = imul(result, 31) + (this.b20_1 == null ? 0 : getNumberHashCode(this.b20_1)) | 0;
+  result = imul(result, 31) + (this.c20_1 == null ? 0 : getNumberHashCode(this.c20_1)) | 0;
   return result;
 };
 protoOf(RoundResult).equals = function (other) {
@@ -31545,19 +31629,19 @@ protoOf(RoundResult).equals = function (other) {
   if (!(other instanceof RoundResult))
     return false;
   var tmp0_other_with_cast = other instanceof RoundResult ? other : THROW_CCE();
-  if (!(this.r1z_1 === tmp0_other_with_cast.r1z_1))
-    return false;
-  if (!equals(this.s1z_1, tmp0_other_with_cast.s1z_1))
-    return false;
-  if (!equals(this.t1z_1, tmp0_other_with_cast.t1z_1))
-    return false;
-  if (!equals(this.u1z_1, tmp0_other_with_cast.u1z_1))
-    return false;
-  if (!equals(this.v1z_1, tmp0_other_with_cast.v1z_1))
-    return false;
-  if (!equals(this.w1z_1, tmp0_other_with_cast.w1z_1))
+  if (!(this.w1z_1 === tmp0_other_with_cast.w1z_1))
     return false;
   if (!equals(this.x1z_1, tmp0_other_with_cast.x1z_1))
+    return false;
+  if (!equals(this.y1z_1, tmp0_other_with_cast.y1z_1))
+    return false;
+  if (!equals(this.z1z_1, tmp0_other_with_cast.z1z_1))
+    return false;
+  if (!equals(this.a20_1, tmp0_other_with_cast.a20_1))
+    return false;
+  if (!equals(this.b20_1, tmp0_other_with_cast.b20_1))
+    return false;
+  if (!equals(this.c20_1, tmp0_other_with_cast.c20_1))
     return false;
   return true;
 };
@@ -31586,10 +31670,10 @@ function RoundReading_RIGHT_FORE_getInstance() {
 }
 function JSONObject_init_$Init$(text, $this) {
   JSONObject.call($this);
-  var v = (new JsonParser(text)).m20();
+  var v = (new JsonParser(text)).r20();
   if (!(v instanceof JSONObject))
     throw new JSONException('\u041E\u0436\u0438\u0434\u0430\u043B\u0441\u044F \u043E\u0431\u044A\u0435\u043A\u0442 JSON');
-  $this.bs_1.i5(v.bs_1);
+  $this.bs_1.s4(v.bs_1);
   return $this;
 }
 function JSONObject_init_$Create$(text) {
@@ -31608,8 +31692,8 @@ protoOf(JSONObject).cs = function (key, value) {
 protoOf(JSONObject).at = function (key) {
   return this.bs_1.g2(key);
 };
-protoOf(JSONObject).n20 = function (key) {
-  return this.bs_1.s4(key);
+protoOf(JSONObject).s20 = function (key) {
+  return this.bs_1.t4(key);
 };
 protoOf(JSONObject).rs = function () {
   return toList_0(this.bs_1.j2()).j();
@@ -31711,7 +31795,7 @@ protoOf(JSONObject).toString = function () {
   writeJson(this, this_0);
   return this_0.toString();
 };
-protoOf(JSONObject).o20 = function () {
+protoOf(JSONObject).t20 = function () {
   return this.bs_1.x();
 };
 function JSONArray() {
@@ -31765,19 +31849,19 @@ protoOf(JSONArray).toString = function () {
   writeJson(this, this_0);
   return this_0.toString();
 };
-protoOf(JSONArray).p20 = function () {
+protoOf(JSONArray).u20 = function () {
   return this.ms_1;
 };
 function ws($this) {
-  while ($this.l20_1 < $this.k20_1.length && isWhitespace(charCodeAt($this.k20_1, $this.l20_1))) {
-    $this.l20_1 = $this.l20_1 + 1 | 0;
+  while ($this.q20_1 < $this.p20_1.length && isWhitespace(charCodeAt($this.p20_1, $this.q20_1))) {
+    $this.q20_1 = $this.q20_1 + 1 | 0;
   }
 }
 function value($this) {
   ws($this);
-  if ($this.l20_1 >= $this.k20_1.length)
+  if ($this.q20_1 >= $this.p20_1.length)
     throw new JSONException('\u041D\u0435\u043E\u0436\u0438\u0434\u0430\u043D\u043D\u044B\u0439 \u043A\u043E\u043D\u0435\u0446');
-  var c = charCodeAt($this.k20_1, $this.l20_1);
+  var c = charCodeAt($this.p20_1, $this.q20_1);
   var tmp;
   if (c === _Char___init__impl__6a9atx(123)) {
     tmp = obj($this);
@@ -31794,25 +31878,25 @@ function value($this) {
   } else if (c === _Char___init__impl__6a9atx(45) || isDigit(c)) {
     tmp = number($this);
   } else {
-    throw new JSONException("\u041D\u0435\u043E\u0436\u0438\u0434\u0430\u043D\u043D\u044B\u0439 \u0441\u0438\u043C\u0432\u043E\u043B '" + toString_0(c) + "' \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 " + $this.l20_1);
+    throw new JSONException("\u041D\u0435\u043E\u0436\u0438\u0434\u0430\u043D\u043D\u044B\u0439 \u0441\u0438\u043C\u0432\u043E\u043B '" + toString_0(c) + "' \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 " + $this.q20_1);
   }
   return tmp;
 }
 function lit($this, word, v) {
-  if (!startsWith_0($this.k20_1, word, $this.l20_1))
-    throw new JSONException('\u041E\u0436\u0438\u0434\u0430\u043B\u043E\u0441\u044C ' + word + ' \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 ' + $this.l20_1);
-  $this.l20_1 = $this.l20_1 + word.length | 0;
+  if (!startsWith_0($this.p20_1, word, $this.q20_1))
+    throw new JSONException('\u041E\u0436\u0438\u0434\u0430\u043B\u043E\u0441\u044C ' + word + ' \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 ' + $this.q20_1);
+  $this.q20_1 = $this.q20_1 + word.length | 0;
   return v;
 }
 function number($this) {
-  var st = $this.l20_1;
-  if (charCodeAt($this.k20_1, $this.l20_1) === _Char___init__impl__6a9atx(45)) {
-    $this.l20_1 = $this.l20_1 + 1 | 0;
+  var st = $this.q20_1;
+  if (charCodeAt($this.p20_1, $this.q20_1) === _Char___init__impl__6a9atx(45)) {
+    $this.q20_1 = $this.q20_1 + 1 | 0;
   }
-  while ($this.l20_1 < $this.k20_1.length && (isDigit(charCodeAt($this.k20_1, $this.l20_1)) || charCodeAt($this.k20_1, $this.l20_1) === _Char___init__impl__6a9atx(46) || charCodeAt($this.k20_1, $this.l20_1) === _Char___init__impl__6a9atx(101) || charCodeAt($this.k20_1, $this.l20_1) === _Char___init__impl__6a9atx(69) || charCodeAt($this.k20_1, $this.l20_1) === _Char___init__impl__6a9atx(43) || charCodeAt($this.k20_1, $this.l20_1) === _Char___init__impl__6a9atx(45))) {
-    $this.l20_1 = $this.l20_1 + 1 | 0;
+  while ($this.q20_1 < $this.p20_1.length && (isDigit(charCodeAt($this.p20_1, $this.q20_1)) || charCodeAt($this.p20_1, $this.q20_1) === _Char___init__impl__6a9atx(46) || charCodeAt($this.p20_1, $this.q20_1) === _Char___init__impl__6a9atx(101) || charCodeAt($this.p20_1, $this.q20_1) === _Char___init__impl__6a9atx(69) || charCodeAt($this.p20_1, $this.q20_1) === _Char___init__impl__6a9atx(43) || charCodeAt($this.p20_1, $this.q20_1) === _Char___init__impl__6a9atx(45))) {
+    $this.q20_1 = $this.q20_1 + 1 | 0;
   }
-  var t = substring($this.k20_1, st, $this.l20_1);
+  var t = substring($this.p20_1, st, $this.q20_1);
   var tmp0_elvis_lhs = toDoubleOrNull(t);
   var tmp;
   if (tmp0_elvis_lhs == null) {
@@ -31823,25 +31907,25 @@ function number($this) {
   return tmp;
 }
 function str_0($this) {
-  $this.l20_1 = $this.l20_1 + 1 | 0;
+  $this.q20_1 = $this.q20_1 + 1 | 0;
   var sb = StringBuilder_init_$Create$();
   $l$loop: while (true) {
-    if ($this.l20_1 >= $this.k20_1.length)
+    if ($this.q20_1 >= $this.p20_1.length)
       throw new JSONException('\u0421\u0442\u0440\u043E\u043A\u0430 \u043D\u0435 \u0437\u0430\u043A\u0440\u044B\u0442\u0430');
-    var _unary__edvuaz = $this.l20_1;
-    $this.l20_1 = _unary__edvuaz + 1 | 0;
-    var c = charCodeAt($this.k20_1, _unary__edvuaz);
+    var _unary__edvuaz = $this.q20_1;
+    $this.q20_1 = _unary__edvuaz + 1 | 0;
+    var c = charCodeAt($this.p20_1, _unary__edvuaz);
     if (c === _Char___init__impl__6a9atx(34))
       return sb.toString();
     if (!(c === _Char___init__impl__6a9atx(92))) {
       sb.u7(c);
       continue $l$loop;
     }
-    if ($this.l20_1 >= $this.k20_1.length)
+    if ($this.q20_1 >= $this.p20_1.length)
       throw new JSONException('\u0421\u0442\u0440\u043E\u043A\u0430 \u043D\u0435 \u0437\u0430\u043A\u0440\u044B\u0442\u0430');
-    var _unary__edvuaz_0 = $this.l20_1;
-    $this.l20_1 = _unary__edvuaz_0 + 1 | 0;
-    var e = charCodeAt($this.k20_1, _unary__edvuaz_0);
+    var _unary__edvuaz_0 = $this.q20_1;
+    $this.q20_1 = _unary__edvuaz_0 + 1 | 0;
+    var e = charCodeAt($this.p20_1, _unary__edvuaz_0);
     if (e === _Char___init__impl__6a9atx(110))
       sb.u7(_Char___init__impl__6a9atx(10));
     else if (e === _Char___init__impl__6a9atx(114))
@@ -31853,82 +31937,82 @@ function str_0($this) {
     else if (e === _Char___init__impl__6a9atx(102))
       sb.u7(_Char___init__impl__6a9atx(12));
     else if (e === _Char___init__impl__6a9atx(117)) {
-      if (($this.l20_1 + 4 | 0) > $this.k20_1.length)
+      if (($this.q20_1 + 4 | 0) > $this.p20_1.length)
         throw new JSONException('\u041F\u043B\u043E\u0445\u043E\u0439 \\u');
-      sb.u7(numberToChar(toInt(substring($this.k20_1, $this.l20_1, $this.l20_1 + 4 | 0), 16)));
-      $this.l20_1 = $this.l20_1 + 4 | 0;
+      sb.u7(numberToChar(toInt(substring($this.p20_1, $this.q20_1, $this.q20_1 + 4 | 0), 16)));
+      $this.q20_1 = $this.q20_1 + 4 | 0;
     } else
       sb.u7(e);
   }
 }
 function arr($this) {
-  $this.l20_1 = $this.l20_1 + 1 | 0;
+  $this.q20_1 = $this.q20_1 + 1 | 0;
   var a = new JSONArray();
   ws($this);
-  if ($this.l20_1 < $this.k20_1.length && charCodeAt($this.k20_1, $this.l20_1) === _Char___init__impl__6a9atx(93)) {
-    $this.l20_1 = $this.l20_1 + 1 | 0;
+  if ($this.q20_1 < $this.p20_1.length && charCodeAt($this.p20_1, $this.q20_1) === _Char___init__impl__6a9atx(93)) {
+    $this.q20_1 = $this.q20_1 + 1 | 0;
     return a;
   }
   while (true) {
     a.ns(value($this));
     ws($this);
-    if ($this.l20_1 >= $this.k20_1.length)
+    if ($this.q20_1 >= $this.p20_1.length)
       throw new JSONException('\u041C\u0430\u0441\u0441\u0438\u0432 \u043D\u0435 \u0437\u0430\u043A\u0440\u044B\u0442');
-    var _unary__edvuaz = $this.l20_1;
-    $this.l20_1 = _unary__edvuaz + 1 | 0;
-    var c = charCodeAt($this.k20_1, _unary__edvuaz);
+    var _unary__edvuaz = $this.q20_1;
+    $this.q20_1 = _unary__edvuaz + 1 | 0;
+    var c = charCodeAt($this.p20_1, _unary__edvuaz);
     if (c === _Char___init__impl__6a9atx(93))
       return a;
     if (!(c === _Char___init__impl__6a9atx(44)))
-      throw new JSONException('\u041E\u0436\u0438\u0434\u0430\u043B\u0430\u0441\u044C \u0437\u0430\u043F\u044F\u0442\u0430\u044F \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 ' + ($this.l20_1 - 1 | 0));
+      throw new JSONException('\u041E\u0436\u0438\u0434\u0430\u043B\u0430\u0441\u044C \u0437\u0430\u043F\u044F\u0442\u0430\u044F \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 ' + ($this.q20_1 - 1 | 0));
   }
 }
 function obj($this) {
-  $this.l20_1 = $this.l20_1 + 1 | 0;
+  $this.q20_1 = $this.q20_1 + 1 | 0;
   var o = new JSONObject();
   ws($this);
-  if ($this.l20_1 < $this.k20_1.length && charCodeAt($this.k20_1, $this.l20_1) === _Char___init__impl__6a9atx(125)) {
-    $this.l20_1 = $this.l20_1 + 1 | 0;
+  if ($this.q20_1 < $this.p20_1.length && charCodeAt($this.p20_1, $this.q20_1) === _Char___init__impl__6a9atx(125)) {
+    $this.q20_1 = $this.q20_1 + 1 | 0;
     return o;
   }
   while (true) {
     ws($this);
-    if ($this.l20_1 >= $this.k20_1.length || !(charCodeAt($this.k20_1, $this.l20_1) === _Char___init__impl__6a9atx(34)))
-      throw new JSONException('\u041E\u0436\u0438\u0434\u0430\u043B\u0441\u044F \u043A\u043B\u044E\u0447 \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 ' + $this.l20_1);
+    if ($this.q20_1 >= $this.p20_1.length || !(charCodeAt($this.p20_1, $this.q20_1) === _Char___init__impl__6a9atx(34)))
+      throw new JSONException('\u041E\u0436\u0438\u0434\u0430\u043B\u0441\u044F \u043A\u043B\u044E\u0447 \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 ' + $this.q20_1);
     var k = str_0($this);
     ws($this);
     var tmp;
-    if ($this.l20_1 >= $this.k20_1.length) {
+    if ($this.q20_1 >= $this.p20_1.length) {
       tmp = true;
     } else {
-      var _unary__edvuaz = $this.l20_1;
-      $this.l20_1 = _unary__edvuaz + 1 | 0;
-      tmp = !(charCodeAt($this.k20_1, _unary__edvuaz) === _Char___init__impl__6a9atx(58));
+      var _unary__edvuaz = $this.q20_1;
+      $this.q20_1 = _unary__edvuaz + 1 | 0;
+      tmp = !(charCodeAt($this.p20_1, _unary__edvuaz) === _Char___init__impl__6a9atx(58));
     }
     if (tmp)
       throw new JSONException("\u041E\u0436\u0438\u0434\u0430\u043B\u043E\u0441\u044C ':'");
     o.cs(k, value($this));
     ws($this);
-    if ($this.l20_1 >= $this.k20_1.length)
+    if ($this.q20_1 >= $this.p20_1.length)
       throw new JSONException('\u041E\u0431\u044A\u0435\u043A\u0442 \u043D\u0435 \u0437\u0430\u043A\u0440\u044B\u0442');
-    var _unary__edvuaz_0 = $this.l20_1;
-    $this.l20_1 = _unary__edvuaz_0 + 1 | 0;
-    var c = charCodeAt($this.k20_1, _unary__edvuaz_0);
+    var _unary__edvuaz_0 = $this.q20_1;
+    $this.q20_1 = _unary__edvuaz_0 + 1 | 0;
+    var c = charCodeAt($this.p20_1, _unary__edvuaz_0);
     if (c === _Char___init__impl__6a9atx(125))
       return o;
     if (!(c === _Char___init__impl__6a9atx(44)))
-      throw new JSONException('\u041E\u0436\u0438\u0434\u0430\u043B\u0430\u0441\u044C \u0437\u0430\u043F\u044F\u0442\u0430\u044F \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 ' + ($this.l20_1 - 1 | 0));
+      throw new JSONException('\u041E\u0436\u0438\u0434\u0430\u043B\u0430\u0441\u044C \u0437\u0430\u043F\u044F\u0442\u0430\u044F \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 ' + ($this.q20_1 - 1 | 0));
   }
 }
 function JsonParser(s) {
-  this.k20_1 = s;
-  this.l20_1 = 0;
+  this.p20_1 = s;
+  this.q20_1 = 0;
 }
-protoOf(JsonParser).m20 = function () {
+protoOf(JsonParser).r20 = function () {
   var v = value(this);
   ws(this);
-  if (this.l20_1 < this.k20_1.length)
-    throw new JSONException('\u041B\u0438\u0448\u043D\u0438\u0435 \u0434\u0430\u043D\u043D\u044B\u0435 \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 ' + this.l20_1);
+  if (this.q20_1 < this.p20_1.length)
+    throw new JSONException('\u041B\u0438\u0448\u043D\u0438\u0435 \u0434\u0430\u043D\u043D\u044B\u0435 \u0432 \u043F\u043E\u0437\u0438\u0446\u0438\u0438 ' + this.q20_1);
   return v;
 };
 function JSONException(message) {
@@ -31970,7 +32054,7 @@ function writeJson(v, out) {
     if (v instanceof JSONObject) {
       out.u7(_Char___init__impl__6a9atx(123));
       var first = true;
-      var _iterator__ex2g4s = v.o20().j();
+      var _iterator__ex2g4s = v.t20().j();
       while (_iterator__ex2g4s.k()) {
         var _destruct__k2r9zo = _iterator__ex2g4s.l();
         // Inline function 'kotlin.collections.component1' call
@@ -31991,7 +32075,7 @@ function writeJson(v, out) {
         out.u7(_Char___init__impl__6a9atx(91));
         // Inline function 'kotlin.collections.forEachIndexed' call
         var index = 0;
-        var _iterator__ex2g4s_0 = v.p20().j();
+        var _iterator__ex2g4s_0 = v.u20().j();
         while (_iterator__ex2g4s_0.k()) {
           var item = _iterator__ex2g4s_0.l();
           var _unary__edvuaz = index;
@@ -32068,10 +32152,10 @@ function quote(s, out) {
   out.u7(_Char___init__impl__6a9atx(34));
 }
 function formatUs(pattern, args) {
-  return Printf_getInstance().r20(pattern, args, _Char___init__impl__6a9atx(46));
+  return Printf_getInstance().w20(pattern, args, _Char___init__impl__6a9atx(46));
 }
 function formatLocal(pattern, args) {
-  return Printf_getInstance().r20(pattern, args, _Char___init__impl__6a9atx(44));
+  return Printf_getInstance().w20(pattern, args, _Char___init__impl__6a9atx(44));
 }
 function withSign($this, s, flags) {
   return !startsWith(s, '-') && contains_0(flags, _Char___init__impl__6a9atx(43)) ? '+' + s : !startsWith(s, '-') && contains_0(flags, _Char___init__impl__6a9atx(32)) ? ' ' + s : s;
@@ -32126,7 +32210,7 @@ function Printf$format$lambda($args, $argIndex, $decimalSep) {
       var tmp_2 = Printf_getInstance();
       var tmp_3 = Printf_getInstance();
       var tmp_4 = numberToDouble(isNumber(arg) ? arg : THROW_CCE());
-      tmp_0 = withSign(tmp_2, tmp_3.s20(tmp_4, precision == null ? 6 : precision), flags);
+      tmp_0 = withSign(tmp_2, tmp_3.x20(tmp_4, precision == null ? 6 : precision), flags);
     } else if (conv === _Char___init__impl__6a9atx(88)) {
       // Inline function 'kotlin.text.uppercase' call
       // Inline function 'kotlin.js.asDynamic' call
@@ -32147,13 +32231,13 @@ function Printf$format$lambda($args, $argIndex, $decimalSep) {
 }
 function Printf() {
   Printf_instance = this;
-  this.q20_1 = Regex_init_$Create$('%([-+0 ]*)(\\d+)?(?:\\.(\\d+))?([dfsXx%])');
+  this.v20_1 = Regex_init_$Create$('%([-+0 ]*)(\\d+)?(?:\\.(\\d+))?([dfsXx%])');
 }
-protoOf(Printf).r20 = function (pattern, args, decimalSep) {
+protoOf(Printf).w20 = function (pattern, args, decimalSep) {
   var argIndex = {_v: 0};
-  return this.q20_1.h9(pattern, Printf$format$lambda(args, argIndex, decimalSep));
+  return this.v20_1.h9(pattern, Printf$format$lambda(args, argIndex, decimalSep));
 };
-protoOf(Printf).s20 = function (v, decimals) {
+protoOf(Printf).x20 = function (v, decimals) {
   if (isNaN_0(v))
     return 'NaN';
   if (isInfinite(v))
@@ -32260,6 +32344,7 @@ LevelingAdjustment_instance = new LevelingAdjustment();
 Companion_instance_14 = new Companion_13();
 MapCoordinateConverter_instance = new MapCoordinateConverter();
 CoordinateFormat_instance = new CoordinateFormat();
+WebMercator_instance = new WebMercator();
 RodHeel_instance = new RodHeel();
 RunAnalysis_instance = new RunAnalysis();
 SphereFit_instance = new SphereFit();
@@ -32354,19 +32439,20 @@ export {
   degreesToRadians as degreesToRadians3425wo2w2bbot,
   radiansToDegrees as radiansToDegrees2991r3ny43fj8,
   Fields as Fields3uci8si62nr1f,
+  get_entries_32 as get_entriesak6jzn1togn,
   CoordinateSettings as CoordinateSettings39v0k7byt2htk,
   get_GSK2011_ELLIPSOID as get_GSK2011_ELLIPSOIDfaen3up6s3m3,
   get_entries_31 as get_entries1remw92uzy0cc,
   get_KRASSOVSKY_ELLIPSOID as get_KRASSOVSKY_ELLIPSOID1753vnq0fzhhi,
   get_entries_29 as get_entriesqe5f9k92nuh7,
-  get_entries_33 as get_entries3p0rynkl7wwix,
+  get_entries_34 as get_entries3p0rynkl7wwix,
   LocalSystemParams as LocalSystemParams2moy3x8y42oz4,
   get_entries_30 as get_entries37zofcfz2m0sk,
   get_PZ90_ELLIPSOID as get_PZ90_ELLIPSOIDpzdv681ocqyd,
   PlanePoint as PlanePoint32e0wp3nmwzeh,
   Point3 as Point32yuf7cgcco9h7,
-  get_entries_32 as get_entriesrgh871sgtchp,
-  get_entries_34 as get_entries35cld96uiau8p,
+  get_entries_33 as get_entriesrgh871sgtchp,
+  get_entries_35 as get_entries35cld96uiau8p,
   StakeTarget as StakeTarget315x6llke2ooc,
   Geodetic as Geodetic2nbw1gdp4qq5q,
   Projected as Projectedv3rvlprufj7y,

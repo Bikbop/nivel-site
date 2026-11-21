@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 20,
-    "identityHash": "f5b46440cc332ac31eb24b7821b4665e",
+    "version": 22,
+    "identityHash": "a3ec22eca2d96501ef0c15e3a0087a6b",
     "entities": [
       {
         "tableName": "projects",
@@ -350,7 +350,7 @@
       },
       {
         "tableName": "map_projects",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `coordinateSettings` TEXT NOT NULL DEFAULT '{}')",
         "fields": [
           {
             "fieldPath": "id",
@@ -381,6 +381,13 @@
             "columnName": "updatedAt",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "coordinateSettings",
+            "columnName": "coordinateSettings",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'{}'"
           }
         ],
         "primaryKey": {
@@ -389,6 +396,102 @@
             "id"
           ]
         }
+      },
+      {
+        "tableName": "map_rasters",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `definition` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "definition",
+            "columnName": "definition",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "map_raster_links",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`projectId` INTEGER NOT NULL, `rasterId` INTEGER NOT NULL, `visible` INTEGER NOT NULL, `opacity` REAL NOT NULL, PRIMARY KEY(`projectId`, `rasterId`), FOREIGN KEY(`projectId`) REFERENCES `map_projects`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`rasterId`) REFERENCES `map_rasters`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "projectId",
+            "columnName": "projectId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rasterId",
+            "columnName": "rasterId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "visible",
+            "columnName": "visible",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "opacity",
+            "columnName": "opacity",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "projectId",
+            "rasterId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_map_raster_links_rasterId",
+            "unique": false,
+            "columnNames": [
+              "rasterId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_map_raster_links_rasterId` ON `${TABLE_NAME}` (`rasterId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "map_projects",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "projectId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "map_rasters",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "rasterId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "map_markers_enhanced",
@@ -1117,7 +1220,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f5b46440cc332ac31eb24b7821b4665e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a3ec22eca2d96501ef0c15e3a0087a6b')"
     ]
   }
 }
