@@ -224,6 +224,11 @@ main.page.narrow, .pagehead.narrow { max-width: 1040px; }
 }
 .chip:hover { background: var(--surface-2); }
 .chip.on { background: var(--primary-soft); border-color: color-mix(in srgb, var(--primary) 45%, transparent); color: var(--on-primary-soft); }
+.map-basemap-options .chip:disabled {
+  min-height: 28px; height: auto; max-width: 100%; padding-block: 3px; text-align: left;
+  border-color: var(--outline-soft); background: var(--surface-2); color: var(--muted); cursor: not-allowed;
+}
+.map-basemap-key { border-inline-start: 1px solid var(--outline); padding-inline-start: 6px; font-size: 11px; white-space: nowrap; }
 .seg {
   display: inline-flex; gap: 2px; background: var(--surface-variant); padding: 3px; border-radius: var(--radius-m); flex-wrap: wrap; max-width: 100%;
 }
@@ -372,9 +377,21 @@ main.page.full { max-width: none; padding: 0; }
 .leaflet-tooltip.map-label::before { display: none; }
 .leaflet-container { font-family: var(--font); }
 .map-profile { background: var(--surface); border: 1px solid var(--outline-soft); border-radius: var(--radius-m); padding: 8px 10px; }
-.map-profile svg { width: 100%; height: 110px; display: block; margin-top: 4px; }
+.map-profile-plot { position: relative; margin-top: 4px; cursor: crosshair; }
+.map-profile svg { width: 100%; height: 110px; display: block; }
 .map-profile .area { fill: color-mix(in srgb, var(--primary) 18%, transparent); stroke: none; }
 .map-profile .line { fill: none; stroke: var(--primary); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.map-profile .sample { fill: var(--primary); }
+.map-profile-dot, .map-profile-map-marker {
+  border: 2px solid #fff; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 1px #0005; pointer-events: none;
+}
+.map-profile-dot { position: absolute; width: 12px; height: 12px; transform: translate(-50%, -50%); }
+.map-profile-height {
+  position: absolute; left: calc(100% + 5px); top: 50%; transform: translateY(-50%);
+  padding: 3px 6px; background: var(--surface); color: var(--on-bg); border: 1px solid var(--outline);
+  border-radius: var(--radius-s); font: 600 12px var(--mono); white-space: nowrap;
+}
+.map-profile-dot.label-left .map-profile-height { left: auto; right: calc(100% + 5px); }
 @media (max-width: 960px) { .map-shell, .map-shell.has-props { grid-template-columns: minmax(0, 1fr); grid-template-rows: 46vh auto; height: auto !important; } .map-panel { order: 2; border-right: 0; } .map-props { order: 3; border-left: 0; } .map-stage { order: 1; min-height: 46vh; } }
 
 /* ---------- окна ---------- */
@@ -529,7 +546,7 @@ footer.app-foot .grow { min-width: 200px; }
 .cad-menu-option[aria-pressed=true] { background: var(--primary-soft); color: var(--primary); }
 .cad-menu-option:disabled { color: var(--muted); opacity: .6; cursor: default; }
 .cad-raster-tools .cad-tool { flex-direction: row; gap: 6px; max-width: none; height: 34px; padding: 0 8px; font: 500 12px var(--font); white-space: nowrap; }
-.cad-raster-tools .cad-tool:disabled { opacity: .35; cursor: default; background: transparent; }
+.cad-raster-tools .cad-tool:disabled, #cad-clipboard-tools .cad-tool:disabled { opacity: .35; cursor: default; background: transparent; }
 @media (max-width: 600px) {
   .cad-raster-tools { width: 100%; padding: 0 4px; }
   .cad-raster-tools .cad-tool-buttons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; }
